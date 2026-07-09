@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animais - Mundo da Yoyo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🐾 Animais da Yoyo</h1>
+            <p>Leia o nome e clique no animal certo!</p>
+        </header>
+
+        <main class="game">
+            <a href="index.html" class="btn-back">← Voltar ao menu</a>
+            <div class="score">⭐ Pontos: <span id="pontos">0</span></div>
+
+            <div class="word-area">
+                <div class="animal-word" id="animal-word">🐶</div>
+                <div class="animal-hint" id="animal-hint">Qual animal é esse?</div>
+            </div>
+
+            <div class="animals" id="animals"></div>
+
+            <div class="feedback" id="feedback"></div>
+
+            <div class="controls">
+                <button class="btn-speak" id="btn-speak">🔊 Ouvir dica</button>
+                <button class="btn-next" id="btn-next">Próximo ➜</button>
+            </div>
+        </main>
+
+        <footer>
+            <p>Feito com ❤️ para a Yoyo</p>
+        </footer>
+    </div>
+
+    <script src="sounds.js"></script>
+    <script src="animais.js"></script>
+</body>
+</html>

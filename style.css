@@ -262,6 +262,116 @@ header p {
     box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
 }
 
+/* Jogo dos Animais */
+.animal-word {
+    font-size: 8rem;
+    margin-bottom: 10px;
+    line-height: 1;
+    animation: bounce 2s infinite;
+    user-select: none;
+}
+
+.animal-hint {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.animals {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+}
+
+.animal-button {
+    width: 170px;
+    height: 90px;
+    border: none;
+    border-radius: 25px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #FFF;
+    cursor: pointer;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 6px 0 rgba(0, 0, 0, 0.2);
+    transition: transform 0.15s, box-shadow 0.15s;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    background: linear-gradient(135deg, #81C784 0%, #64B5F6 100%);
+}
+
+.animal-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 9px 0 rgba(0, 0, 0, 0.2);
+}
+
+.animal-button:active {
+    transform: translateY(3px);
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* Jogo da Letra Inicial */
+.letter-word {
+    font-size: 8rem;
+    margin-bottom: 5px;
+    line-height: 1;
+    animation: bounce 2s infinite;
+    user-select: none;
+}
+
+.letter-name {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #FF6B9D;
+    margin-bottom: 5px;
+    text-transform: lowercase;
+}
+
+.letter-question {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.letters {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+}
+
+.letter-button {
+    width: 100px;
+    height: 100px;
+    border: none;
+    border-radius: 50%;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #FFF;
+    cursor: pointer;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 6px 0 rgba(0, 0, 0, 0.2);
+    transition: transform 0.15s, box-shadow 0.15s;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    background: linear-gradient(135deg, #AB47BC 0%, #5C6BC0 100%);
+}
+
+.letter-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 9px 0 rgba(0, 0, 0, 0.2);
+}
+
+.letter-button:active {
+    transform: translateY(3px);
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
+}
+
 .feedback {
     text-align: center;
     min-height: 60px;
@@ -381,6 +491,34 @@ header p {
 .shape-card:hover {
     border-color: #42A5F5;
     box-shadow: 0 10px 30px rgba(25, 118, 210, 0.3);
+}
+
+.animal-card {
+    background: linear-gradient(135deg, #E8F5E9 0%, #FFFDE7 50%, #E0F7FA 100%);
+    border-color: #AED581;
+}
+
+.animal-card h2 {
+    color: #689F38;
+}
+
+.animal-card:hover {
+    border-color: #7CB342;
+    box-shadow: 0 10px 30px rgba(104, 159, 56, 0.3);
+}
+
+.letter-card {
+    background: linear-gradient(135deg, #F3E5F5 0%, #E1F5FE 50%, #E8F5E9 100%);
+    border-color: #BA68C8;
+}
+
+.letter-card h2 {
+    color: #7B1FA2;
+}
+
+.letter-card:hover {
+    border-color: #9C27B0;
+    box-shadow: 0 10px 30px rgba(123, 31, 162, 0.3);
 }
 
 .menu-icon {
