@@ -95,6 +95,41 @@ Dentro do Mundo da Yoyo, o adulto pode usar atalhos ocultos:
   - botão para reiniciar
   - botão para desligar
 
+## Deixar o Linux Mint mais leve
+
+Para tornar o boot mais rápido e o sistema mais enxuto, remova programas desnecessários e desative serviços que não são usados pelo Mundo da Yoyo.
+
+Execute no terminal como administrador:
+
+```bash
+cd /home/seu-usuario/Downloads/os-setup
+sudo bash optimize-mint.sh
+```
+
+Esse script remove:
+- Pacotes do LibreOffice, Thunderbird, jogos e reprodutores
+- Serviços como Bluetooth, impressora e modem
+- Animações do desktop
+- Atualizações automáticas
+
+> Antes de executar, revise o script se quiser manter algum programa.
+
+## Futuro: ISO customizada
+
+No futuro, é possível criar uma ISO oficial do **Mundo da Yoyo** — uma imagem de instalação que já configura tudo automaticamente:
+
+- Linux mínimo baseado em Ubuntu
+- Boot direto no navegador em modo quiosque
+- Sem área de trabalho, sem aplicativos extras
+- Apenas o Mundo da Yoyo e ferramentas de manutenção do adulto
+
+Ferramentas para isso:
+- **Cubic** — cria ISO customizada do Ubuntu/Linux Mint
+- **Buildroot** — Linux muito enxuto para hardware específico
+- **Chromium OS / Chrome OS Flex** — sistema do Google para rodar navegador
+
+Quando quiser seguir esse caminho, posso criar um guia passo a passo.
+
 ## Para sair do modo quiosque
 
 - **Ctrl+Alt+T** abre o terminal para o adulto fazer ajustes.
