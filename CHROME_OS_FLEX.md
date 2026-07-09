@@ -20,7 +20,8 @@ Chrome OS Flex é uma versão gratuita do Chrome OS da Google que pode ser insta
 1. **Instale a ferramenta oficial**
    - Abra o Chrome no Windows
    - Instale a extensao **Chromebook Recovery Utility**:
-     - Link: https://chromewebstore.google.com/detail/chromebook-recovery-utili/pocpnlppkickdkcmuniobaapebpomelo
+     - Link: https://chromewebstore.google.com/detail/chromebook-recovery-utili/pocpnlppkickgojjlmhdmidojbmbodfm
+   - Ou pesquise na Chrome Web Store por: **Chromebook Recovery Utility**
    - Clique em **"Adicionar ao Chrome"** e confirme
 
 2. **Abra a Chromebook Recovery Utility**
