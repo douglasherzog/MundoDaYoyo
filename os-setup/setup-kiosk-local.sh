@@ -12,20 +12,41 @@ ARQUIVO_DESKTOP="$PASTA_AUTOSTART/mundodayoyo.desktop"
 
 echo "=== Configurando Mundo da Yoyo (modo offline) ==="
 
-# Descobre o nome correto do navegador Chromium no sistema
+# Descobre o nome correto do navegador ja instalado
 if command -v chromium-browser &>/dev/null; then
     NAVEGADOR="chromium-browser"
 elif command -v chromium &>/dev/null; then
     NAVEGADOR="chromium"
 elif command -v google-chrome &>/dev/null; then
     NAVEGADOR="google-chrome"
+elif command -v firefox &>/dev/null; then
+    NAVEGADOR="firefox"
 else
-    NAVEGADOR="chromium-browser"
+    NAVEGADOR=""
 fi
 
 # Atualiza pacotes e instala dependencias
 sudo apt update
-sudo apt install -y "$NAVEGADOR" unclutter git
+sudo apt install -y unclutter git
+
+# Instala o navegador se ainda nao tiver nenhum
+if [ -z "$NAVEGADOR" ]; then
+    echo "Nenhum navegador encontrado. Tentando instalar Chromium..."
+    if sudo apt install -y chromium; then
+        NAVEGADOR="chromium"
+    else
+        echo "Chromium falhou. Instalando Firefox como alternativa..."
+        sudo apt install -y firefox
+        NAVEGADOR="firefox"
+    fi
+fi
+
+if [ -z "$NAVEGADOR" ]; then
+    echo "ERRO: Nao foi possivel instalar nenhum navegador."
+    exit 1
+fi
+
+echo "Navegador usado: $NAVEGADOR"
 
 # Cria o usuario yoyo se nao existir
 if ! id "$USUARIO" &>/dev/null; then
