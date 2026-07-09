@@ -3,27 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Memória - Mundo da Yoyo</title>
+    <title>Cores - Mundo da Yoyo</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>🧠 Memória da Yoyo</h1>
-            <p>Vire duas cartas e encontre os pares iguais!</p>
+            <h1>🎨 Cores da Yoyo</h1>
+            <p>Clique na cor do objeto!</p>
         </header>
 
         <main class="game">
             <a href="index.html" class="btn-back">← Voltar ao menu</a>
             <div class="score">⭐ Pontos: <span id="pontos">0</span></div>
-            <div class="attempts">Tentativas: <span id="tentativas">0</span></div>
 
-            <div class="memory-grid" id="memory-grid"></div>
+            <div class="word-area">
+                <div class="color-shape" id="color-shape">●</div>
+                <div class="color-question" id="color-question">Qual é a cor?</div>
+            </div>
+
+            <div class="colors" id="colors"></div>
 
             <div class="feedback" id="feedback"></div>
 
             <div class="controls">
-                <button class="btn-next" id="btn-restart">Jogar de novo 🔄</button>
+                <button class="btn-speak" id="btn-speak">🔊 Ouvir pergunta</button>
+                <button class="btn-next" id="btn-next">Próxima ➜</button>
             </div>
         </main>
 
@@ -33,6 +38,6 @@
     </div>
 
     <script src="sounds.js"></script>
-    <script src="memorias.js"></script>
+    <script src="cores.js"></script>
 </body>
 </html>

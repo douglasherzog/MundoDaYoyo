@@ -86,6 +86,7 @@ function numeroSurpresa() {
     }
     numeroAtual = numero.replace(/^0+/, '') || '0';
     atualizarTela();
+    playSuccess();
     falar(numeroPorExtenso(numeroAtual));
     elementos.feedback.textContent = '✨ Que número lindo!';
     elementos.feedback.className = 'feedback success';

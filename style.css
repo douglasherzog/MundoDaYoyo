@@ -124,6 +124,9 @@ header p {
     cursor: pointer;
     transition: transform 0.2s, box-shadow 0.2s;
     box-shadow: 0 5px 0 rgba(0, 0, 0, 0.2);
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
 }
 
 .syllable:hover {
@@ -146,6 +149,68 @@ header p {
 .color-4 { background: #FFB74D; }
 .color-5 { background: #BA68C8; }
 .color-6 { background: #4DB6AC; }
+
+/* Jogo das Cores */
+.color-shape {
+    font-size: 10rem;
+    margin-bottom: 10px;
+    line-height: 1;
+    animation: bounce 2s infinite;
+    user-select: none;
+}
+
+.color-question {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.colors {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+}
+
+.color-button {
+    width: 140px;
+    height: 100px;
+    border: none;
+    border-radius: 25px;
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: #FFF;
+    cursor: pointer;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 6px 0 rgba(0, 0, 0, 0.2);
+    transition: transform 0.15s, box-shadow 0.15s;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.color-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 9px 0 rgba(0, 0, 0, 0.2);
+}
+
+.color-button:active {
+    transform: translateY(3px);
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
+}
+
+.shake {
+    animation: shake 0.5s ease;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-10px); }
+    40% { transform: translateX(10px); }
+    60% { transform: translateX(-10px); }
+    80% { transform: translateX(10px); }
+}
 
 .feedback {
     text-align: center;
@@ -238,6 +303,20 @@ header p {
 .magical-card:hover {
     border-color: #AB47BC;
     box-shadow: 0 10px 30px rgba(142, 36, 170, 0.3);
+}
+
+.color-card {
+    background: linear-gradient(135deg, #FFCDD2 0%, #F8BBD0 25%, #E1BEE7 50%, #C5CAE9 75%, #B2EBF2 100%);
+    border-color: #F48FB1;
+}
+
+.color-card h2 {
+    color: #E91E63;
+}
+
+.color-card:hover {
+    border-color: #EC407A;
+    box-shadow: 0 10px 30px rgba(233, 30, 99, 0.3);
 }
 
 .menu-icon {
@@ -456,6 +535,9 @@ header p {
     perspective: 1000px;
     transition: transform 0.2s;
     box-shadow: 0 5px 0 rgba(0, 0, 0, 0.2);
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
 }
 
 .memory-card:hover {

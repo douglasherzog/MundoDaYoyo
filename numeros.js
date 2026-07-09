@@ -87,12 +87,14 @@ function selecionarNumero(botao) {
         elementos.feedback.textContent = `🎉 Muito bem! São ${numeroAtual} ${numeroAtual === 1 ? 'objeto' : 'objetos'}!`;
         elementos.feedback.className = 'feedback success';
         elementos.btnNext.disabled = false;
+        playSuccess();
         falar(`Muito bem! São ${numeroPorExtenso(numeroAtual)}`);
     } else {
         botao.classList.add('celebration');
         setTimeout(() => botao.classList.remove('celebration'), 500);
         elementos.feedback.textContent = 'Tente outro número! 💪';
         elementos.feedback.className = 'feedback error';
+        playError();
         falar('Tente outro número');
     }
 }

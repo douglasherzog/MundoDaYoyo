@@ -104,8 +104,10 @@ function selecionarSyllable(botao) {
             elementos.feedback.className = 'feedback success';
             elementos.emoji.classList.add('celebration');
             elementos.btnNext.disabled = false;
+            playSuccess();
             falar(`Mágico! A palavra é ${palavraAtual.palavra}`);
         } else {
+            playClick();
             falar(silaba);
         }
     } else {
@@ -113,6 +115,7 @@ function selecionarSyllable(botao) {
         setTimeout(() => botao.classList.remove('celebration'), 500);
         elementos.feedback.textContent = 'Tente outra sílaba mágica! 💪';
         elementos.feedback.className = 'feedback error';
+        playError();
         falar('Tente outra sílaba');
     }
 }

@@ -1,4 +1,4 @@
-const pares = ['🦄', '🌈', '�', '☁️', '⭐', '🧚', '�', '☀️'];
+﻿const pares = ['🦄', '🌈', '🍭', '☁️', '⭐', '🧚', '🍦', '☀️'];
 
 let cartas = [];
 let cartaVirada = null;
@@ -95,17 +95,20 @@ function virarCarta(indice) {
         paresEncontrados++;
         pontos += 10;
         elementos.pontos.textContent = pontos;
-        elementos.feedback.textContent = 'Par encontrado! 🎉';
+        elementos.feedback.textContent = 'Par encontrado! ðŸŽ‰';
         elementos.feedback.className = 'feedback success';
+        playSuccess();
         falar('Par encontrado');
 
         if (paresEncontrados === pares.length) {
-            elementos.feedback.textContent = `🎉 Você venceu! Encontrou todos os pares em ${tentativas} tentativas!`;
-            falar('Parabéns, você venceu!');
+            elementos.feedback.textContent = `ðŸŽ‰ VocÃª venceu! Encontrou todos os pares em ${tentativas} tentativas!`;
+            playSuccess();
+            falar('ParabÃ©ns, vocÃª venceu!');
         }
     } else {
-        elementos.feedback.textContent = 'Não é igual. Tente de novo! 💪';
+        elementos.feedback.textContent = 'NÃ£o Ã© igual. Tente de novo! ðŸ’ª';
         elementos.feedback.className = 'feedback error';
+        playError();
         falar('Tente de novo');
         setTimeout(() => {
             cartaVirada.virada = false;
@@ -134,3 +137,4 @@ function reiniciarJogo() {
 elementos.btnRestart.addEventListener('click', reiniciarJogo);
 
 reiniciarJogo();
+

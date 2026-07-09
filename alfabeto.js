@@ -73,6 +73,7 @@ function palavraMagica() {
     const indice = Math.floor(Math.random() * palavrasMagicas.length);
     palavraAtual = palavrasMagicas[indice];
     atualizarTela();
+    playSuccess();
     falar(palavraAtual);
     elementos.feedback.textContent = '✨ Palavra mágica formada!';
     elementos.feedback.className = 'feedback success';

@@ -102,8 +102,10 @@ function selecionarPalavra(botao) {
             elementos.feedback.className = 'feedback success';
             elementos.emoji.classList.add('celebration');
             elementos.btnNext.disabled = false;
+            playSuccess();
             falar(`Muito bem! ${fraseAtual.frase}`);
         } else {
+            playClick();
             falar(palavra);
         }
     } else {
@@ -111,6 +113,7 @@ function selecionarPalavra(botao) {
         setTimeout(() => botao.classList.remove('celebration'), 500);
         elementos.feedback.textContent = 'Tente outra palavra! 💪';
         elementos.feedback.className = 'feedback error';
+        playError();
         falar('Tente outra palavra');
     }
 }
