@@ -22,7 +22,21 @@ def gerar_audio(texto):
     if os.path.exists(caminho):
         return caminho
 
-    # Tenta pico2wave primeiro (melhor qualidade em pt-BR)
+    # 1) RHVoice - melhor qualidade
+    rhvoice_cmds = [
+        ["RHVoice-test", "-p", "brazilian-portuguese", "-o", caminho],
+        ["rhvoice-test", "-p", "brazilian-portuguese", "-o", caminho],
+    ]
+    for cmd in rhvoice_cmds:
+        try:
+            with subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL) as proc:
+                proc.communicate(texto.encode("utf-8"), timeout=10)
+            if os.path.exists(caminho) and os.path.getsize(caminho) > 0:
+                return caminho
+        except Exception:
+            pass
+
+    # 2) pico2wave - boa qualidade robotica
     try:
         subprocess.run(
             ["pico2wave", "-l", "pt-BR", "-w", caminho, texto],
@@ -34,7 +48,7 @@ def gerar_audio(texto):
     except Exception:
         pass
 
-    # Fallback para espeak
+    # 3) espeak - fallback basico
     try:
         subprocess.run(
             ["espeak", "-v", "pt-br", "-w", caminho, texto],
