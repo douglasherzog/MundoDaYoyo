@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mundo da Yoyo - Maiúsculas e Minúsculas</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="game-header">
+            <a href="index.html" class="back-button">Voltar</a>
+            <h1>Maiúsculas e Minúsculas</h1>
+            <div class="stars-counter">
+                <span class="star-icon">⭐</span>
+                <span id="stars-count">0</span>
+            </div>
+        </header>
+
+        <main class="game-area">
+            <div id="question-area" class="case-question">
+                <p class="instruction">Encontre a letra correspondente:</p>
+                <div id="target-letter" class="target-letter"></div>
+            </div>
+
+            <div id="options-area" class="case-options"></div>
+
+            <div id="feedback" class="feedback"></div>
+
+            <button id="btn-next" class="btn-next" disabled>Próxima</button>
+        </main>
+    </div>
+
+    <script src="stars.js"></script>
+    <script src="sounds.js"></script>
+    <script src="maiusculas.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>
