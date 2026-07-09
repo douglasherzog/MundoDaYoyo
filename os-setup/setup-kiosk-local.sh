@@ -113,6 +113,10 @@ pactl set-sink-volume @DEFAULT_SINK@ 80% 2>/dev/null || true
 systemctl --user start speech-dispatcher 2>/dev/null || true
 sleep 1
 
+# Inicia o servidor TTS local (fallback quando Web Speech API nao funciona)
+python3 /usr/local/bin/mundodayoyo-tts-server.py &>/dev/null &
+sleep 1
+
 # Limpa a tela do cursor quando parado
 pkill unclutter || true
 unclutter -idle 0.1 &
@@ -165,6 +169,11 @@ PASTA_SCRIPT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 if [ -f "$PASTA_SCRIPT/admin-server.py" ]; then
     sudo cp "$PASTA_SCRIPT/admin-server.py" /usr/local/bin/mundodayoyo-admin-server.py
     sudo chmod +x /usr/local/bin/mundodayoyo-admin-server.py
+fi
+
+if [ -f "$PASTA_SCRIPT/tts-server.py" ]; then
+    sudo cp "$PASTA_SCRIPT/tts-server.py" /usr/local/bin/mundodayoyo-tts-server.py
+    sudo chmod +x /usr/local/bin/mundodayoyo-tts-server.py
 fi
 
 if [ -f "$PASTA_SCRIPT/admin-server.service" ]; then
