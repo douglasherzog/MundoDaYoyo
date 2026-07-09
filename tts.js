@@ -5,7 +5,23 @@ function selecionarVozPTBR() {
            voices[0];
 }
 
-function falarLocal(texto) {
+function falarWeb(texto) {
+    if (!('speechSynthesis' in window)) return false;
+    window.speechSynthesis.cancel();
+    const msg = new SpeechSynthesisUtterance(texto);
+    const voz = selecionarVozPTBR();
+    if (voz) msg.voice = voz;
+    msg.lang = 'pt-BR';
+    msg.rate = 0.9;
+    window.speechSynthesis.speak(msg);
+    return true;
+}
+
+function falar(texto) {
+    if (!texto) return;
+
+    // Tenta o servidor TTS local primeiro (Linux)
+    // Se nao estiver disponivel, usa Web Speech API (Windows/Android)
     const url = `http://127.0.0.1:8766/falar?texto=${encodeURIComponent(texto)}`;
     fetch(url)
         .then(response => {
@@ -17,26 +33,6 @@ function falarLocal(texto) {
             audio.play();
         })
         .catch(() => {
-            // Silenciosamente ignora erro do servidor TTS
+            falarWeb(texto);
         });
-}
-
-function falar(texto) {
-    if (!texto) return;
-
-    // Usa o servidor TTS local como padrao (mais confiavel no Linux)
-    // e mantem a Web Speech API como fallback
-    falarLocal(texto);
-
-    // Tambem tenta a Web Speech API, caso haja vozes naturais instaladas
-    if ('speechSynthesis' in window) {
-        const vozes = window.speechSynthesis.getVoices();
-        if (vozes.length > 0) {
-            const voz = selecionarVozPTBR();
-            if (voz && voz.lang.toLowerCase() !== 'pt-br') {
-                // Se nao houver voz pt-br nativa, nao usa Web Speech API
-                return;
-            }
-        }
-    }
 }
