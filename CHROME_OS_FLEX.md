@@ -18,8 +18,8 @@ Chrome OS Flex é uma versão gratuita do Chrome OS da Google que pode ser insta
 ## Passo a passo para criar o pendrive no Windows
 
 1. **Baixe a ferramenta oficial**
-   - Acesse: https://chromeosflex.google.com/
-   - Clique em **"Try Chrome OS Flex"** ou **"Baixar"**
+   - Acesse: https://chromeos.google/products/chromeos-flex/
+   - Clique em **"Comece agora"** ou **"Download"**
    - Ou instale a extensao oficial no Chrome: **Chromebook Recovery Utility**
      - Link: https://chromewebstore.google.com/detail/chromebook-recovery-utili/pocpnlppkickdkcmuniobaapebpomelo
 
