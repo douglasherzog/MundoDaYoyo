@@ -2,8 +2,6 @@
 # Mundo da Yoyo - Sistema Educacional Kiosk
 # Instala e configura o Linux para iniciar direto no Mundo da Yoyo
 
-set -e
-
 URL_JOGO="https://douglasherzog.github.io/MundoDaYoyo"
 USUARIO="yoyo"
 PASTA_AUTOSTART="/home/$USUARIO/.config/autostart"
@@ -12,11 +10,20 @@ ARQUIVO_DESKTOP="$PASTA_AUTOSTART/mundodayoyo.desktop"
 
 echo "=== Configurando Mundo da Yoyo como ambiente educacional ==="
 
-# Atualiza pacotes
-sudo apt update
+# Descobre o nome correto do navegador Chromium no sistema
+if command -v chromium-browser &>/dev/null; then
+    NAVEGADOR="chromium-browser"
+elif command -v chromium &>/dev/null; then
+    NAVEGADOR="chromium"
+elif command -v google-chrome &>/dev/null; then
+    NAVEGADOR="google-chrome"
+else
+    NAVEGADOR="chromium-browser"
+fi
 
-# Instala o Chromium
-sudo apt install -y chromium-browser unclutter
+# Atualiza pacotes e instala dependencias
+sudo apt update
+sudo apt install -y "$NAVEGADOR" unclutter
 
 # Cria o usuario yoyo se nao existir
 if ! id "$USUARIO" &>/dev/null; then
@@ -28,35 +35,53 @@ else
     echo "Usuario $USUARIO ja existe."
 fi
 
-# Configura login automatico
-if command -v lightdm &>/dev/null; then
-    sudo sed -i "s/^#\?autologin-user=.*/autologin-user=$USUARIO/" /etc/lightdm/lightdm.conf || true
-    sudo sed -i "s/^#\?autologin-user-timeout=.*/autologin-user-timeout=0/" /etc/lightdm/lightdm.conf || true
-    sudo sed -i "s/^#\?greeter-hide-users=.*/greeter-hide-users=true/" /etc/lightdm/lightdm.conf || true
+# Configura login automatico no LightDM (padrao do Linux Mint)
+if command -v lightdm &>/dev/null || [ -d /etc/lightdm ]; then
+    ARQUIVO_LIGHTDM="/etc/lightdm/lightdm.conf"
+    sudo mkdir -p /etc/lightdm
+
+    if [ -f "$ARQUIVO_LIGHTDM" ]; then
+        sudo cp "$ARQUIVO_LIGHTDM" "$ARQUIVO_LIGHTDM.bak"
+    fi
+
+    sudo tee "$ARQUIVO_LIGHTDM" > /dev/null <<EOF
+[Seat:*]
+autologin-user=$USUARIO
+autologin-user-timeout=0
+autologin-session=lightdm-xsession
+EOF
 fi
 
-if command -v gdm3 &>/dev/null; then
-    sudo sed -i "s/^#\?AutomaticLoginEnable.*/AutomaticLoginEnable=true/" /etc/gdm3/custom.conf || true
-    sudo sed -i "s/^#\?AutomaticLogin.*/AutomaticLogin=$USUARIO/" /etc/gdm3/custom.conf || true
+# Configura login automatico no GDM3
+if command -v gdm3 &>/dev/null || [ -d /etc/gdm3 ]; then
+    ARQUIVO_GDM="/etc/gdm3/custom.conf"
+
+    if [ -f "$ARQUIVO_GDM" ]; then
+        sudo cp "$ARQUIVO_GDM" "$ARQUIVO_GDM.bak"
+        sudo sed -i "s/^#\?AutomaticLoginEnable.*/AutomaticLoginEnable=true/" "$ARQUIVO_GDM" || true
+        sudo sed -i "s/^#\?AutomaticLogin.*/AutomaticLogin=$USUARIO/" "$ARQUIVO_GDM" || true
+    fi
 fi
 
 # Cria o script do kiosk
 sudo tee "$ARQUIVO_KIOSK" > /dev/null <<EOF
 #!/bin/bash
+
 # Limpa a tela do cursor quando parado
+pkill unclutter || true
 unclutter -idle 0.1 &
 
 # Abre o Mundo da Yoyo em modo quiosque
-chromium-browser --kiosk --app=$URL_JOGO \
-    --disable-infobars \
-    --disable-session-crashed-bubble \
-    --disable-restore-session-state \
-    --no-first-run \
-    --disable-features=TranslateUI \
-    --enable-features=OverlayScrollbars \
-    --disable-pinch \
-    --overscroll-history-navigation=0 \
-    --touch-events=enabled \
+$NAVEGADOR --kiosk --app=$URL_JOGO \\
+    --disable-infobars \\
+    --disable-session-crashed-bubble \\
+    --disable-restore-session-state \\
+    --no-first-run \\
+    --disable-features=TranslateUI \\
+    --enable-features=OverlayScrollbars \\
+    --disable-pinch \\
+    --overscroll-history-navigation=0 \\
+    --touch-events=enabled \\
     --user-data-dir=/home/$USUARIO/.config/chromium-yoyo
 EOF
 
@@ -80,14 +105,12 @@ sudo chown -R "$USUARIO:$USUARIO" "/home/$USUARIO/.config"
 sudo -u "$USUARIO" gsettings set org.gnome.desktop.screensaver lock-enabled false 2>/dev/null || true
 sudo -u "$USUARIO" gsettings set org.gnome.desktop.session idle-delay 0 2>/dev/null || true
 sudo -u "$USUARIO" gsettings set org.gnome.desktop.screensaver lock-delay 0 2>/dev/null || true
-sudo -u "$USUARIO" gsettings set org.gnome.desktop.screensaver lock-enabled false 2>/dev/null || true
 sudo -u "$USUARIO" gsettings set org.gnome.desktop.screensaver active-lock-enabled false 2>/dev/null || true
 sudo -u "$USUARIO" gsettings set org.gnome.settings-daemon.plugins.power idle-dim false 2>/dev/null || true
 sudo -u "$USUARIO" gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-timeout 0 2>/dev/null || true
 sudo -u "$USUARIO" gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-battery-timeout 0 2>/dev/null || true
 
-# Cria atalho de emergencia para terminal (Ctrl+Alt+T)
-TECLA_ATALHO="/home/$USUARIO/.config/dconf/user"
+# Atalho de emergencia para terminal (Ctrl+Alt+T)
 sudo -u "$USUARIO" gsettings set org.gnome.settings-daemon.plugins.media-keys terminal '<Ctrl><Alt>t' 2>/dev/null || true
 
 echo ""

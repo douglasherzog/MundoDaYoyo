@@ -14,15 +14,39 @@ A ideia é usar o **Linux Mint** como base, configurar um login automático e ab
 
 ## Instalação rápida
 
-1. Copie os arquivos desta pasta `os-setup` para o Linux que será usado pela criança.
-2. Abra o terminal na pasta `os-setup`.
-3. Execute o script de instalação:
+1. No Linux Mint, copie a pasta `os-setup` para uma localização, por exemplo:
 
 ```bash
-bash setup-kiosk.sh
+/home/seu-usuario/Downloads/os-setup
 ```
 
-4. Reinicie o computador. O Mundo da Yoyo abrirá sozinho, em tela cheia.
+2. Abra o terminal e **entre na pasta** do script:
+
+```bash
+cd /home/seu-usuario/Downloads/os-setup
+```
+
+> Substitua `seu-usuario` pelo nome do seu usuário.
+
+3. Se o arquivo veio do Windows, corrija as quebras de linha:
+
+```bash
+sed -i 's/\r$//' setup-kiosk.sh
+```
+
+4. Tome o script executável:
+
+```bash
+chmod +x setup-kiosk.sh
+```
+
+5. Execute o script com privilégios de administrador:
+
+```bash
+sudo bash setup-kiosk.sh
+```
+
+6. Reinicie o computador. O Mundo da Yoyo abrirá sozinho, em tela cheia.
 
 ## O que o script faz
 
