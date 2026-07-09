@@ -6,7 +6,15 @@ const frases = [
     { frase: 'O cão corre', palavras: ['O', 'cão', 'corre'], emoji: '🐶🏃' },
     { frase: 'A lua brilha', palavras: ['A', 'lua', 'brilha'], emoji: '🌙✨' },
     { frase: 'O bolo é bom', palavras: ['O', 'bolo', 'é', 'bom'], emoji: '🎂😊' },
-    { frase: 'A casa é grande', palavras: ['A', 'casa', 'é', 'grande'], emoji: '🏠🏰' }
+    { frase: 'A casa é grande', palavras: ['A', 'casa', 'é', 'grande'], emoji: '🏠🏰' },
+    { frase: 'A mãe lê livro', palavras: ['A', 'mãe', 'lê', 'livro'], emoji: '👩📖' },
+    { frase: 'O pai faz carinho', palavras: ['O', 'pai', 'faz', 'carinho'], emoji: '👨❤️' },
+    { frase: 'A flor é bonita', palavras: ['A', 'flor', 'é', 'bonita'], emoji: '🌸😍' },
+    { frase: 'O avô dorme', palavras: ['O', 'avô', 'dorme'], emoji: '👴😴' },
+    { frase: 'A vovó cozinha', palavras: ['A', 'vovó', 'cozinha'], emoji: '👵🍳' },
+    { frase: 'O bebê ri', palavras: ['O', 'bebê', 'ri'], emoji: '👶😄' },
+    { frase: 'A menina canta', palavras: ['A', 'menina', 'canta'], emoji: '👧🎵' },
+    { frase: 'O menino pula', palavras: ['O', 'menino', 'pula'], emoji: '👦🤸' }
 ];
 
 let fraseAtual = null;

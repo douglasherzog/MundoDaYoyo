@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desenhar e Colorir - Mundo da Yoyo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎨 Desenhar e Colorir</h1>
+            <p>Use os dedos para desenhar e colorir!</p>
+        </header>
+
+        <main class="game">
+            <a href="index.html" class="btn-back">← Voltar ao menu</a>
+
+            <div class="drawing-toolbar">
+                <div class="color-palette" id="color-palette">
+                    <button class="color-btn active" style="background: #FF0000" data-color="#FF0000" title="vermelho"></button>
+                    <button class="color-btn" style="background: #00FF00" data-color="#00FF00" title="verde"></button>
+                    <button class="color-btn" style="background: #0000FF" data-color="#0000FF" title="azul"></button>
+                    <button class="color-btn" style="background: #FFFF00" data-color="#FFFF00" title="amarelo"></button>
+                    <button class="color-btn" style="background: #FF00FF" data-color="#FF00FF" title="rosa"></button>
+                    <button class="color-btn" style="background: #FFA500" data-color="#FFA500" title="laranja"></button>
+                    <button class="color-btn" style="background: #000000" data-color="#000000" title="preto"></button>
+                    <button class="color-btn" style="background: #FFFFFF; border: 2px solid #CCC" data-color="#FFFFFF" title="branco"></button>
+                </div>
+
+                <div class="brush-sizes">
+                    <button class="brush-btn" data-size="5">Fino</button>
+                    <button class="brush-btn active" data-size="12">Médio</button>
+                    <button class="brush-btn" data-size="25">Grosso</button>
+                </div>
+
+                <div class="templates">
+                    <button class="template-btn" data-template="blank">Página em branco</button>
+                    <button class="template-btn" data-template="heart">Coração</button>
+                    <button class="template-btn" data-template="star">Estrela</button>
+                    <button class="template-btn" data-template="flower">Flor</button>
+                    <button class="template-btn" data-template="house">Casa</button>
+                    <button class="template-btn" data-template="sun">Sol</button>
+                </div>
+            </div>
+
+            <div class="canvas-area">
+                <canvas id="drawing-canvas" width="700" height="500"></canvas>
+            </div>
+
+            <div class="feedback" id="feedback"></div>
+
+            <div class="controls">
+                <button class="btn-clear" id="btn-clear">🗑️ Limpar</button>
+                <button class="btn-speak" id="btn-download">💾 Salvar desenho</button>
+            </div>
+        </main>
+
+        <footer>
+            <p>Feito com ❤️ para a Yoyo</p>
+        </footer>
+    </div>
+
+    <script src="stars.js"></script>
+    <script src="sounds.js"></script>
+    <script src="desenhar.js"></script>
+</body>
+</html>

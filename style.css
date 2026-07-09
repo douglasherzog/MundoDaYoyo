@@ -372,6 +372,197 @@ header p {
     box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
 }
 
+/* Jogo de Rimas */
+.rhyme-target {
+    font-size: 8rem;
+    margin-bottom: 5px;
+    line-height: 1;
+    animation: bounce 2s infinite;
+    user-select: none;
+}
+
+.rhyme-word {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #FF6B9D;
+    margin-bottom: 5px;
+}
+
+.rhyme-question {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.rhymes {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+}
+
+.rhyme-button {
+    width: 170px;
+    height: 90px;
+    border: none;
+    border-radius: 25px;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #FFF;
+    cursor: pointer;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 6px 0 rgba(0, 0, 0, 0.2);
+    transition: transform 0.15s, box-shadow 0.15s;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.rhyme-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 9px 0 rgba(0, 0, 0, 0.2);
+}
+
+.rhyme-button:active {
+    transform: translateY(3px);
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* Jogo Formar Palavras */
+.word-image {
+    font-size: 8rem;
+    margin-bottom: 15px;
+    line-height: 1;
+    animation: bounce 2s infinite;
+    user-select: none;
+}
+
+.word-tip {
+    font-size: 1.6rem;
+    color: #666;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.word-keyboard {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.word-keyboard .syllable {
+    width: 65px;
+    height: 65px;
+    font-size: 1.8rem;
+}
+
+/* Atividade Desenhar e Colorir */
+.drawing-toolbar {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+.color-palette {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.color-btn {
+    width: 45px;
+    height: 45px;
+    border: 3px solid transparent;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.15s, border-color 0.15s;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.color-btn:hover {
+    transform: scale(1.1);
+}
+
+.color-btn.active {
+    border-color: #333;
+    transform: scale(1.15);
+}
+
+.brush-sizes {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.brush-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    background: #E0E0E0;
+    color: #555;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.brush-btn.active {
+    background: #FF6B9D;
+    color: #FFF;
+}
+
+.templates {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.template-btn {
+    padding: 8px 16px;
+    border: 2px solid #CCC;
+    border-radius: 20px;
+    background: #FFF;
+    color: #666;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s, background 0.15s;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.template-btn.active {
+    border-color: #FF6B9D;
+    color: #FF4081;
+    background: #FCE4EC;
+}
+
+.canvas-area {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+#drawing-canvas {
+    border: 4px solid #DDD;
+    border-radius: 20px;
+    background: #FFF;
+    cursor: crosshair;
+    max-width: 100%;
+    touch-action: none;
+}
+
 .feedback {
     text-align: center;
     min-height: 60px;
@@ -519,6 +710,48 @@ header p {
 .letter-card:hover {
     border-color: #9C27B0;
     box-shadow: 0 10px 30px rgba(123, 31, 162, 0.3);
+}
+
+.rhyme-card {
+    background: linear-gradient(135deg, #FFF8E1 0%, #FCE4EC 50%, #E8EAF6 100%);
+    border-color: #FFB74D;
+}
+
+.rhyme-card h2 {
+    color: #F57C00;
+}
+
+.rhyme-card:hover {
+    border-color: #FF9800;
+    box-shadow: 0 10px 30px rgba(245, 124, 0, 0.3);
+}
+
+.words-card {
+    background: linear-gradient(135deg, #E0F2F1 0%, #F3E5F5 50%, #E8EAF6 100%);
+    border-color: #4DB6AC;
+}
+
+.words-card h2 {
+    color: #00796B;
+}
+
+.words-card:hover {
+    border-color: #009688;
+    box-shadow: 0 10px 30px rgba(0, 121, 107, 0.3);
+}
+
+.draw-card {
+    background: linear-gradient(135deg, #FCE4EC 0%, #F3E5F5 50%, #E1F5FE 100%);
+    border-color: #F06292;
+}
+
+.draw-card h2 {
+    color: #C2185B;
+}
+
+.draw-card:hover {
+    border-color: #E91E63;
+    box-shadow: 0 10px 30px rgba(194, 24, 87, 0.3);
 }
 
 .menu-icon {
@@ -800,4 +1033,40 @@ footer {
     50% { transform: scale(1.2) rotate(5deg); }
     75% { transform: scale(1.1) rotate(-3deg); }
     100% { transform: scale(1) rotate(0); }
+}
+
+/* Cofrinho de Estrelas */
+.star-counter {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    background: linear-gradient(135deg, #FFD700 0%, #FFA000 100%);
+    color: #FFF;
+    font-size: 1.6rem;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 30px;
+    box-shadow: 0 5px 15px rgba(255, 160, 0, 0.4);
+    z-index: 1000;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    user-select: none;
+}
+
+.star-float {
+    position: fixed;
+    font-size: 3rem;
+    pointer-events: none;
+    z-index: 2000;
+    animation: starFloat 1.5s ease-out forwards;
+}
+
+@keyframes starFloat {
+    0% {
+        transform: translateY(0) scale(0.5);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-250px) scale(1.2) rotate(360deg);
+        opacity: 0;
+    }
 }

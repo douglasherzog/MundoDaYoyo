@@ -24,6 +24,10 @@ function playSuccess() {
     notes.forEach((freq, index) => {
         setTimeout(() => playTone(freq, 0.25, 'sine', 0.25), index * 120);
     });
+
+    if (typeof adicionarEstrelas === 'function') {
+        setTimeout(() => adicionarEstrelas(1), 400);
+    }
 }
 
 function playError() {
