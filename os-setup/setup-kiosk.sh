@@ -69,7 +69,7 @@ if command -v lightdm &>/dev/null || [ -d /etc/lightdm ]; then
 [Seat:*]
 autologin-user=$USUARIO
 autologin-user-timeout=0
-autologin-session=lightdm-xsession
+autologin-guest=false
 EOF
 fi
 
