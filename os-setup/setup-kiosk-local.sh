@@ -99,6 +99,14 @@ fi
 sudo tee "$ARQUIVO_KIOSK" > /dev/null <<EOF
 #!/bin/bash
 
+# Inicia o servidor de audio para o usuario do kiosk
+pulseaudio --kill 2>/dev/null || true
+sleep 1
+pulseaudio --start 2>/dev/null || true
+sleep 1
+pactl set-sink-mute @DEFAULT_SINK@ 0 2>/dev/null || true
+pactl set-sink-volume @DEFAULT_SINK@ 80% 2>/dev/null || true
+
 # Limpa a tela do cursor quando parado
 pkill unclutter || true
 unclutter -idle 0.1 &
