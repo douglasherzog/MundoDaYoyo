@@ -160,7 +160,10 @@
     <script>
         function iniciarBoasVindas() {
             if (sessionStorage.getItem('boasVindasDitas') === 'sim') return;
-            falar('Bem vindo ao fantástico mundo da Yoyo');
+            // Pequeno atraso para garantir que o servidor TTS esteja pronto
+            setTimeout(function() {
+                falar('Bem vindo ao fantástico mundo da Yoyo');
+            }, 1500);
             sessionStorage.setItem('boasVindasDitas', 'sim');
         }
 

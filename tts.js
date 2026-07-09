@@ -24,22 +24,19 @@ function falarLocal(texto) {
 function falar(texto) {
     if (!texto) return;
 
-    // Tenta Web Speech API primeiro
-    if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
-        const msg = new SpeechSynthesisUtterance(texto);
-        const voz = selecionarVozPTBR();
-        if (voz) msg.voice = voz;
-        msg.lang = 'pt-BR';
-        msg.rate = 0.9;
-        window.speechSynthesis.speak(msg);
+    // Usa o servidor TTS local como padrao (mais confiavel no Linux)
+    // e mantem a Web Speech API como fallback
+    falarLocal(texto);
 
-        // Se nao houver vozes instaladas, usa o servidor TTS local como fallback
-        if (window.speechSynthesis.getVoices().length === 0) {
-            falarLocal(texto);
+    // Tambem tenta a Web Speech API, caso haja vozes naturais instaladas
+    if ('speechSynthesis' in window) {
+        const vozes = window.speechSynthesis.getVoices();
+        if (vozes.length > 0) {
+            const voz = selecionarVozPTBR();
+            if (voz && voz.lang.toLowerCase() !== 'pt-br') {
+                // Se nao houver voz pt-br nativa, nao usa Web Speech API
+                return;
+            }
         }
-    } else {
-        // Web Speech API nao disponivel, usa servidor TTS local
-        falarLocal(texto);
     }
 }
