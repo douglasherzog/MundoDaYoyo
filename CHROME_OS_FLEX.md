@@ -17,24 +17,29 @@ Chrome OS Flex é uma versão gratuita do Chrome OS da Google que pode ser insta
 
 ## Passo a passo para criar o pendrive no Windows
 
-1. **Baixe a ferramenta oficial**
-   - Acesse: https://chromeos.google/products/chromeos-flex/
-   - Clique em **"Comece agora"** ou **"Download"**
-   - Ou instale a extensao oficial no Chrome: **Chromebook Recovery Utility**
+1. **Instale a ferramenta oficial**
+   - Abra o Chrome no Windows
+   - Instale a extensao **Chromebook Recovery Utility**:
      - Link: https://chromewebstore.google.com/detail/chromebook-recovery-utili/pocpnlppkickdkcmuniobaapebpomelo
+   - Clique em **"Adicionar ao Chrome"** e confirme
 
 2. **Abra a Chromebook Recovery Utility**
-   - Clique na engrenagem (⚙️) no canto superior direito
-   - Selecione **"Use local image"** (usar imagem local)
-   - Escolha o arquivo `.bin` do Chrome OS Flex baixado
+   - Clique no icone da extensao na barra do Chrome
+   - Clique em **"Get started"** (ou "Começar")
 
-3. **Prepare o pendrive**
-   - Insira o pendrive de 8 GB ou mais
+3. **Selecione o Chrome OS Flex**
+   - Em **"Select a manufacturer"**, escolha: **Google Chrome OS Flex**
+   - Em **"Select a model"**, escolha: **Chrome OS Flex**
+   - Clique em **"Continue"**
+
+4. **Prepare o pendrive**
+   - Insira o pendrive USB de pelo menos **8 GB**
    - **Atencao:** todos os dados do pendrive serão apagados
-   - Na ferramenta, selecione o modelo do pendrive
-   - Clique em **"Create now"** e aguarde o processo terminar
+   - Na ferramenta, selecione o pendrive na lista
+   - Clique em **"Create now"**
+   - Aguarde o download e a gravacao terminarem (pode demorar alguns minutos)
 
-4. **Inicie o notebook pelo pendrive**
+5. **Inicie o notebook pelo pendrive**
    - Insira o pendrive no notebook da Yoyo
    - Reinicie o notebook
    - Durante a inicializacao, pressione a tecla de boot (varia por marca):
@@ -47,7 +52,7 @@ Chrome OS Flex é uma versão gratuita do Chrome OS da Google que pode ser insta
      - Outras marcas: tente ESC, F2, F10 ou F12
    - Selecione o pendrive na lista de dispositivos de boot
 
-5. **Teste o Chrome OS Flex**
+6. **Teste o Chrome OS Flex**
    - O sistema iniciará direto do pendrive
    - Escolha **"Try Chrome OS Flex"** (experimentar sem instalar)
    - Aguarde a tela de boas-vindas
