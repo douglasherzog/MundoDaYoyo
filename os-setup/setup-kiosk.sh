@@ -88,9 +88,11 @@ fi
 sudo tee "$ARQUIVO_KIOSK" > /dev/null <<EOF
 #!/bin/bash
 
-# Inicia o servidor de audio para o usuario do kiosk
+# Inicia o servidor de audio para o usuario do kiosk (suporta PipeWire e PulseAudio)
+systemctl --user stop pipewire pipewire-pulse wireplumber 2>/dev/null || true
 pulseaudio --kill 2>/dev/null || true
 sleep 1
+systemctl --user start pipewire pipewire-pulse wireplumber 2>/dev/null || true
 pulseaudio --start 2>/dev/null || true
 sleep 1
 pactl set-sink-mute @DEFAULT_SINK@ 0 2>/dev/null || true
