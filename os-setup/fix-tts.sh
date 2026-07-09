@@ -1,7 +1,8 @@
 #!/bin/bash
-# Instala vozes de texto para fala (TTS) para o Chromium funcionar no Mundo da Yoyo
+# Instala e configura vozes TTS para o Chromium no Mundo da Yoyo
 
 USUARIO="yoyo"
+RUNTIME_DIR="/run/user/$(id -u $USUARIO)"
 
 echo "=== Instalando vozes TTS para o Chromium ==="
 
@@ -25,12 +26,40 @@ if [ -f /etc/speech-dispatcher/speechd.conf ]; then
     sudo sed -i 's/^#DefaultModule.*$/DefaultModule espeak/' /etc/speech-dispatcher/speechd.conf 2>/dev/null || true
 fi
 
-# Reinicia o speech-dispatcher
-sudo systemctl restart speech-dispatcher 2>/dev/null || true
-sudo -u $USUARIO speech-dispatcher -t 2>/dev/null || true
+# Cria servico systemd do usuario para iniciar speech-dispatcher na sessao
+sudo mkdir -p /home/$USUARIO/.config/systemd/user
+sudo tee /home/$USUARIO/.config/systemd/user/speech-dispatcher.service > /dev/null <<EOF
+[Unit]
+Description=Speech Dispatcher
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/speech-dispatcher -d -l 1
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
+EOF
+
+sudo chown -R $USUARIO:$USUARIO /home/$USUARIO/.config/systemd
+
+# Para instancias antigas e inicia o servico
+sudo -u $USUARIO pkill -f speech-dispatcher 2>/dev/null || true
+sleep 1
+sudo -u $USUARIO systemctl --user daemon-reload
+sudo -u $USUARIO systemctl --user enable speech-dispatcher
+sudo -u $USUARIO systemctl --user start speech-dispatcher
+sleep 2
+
+# Ajusta permissoes do socket
+sudo mkdir -p $RUNTIME_DIR/speech-dispatcher
+sudo chown -R $USUARIO:$USUARIO $RUNTIME_DIR/speech-dispatcher 2>/dev/null || true
 
 echo ""
 echo "=== Testando TTS via linha de comando ==="
+echo "Testando spd-say:"
+sudo -u $USUARIO spd-say -l pt-br -t female1 "Ola, Mundo da Yoyo" 2>/dev/null || true
+
 echo "Testando espeak:"
 espeak -v pt-br "Ola, Mundo da Yoyo" 2>/dev/null || true
 

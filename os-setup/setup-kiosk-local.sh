@@ -109,6 +109,10 @@ sleep 1
 pactl set-sink-mute @DEFAULT_SINK@ 0 2>/dev/null || true
 pactl set-sink-volume @DEFAULT_SINK@ 80% 2>/dev/null || true
 
+# Inicia o speech-dispatcher para o TTS do navegador funcionar
+systemctl --user start speech-dispatcher 2>/dev/null || true
+sleep 1
+
 # Limpa a tela do cursor quando parado
 pkill unclutter || true
 unclutter -idle 0.1 &
