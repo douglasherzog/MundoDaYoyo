@@ -12,41 +12,56 @@ A ideia é usar o **Linux Mint** como base, configurar um login automático e ab
 - Linux Mint, Lubuntu ou qualquer Linux baseado em Ubuntu instalado
 - Conexão com a internet (para carregar o jogo pelo GitHub Pages) ou os arquivos locais do projeto
 
-## Instalação rápida
+## Modo de instalação
 
-1. No Linux Mint, copie a pasta `os-setup` para uma localização, por exemplo:
+Existem duas formas de usar:
 
-```bash
-/home/seu-usuario/Downloads/os-setup
-```
+### Opção 1 — Online (mais simples, precisa de internet)
 
-2. Abra o terminal e **entre na pasta** do script:
+Usa o jogo publicado no GitHub Pages. Ideal se o notebook tiver internet.
+
+1. No Linux Mint, copie a pasta `os-setup` para uma localização, por exemplo `/home/seu-usuario/Downloads/os-setup`.
+2. Abra o terminal e **entre na pasta**:
 
 ```bash
 cd /home/seu-usuario/Downloads/os-setup
 ```
 
-> Substitua `seu-usuario` pelo nome do seu usuário.
-
-3. Se o arquivo veio do Windows, corrija as quebras de linha:
+3. Corrija as quebras de linha se o arquivo veio do Windows:
 
 ```bash
 sed -i 's/\r$//' setup-kiosk.sh
 ```
 
-4. Tome o script executável:
-
-```bash
-chmod +x setup-kiosk.sh
-```
-
-5. Execute o script com privilégios de administrador:
+4. Execute com privilégios de administrador:
 
 ```bash
 sudo bash setup-kiosk.sh
 ```
 
-6. Reinicie o computador. O Mundo da Yoyo abrirá sozinho, em tela cheia.
+> Antes, ative o GitHub Pages em `Settings > Pages` do repositório.
+
+### Opção 2 — Offline (não precisa de internet depois da instalação)
+
+Baixa o projeto inteiro para o computador e abre os arquivos locais. Melhor se o notebook não tiver internet estável.
+
+1. Copie a pasta `os-setup` para o Linux Mint.
+2. Abra o terminal dentro da pasta `os-setup`.
+3. Corrija as quebras de linha:
+
+```bash
+sed -i 's/\r$//' setup-kiosk-local.sh
+```
+
+4. Execute:
+
+```bash
+sudo bash setup-kiosk-local.sh
+```
+
+Esse script instala o `git`, clona o repositório para `/home/yoyo/MundoDaYoyo` e aponta o navegador para os arquivos locais.
+
+5. Reinicie o computador. O Mundo da Yoyo abrirá sozinho, em tela cheia.
 
 ## O que o script faz
 
