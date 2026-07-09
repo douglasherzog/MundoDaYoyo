@@ -153,5 +153,36 @@
             <p>Feito com ❤️ para a Yoyo</p>
         </footer>
     </div>
+
+    <script src="stars.js"></script>
+    <script src="admin.js"></script>
+    <script>
+        function falarBoasVindas() {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const msg = new SpeechSynthesisUtterance('Bem vindo ao fantástico mundo da Yoyo');
+                msg.lang = 'pt-BR';
+                msg.rate = 0.9;
+                window.speechSynthesis.speak(msg);
+            }
+        }
+
+        function iniciarBoasVindas() {
+            if (sessionStorage.getItem('boasVindasDitas') === 'sim') return;
+
+            const voices = window.speechSynthesis.getVoices();
+            if (voices.length === 0) {
+                window.speechSynthesis.onvoiceschanged = function() {
+                    falarBoasVindas();
+                    sessionStorage.setItem('boasVindasDitas', 'sim');
+                };
+            } else {
+                falarBoasVindas();
+                sessionStorage.setItem('boasVindasDitas', 'sim');
+            }
+        }
+
+        window.addEventListener('load', iniciarBoasVindas);
+    </script>
 </body>
 </html>
