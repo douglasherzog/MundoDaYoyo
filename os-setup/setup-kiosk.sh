@@ -150,6 +150,11 @@ sudo -u "$USUARIO" gsettings set org.gnome.settings-daemon.plugins.power idle-di
 sudo -u "$USUARIO" gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-timeout 0 2>/dev/null || true
 sudo -u "$USUARIO" gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-battery-timeout 0 2>/dev/null || true
 
+# Desativa bloqueio de tela por senha no XFCE (mantem apenas o descanso de tela)
+if [ -f "$PASTA_SCRIPT/disable-screen-lock.sh" ]; then
+    sudo bash "$PASTA_SCRIPT/disable-screen-lock.sh"
+fi
+
 # Atalho de emergencia para terminal (Ctrl+Alt+T)
 sudo -u "$USUARIO" gsettings set org.gnome.settings-daemon.plugins.media-keys terminal '<Ctrl><Alt>t' 2>/dev/null || true
 

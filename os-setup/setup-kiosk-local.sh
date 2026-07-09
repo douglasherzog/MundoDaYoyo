@@ -152,6 +152,9 @@ EOF
 
 sudo chown -R "$USUARIO:$USUARIO" "/home/$USUARIO/.config"
 
+# Define pasta dos scripts
+PASTA_SCRIPT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 # Desativa bloqueio de tela e suspensao
 sudo -u "$USUARIO" gsettings set org.gnome.desktop.screensaver lock-enabled false 2>/dev/null || true
 sudo -u "$USUARIO" gsettings set org.gnome.desktop.session idle-delay 0 2>/dev/null || true
@@ -161,11 +164,15 @@ sudo -u "$USUARIO" gsettings set org.gnome.settings-daemon.plugins.power idle-di
 sudo -u "$USUARIO" gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-timeout 0 2>/dev/null || true
 sudo -u "$USUARIO" gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-battery-timeout 0 2>/dev/null || true
 
+# Desativa bloqueio de tela por senha no XFCE (mantem apenas o descanso de tela)
+if [ -f "$PASTA_SCRIPT/disable-screen-lock.sh" ]; then
+    sudo bash "$PASTA_SCRIPT/disable-screen-lock.sh"
+fi
+
 # Atalho de emergencia para terminal (Ctrl+Alt+T)
 sudo -u "$USUARIO" gsettings set org.gnome.settings-daemon.plugins.media-keys terminal '<Ctrl><Alt>t' 2>/dev/null || true
 
 # Instala o servidor admin para desligar/reiniciar e ajustar volume
-PASTA_SCRIPT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 if [ -f "$PASTA_SCRIPT/admin-server.py" ]; then
     sudo cp "$PASTA_SCRIPT/admin-server.py" /usr/local/bin/mundodayoyo-admin-server.py
     sudo chmod +x /usr/local/bin/mundodayoyo-admin-server.py
