@@ -841,6 +841,119 @@ header p {
     }
 }
 
+/* Jogo Sequência Lógica */
+.sequence-card {
+    background: linear-gradient(135deg, #FFCA28 0%, #FFB300 100%);
+    color: #FFF;
+    box-shadow: 0 8px 20px rgba(255, 202, 40, 0.4);
+}
+
+.sequence-card:hover {
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 12px 30px rgba(255, 202, 40, 0.6);
+}
+
+.sequence-question {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.sequence-question .instruction {
+    font-size: 1.8rem;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.sequence-display {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 25px;
+    background: #FFF;
+    border-radius: 25px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    font-size: 3.5rem;
+    min-height: 100px;
+    flex-wrap: wrap;
+}
+
+.sequence-item {
+    width: 70px;
+    height: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    background: #F5F5F5;
+    transition: all 0.3s;
+}
+
+.sequence-item.missing {
+    background: #FFCA28;
+    color: #FFF;
+    font-weight: 900;
+    animation: pulse 1s infinite;
+}
+
+.sequence-item.filled {
+    background: #4CAF50;
+    color: #FFF;
+    animation: popIn 0.4s ease-out;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.sequence-options {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.sequence-option {
+    padding: 18px;
+    font-size: 2.5rem;
+    border: 4px solid #FFCA28;
+    border-radius: 20px;
+    background: #FFF;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.sequence-option:hover {
+    background: #FFCA28;
+    transform: scale(1.05);
+}
+
+.sequence-option.correct {
+    background: #4CAF50;
+    border-color: #4CAF50;
+    color: #FFF;
+}
+
+.sequence-option.wrong {
+    background: #EF5350;
+    border-color: #EF5350;
+    color: #FFF;
+    animation: shake 0.4s;
+}
+
+@media (max-width: 600px) {
+    .sequence-options {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .sequence-item {
+        width: 55px;
+        height: 55px;
+        font-size: 2.5rem;
+    }
+}
+
 .feedback {
     text-align: center;
     min-height: 60px;
