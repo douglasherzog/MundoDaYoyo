@@ -212,6 +212,56 @@ header p {
     80% { transform: translateX(10px); }
 }
 
+/* Jogo das Formas */
+.shape-display {
+    font-size: 9rem;
+    margin-bottom: 10px;
+    line-height: 1;
+    animation: bounce 2s infinite;
+    user-select: none;
+}
+
+.shape-question {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.shapes {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+}
+
+.shape-button {
+    width: 150px;
+    height: 100px;
+    border: none;
+    border-radius: 25px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #FFF;
+    cursor: pointer;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 6px 0 rgba(0, 0, 0, 0.2);
+    transition: transform 0.15s, box-shadow 0.15s;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.shape-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 9px 0 rgba(0, 0, 0, 0.2);
+}
+
+.shape-button:active {
+    transform: translateY(3px);
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
+}
+
 .feedback {
     text-align: center;
     min-height: 60px;
@@ -317,6 +367,20 @@ header p {
 .color-card:hover {
     border-color: #EC407A;
     box-shadow: 0 10px 30px rgba(233, 30, 99, 0.3);
+}
+
+.shape-card {
+    background: linear-gradient(135deg, #E3F2FD 0%, #FFF3E0 50%, #FCE4EC 100%);
+    border-color: #90CAF9;
+}
+
+.shape-card h2 {
+    color: #1976D2;
+}
+
+.shape-card:hover {
+    border-color: #42A5F5;
+    box-shadow: 0 10px 30px rgba(25, 118, 210, 0.3);
 }
 
 .menu-icon {

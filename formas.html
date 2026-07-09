@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formas - Mundo da Yoyo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⭐ Formas da Yoyo</h1>
+            <p>Clique na forma que aparece na tela!</p>
+        </header>
+
+        <main class="game">
+            <a href="index.html" class="btn-back">← Voltar ao menu</a>
+            <div class="score">⭐ Pontos: <span id="pontos">0</span></div>
+
+            <div class="word-area">
+                <div class="shape-display" id="shape-display">🔵</div>
+                <div class="shape-question" id="shape-question">Qual é a forma?</div>
+            </div>
+
+            <div class="shapes" id="shapes"></div>
+
+            <div class="feedback" id="feedback"></div>
+
+            <div class="controls">
+                <button class="btn-speak" id="btn-speak">🔊 Ouvir pergunta</button>
+                <button class="btn-next" id="btn-next">Próxima ➜</button>
+            </div>
+        </main>
+
+        <footer>
+            <p>Feito com ❤️ para a Yoyo</p>
+        </footer>
+    </div>
+
+    <script src="sounds.js"></script>
+    <script src="formas.js"></script>
+</body>
+</html>
