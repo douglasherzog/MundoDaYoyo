@@ -114,6 +114,7 @@ $NAVEGADOR --kiosk --app=$URL_JOGO \\
     --disable-pinch \\
     --overscroll-history-navigation=0 \\
     --touch-events=enabled \\
+    --password-store=basic \\
     --user-data-dir=/home/$USUARIO/.config/chromium-yoyo
 EOF
 
