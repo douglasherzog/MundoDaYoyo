@@ -954,6 +954,542 @@ header p {
     }
 }
 
+/* Jogo Ordem Alfabética */
+.order-card {
+    background: linear-gradient(135deg, #66BB6A 0%, #43A047 100%);
+    color: #FFF;
+    box-shadow: 0 8px 20px rgba(102, 187, 106, 0.4);
+}
+
+.order-card:hover {
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 12px 30px rgba(102, 187, 106, 0.6);
+}
+
+.order-instruction {
+    text-align: center;
+    font-size: 1.8rem;
+    color: #666;
+    margin-bottom: 25px;
+}
+
+.letters-pool {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.order-letter {
+    width: 65px;
+    height: 65px;
+    font-size: 2rem;
+    font-weight: 900;
+    border: 3px solid #66BB6A;
+    border-radius: 15px;
+    background: #FFF;
+    color: #66BB6A;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.order-letter:hover {
+    background: #66BB6A;
+    color: #FFF;
+    transform: scale(1.1);
+}
+
+.order-letter.used {
+    opacity: 0.3;
+    pointer-events: none;
+    transform: scale(0.9);
+}
+
+.answer-slots {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.order-slot {
+    width: 65px;
+    height: 65px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 3px dashed #CCC;
+    border-radius: 15px;
+    font-size: 2rem;
+    font-weight: 900;
+    color: #66BB6A;
+    background: #FAFAFA;
+}
+
+.order-slot.filled {
+    border-style: solid;
+    border-color: #66BB6A;
+    background: #E8F5E9;
+}
+
+.order-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+/* Jogo Ditado de Palavras */
+.spelling-card {
+    background: linear-gradient(135deg, #EF5350 0%, #D32F2F 100%);
+    color: #FFF;
+    box-shadow: 0 8px 20px rgba(239, 83, 80, 0.4);
+}
+
+.spelling-card:hover {
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 12px 30px rgba(239, 83, 80, 0.6);
+}
+
+.spelling-instruction {
+    text-align: center;
+    font-size: 1.8rem;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.spelling-display {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.spelling-emoji {
+    font-size: 5rem;
+}
+
+.btn-hear {
+    padding: 12px 25px;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 20px;
+    background: #EF5350;
+    color: #FFF;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.btn-hear:hover {
+    transform: scale(1.05);
+}
+
+.spelling-word {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+}
+
+.spelling-slot {
+    width: 55px;
+    height: 55px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 3px dashed #CCC;
+    border-radius: 12px;
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: #EF5350;
+    background: #FAFAFA;
+}
+
+.spelling-slot.filled {
+    border-style: solid;
+    border-color: #EF5350;
+    background: #FFEBEE;
+}
+
+.spelling-keyboard {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    margin-bottom: 25px;
+}
+
+.spelling-key {
+    padding: 12px;
+    font-size: 1.4rem;
+    font-weight: 900;
+    border: 2px solid #EF5350;
+    border-radius: 12px;
+    background: #FFF;
+    color: #EF5350;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.spelling-key:hover {
+    background: #EF5350;
+    color: #FFF;
+    transform: scale(1.05);
+}
+
+.spelling-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 600px) {
+    .spelling-keyboard {
+        grid-template-columns: repeat(5, 1fr);
+    }
+}
+
+/* Jogo Opostos */
+.opposite-card {
+    background: linear-gradient(135deg, #7E57C2 0%, #5E35B1 100%);
+    color: #FFF;
+    box-shadow: 0 8px 20px rgba(126, 87, 194, 0.4);
+}
+
+.opposite-card:hover {
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 12px 30px rgba(126, 87, 194, 0.6);
+}
+
+.opposite-question {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.opposite-question p {
+    font-size: 1.8rem;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.target-word {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 25px;
+    background: #FFF;
+    border-radius: 25px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.opposite-emoji {
+    font-size: 4rem;
+}
+
+.opposite-word {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: #7E57C2;
+}
+
+.opposite-options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.opposite-option {
+    padding: 20px;
+    font-size: 1.6rem;
+    font-weight: bold;
+    border: 4px solid #7E57C2;
+    border-radius: 20px;
+    background: #FFF;
+    color: #7E57C2;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.opposite-option:hover {
+    background: #7E57C2;
+    color: #FFF;
+    transform: scale(1.05);
+}
+
+.opposite-option.correct {
+    background: #4CAF50;
+    border-color: #4CAF50;
+    color: #FFF;
+}
+
+.opposite-option.wrong {
+    background: #EF5350;
+    border-color: #EF5350;
+    color: #FFF;
+    animation: shake 0.4s;
+}
+
+/* Jogo Relógio */
+.clock-card {
+    background: linear-gradient(135deg, #26C6DA 0%, #00ACC1 100%);
+    color: #FFF;
+    box-shadow: 0 8px 20px rgba(38, 198, 218, 0.4);
+}
+
+.clock-card:hover {
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 12px 30px rgba(38, 198, 218, 0.6);
+}
+
+.clock-instruction {
+    text-align: center;
+    font-size: 1.8rem;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.clock-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.clock-face {
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    background: #FFF;
+    border: 8px solid #26C6DA;
+    position: relative;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.clock-center {
+    width: 16px;
+    height: 16px;
+    background: #26C6DA;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+}
+
+.clock-hand {
+    position: absolute;
+    bottom: 50%;
+    left: 50%;
+    transform-origin: bottom center;
+    transform: translateX(-50%) rotate(0deg);
+    border-radius: 10px;
+    transition: transform 0.5s ease;
+}
+
+.hour-hand {
+    width: 8px;
+    height: 60px;
+    background: #333;
+    z-index: 5;
+}
+
+.minute-hand {
+    width: 5px;
+    height: 85px;
+    background: #EF5350;
+    z-index: 4;
+}
+
+.clock-number {
+    position: absolute;
+    font-size: 1.4rem;
+    font-weight: 900;
+    color: #333;
+}
+
+.clock-number.n12 { top: 10px; left: 50%; transform: translateX(-50%); }
+.clock-number.n3 { right: 12px; top: 50%; transform: translateY(-50%); }
+.clock-number.n6 { bottom: 10px; left: 50%; transform: translateX(-50%); }
+.clock-number.n9 { left: 12px; top: 50%; transform: translateY(-50%); }
+
+.clock-options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.clock-option {
+    padding: 18px;
+    font-size: 1.8rem;
+    font-weight: bold;
+    border: 4px solid #26C6DA;
+    border-radius: 20px;
+    background: #FFF;
+    color: #26C6DA;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.clock-option:hover {
+    background: #26C6DA;
+    color: #FFF;
+    transform: scale(1.05);
+}
+
+.clock-option.correct {
+    background: #4CAF50;
+    border-color: #4CAF50;
+    color: #FFF;
+}
+
+.clock-option.wrong {
+    background: #EF5350;
+    border-color: #EF5350;
+    color: #FFF;
+    animation: shake 0.4s;
+}
+
+/* Jogo Meu Corpo */
+.body-card {
+    background: linear-gradient(135deg, #EC407A 0%, #D81B60 100%);
+    color: #FFF;
+    box-shadow: 0 8px 20px rgba(236, 64, 122, 0.4);
+}
+
+.body-card:hover {
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 12px 30px rgba(236, 64, 122, 0.6);
+}
+
+.body-instruction {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.body-instruction p {
+    font-size: 1.8rem;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.target-body-part {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 20px;
+    background: #FFF;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.body-emoji {
+    font-size: 4rem;
+}
+
+.body-part-name {
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: #EC407A;
+}
+
+.body-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 25px;
+}
+
+.body-figure {
+    position: relative;
+    width: 160px;
+    height: 280px;
+}
+
+.body-head {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: #F8BBD0;
+    border: 4px solid #EC407A;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.body-torso {
+    position: absolute;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 100px;
+    border-radius: 20px;
+    background: #F48FB1;
+    border: 4px solid #EC407A;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.body-arm {
+    position: absolute;
+    top: 90px;
+    width: 25px;
+    height: 90px;
+    border-radius: 15px;
+    background: #F8BBD0;
+    border: 4px solid #EC407A;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.body-arm.left { left: 10px; }
+.body-arm.right { right: 10px; }
+
+.body-leg {
+    position: absolute;
+    top: 185px;
+    width: 30px;
+    height: 90px;
+    border-radius: 15px;
+    background: #F8BBD0;
+    border: 4px solid #EC407A;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.body-leg.left { left: 35px; }
+.body-leg.right { right: 35px; }
+
+.body-figure [data-part]:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(236, 64, 122, 0.5);
+}
+
+.body-figure [data-part].selected {
+    background: #FFF;
+}
+
+.body-figure [data-part].correct-part {
+    background: #4CAF50;
+    border-color: #4CAF50;
+    transform: scale(1.1);
+}
+
+.body-figure [data-part].wrong-part {
+    background: #EF5350;
+    border-color: #EF5350;
+    animation: shake 0.4s;
+}
+
 .feedback {
     text-align: center;
     min-height: 60px;

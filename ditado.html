@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mundo da Yoyo - Ditado de Palavras</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="game-header">
+            <a href="index.html" class="back-button">Voltar</a>
+            <h1>Ditado de Palavras</h1>
+            <div class="stars-counter">
+                <span class="star-icon">⭐</span>
+                <span id="stars-count">0</span>
+            </div>
+        </header>
+
+        <main class="game-area">
+            <div class="spelling-instruction">
+                <p>Escute e digite a palavra:</p>
+            </div>
+
+            <div class="spelling-display">
+                <div id="spelling-emoji" class="spelling-emoji"></div>
+                <button id="btn-hear" class="btn-hear">🔊 Ouvir de novo</button>
+            </div>
+
+            <div id="spelling-word" class="spelling-word"></div>
+
+            <div id="keyboard-area" class="spelling-keyboard"></div>
+
+            <div id="feedback" class="feedback"></div>
+
+            <div class="spelling-buttons">
+                <button id="btn-clear" class="btn-clear">Limpar</button>
+                <button id="btn-check" class="btn-check">Verificar</button>
+                <button id="btn-next" class="btn-next" disabled>Próxima</button>
+            </div>
+        </main>
+    </div>
+
+    <script src="stars.js"></script>
+    <script src="sounds.js"></script>
+    <script src="ditado.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>
