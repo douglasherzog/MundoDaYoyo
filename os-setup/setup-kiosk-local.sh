@@ -145,8 +145,27 @@ sudo -u "$USUARIO" gsettings set org.gnome.settings-daemon.plugins.power sleep-i
 # Atalho de emergencia para terminal (Ctrl+Alt+T)
 sudo -u "$USUARIO" gsettings set org.gnome.settings-daemon.plugins.media-keys terminal '<Ctrl><Alt>t' 2>/dev/null || true
 
+# Instala o servidor admin para desligar/reiniciar e ajustar volume
+PASTA_SCRIPT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+if [ -f "$PASTA_SCRIPT/admin-server.py" ]; then
+    sudo cp "$PASTA_SCRIPT/admin-server.py" /usr/local/bin/mundodayoyo-admin-server.py
+    sudo chmod +x /usr/local/bin/mundodayoyo-admin-server.py
+fi
+
+if [ -f "$PASTA_SCRIPT/admin-server.service" ]; then
+    sudo cp "$PASTA_SCRIPT/admin-server.service" /etc/systemd/system/mundodayoyo-admin.service
+    sudo systemctl daemon-reload
+    sudo systemctl enable mundodayoyo-admin.service
+    sudo systemctl start mundodayoyo-admin.service
+fi
+
+# Define volume inicial confortavel
+pactl set-sink-volume @DEFAULT_SINK@ 70% 2>/dev/null || true
+amixer set Master 70% 2>/dev/null || true
+
 echo ""
 echo "=== Instalacao concluida ==="
 echo "Reinicie o computador. O Mundo da Yoyo abrira automaticamente."
 echo "Para manutencao, pressione Ctrl+Alt+T para abrir o terminal."
+echo "Painel admin: Ctrl+Shift+A (volume, reiniciar e desligar)"
 echo "O projeto esta em $PASTA_PROJETO"

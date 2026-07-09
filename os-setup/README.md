@@ -85,10 +85,20 @@ Se você quiser rodar localmente, edite o arquivo `mundodayoyo-kiosk.sh` e troqu
 file:///home/yoyo/MundoDaYoyo/index.html
 ```
 
+## Controle para o adulto
+
+Dentro do Mundo da Yoyo, o adulto pode usar atalhos ocultos:
+
+- **Ctrl+Alt+T** — abre o terminal para manutenção
+- **Ctrl+Shift+A** — abre o painel administrativo com:
+  - ajuste de volume do sistema
+  - botão para reiniciar
+  - botão para desligar
+
 ## Para sair do modo quiosque
 
 - **Ctrl+Alt+T** abre o terminal para o adulto fazer ajustes.
-- Para desligar o computador, segure o botão de energia ou use o terminal com `poweroff`.
+- **Ctrl+Shift+A** abre o painel com botão de desligar.
 
 ## Sugestão avançada: Raspberry Pi
 
