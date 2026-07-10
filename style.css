@@ -1699,20 +1699,43 @@ header p {
 }
 
 /* Botão voltar */
-.btn-back {
-    display: inline-block;
+.btn-back,
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
     margin-bottom: 20px;
-    padding: 10px 20px;
-    background: #E0E0E0;
-    color: #555;
+    padding: 16px 32px;
+    background: linear-gradient(135deg, #FF6B9D, #FF8C42);
+    color: #fff;
     text-decoration: none;
-    border-radius: 20px;
+    border-radius: 50px;
+    font-size: 1.3rem;
     font-weight: bold;
-    transition: background 0.2s;
+    font-family: inherit;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 6px 16px rgba(255, 107, 157, 0.4);
+    transition: transform 0.15s, box-shadow 0.15s;
+    letter-spacing: 0.02em;
 }
 
-.btn-back:hover {
-    background: #D6D6D6;
+.btn-back::before,
+.back-button::before {
+    content: "🏠";
+    font-size: 1.6rem;
+    line-height: 1;
+}
+
+.btn-back:hover,
+.back-button:hover {
+    transform: scale(1.07);
+    box-shadow: 0 8px 22px rgba(255, 107, 157, 0.55);
+}
+
+.btn-back:active,
+.back-button:active {
+    transform: scale(0.96);
 }
 
 /* Formar números */
