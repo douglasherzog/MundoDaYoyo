@@ -16,12 +16,17 @@ os.makedirs(CACHE_DIR, exist_ok=True)
 
 PIPER_BIN = "/usr/local/bin/piper"
 PIPER_VOZ = os.path.expanduser("~/.local/share/piper/voices/pt_BR-faber-medium.onnx")
+SOX_BIN = "/usr/bin/sox"
+# Pitch +40% para deixar a voz mais feminina (estilo professora)
+PITCH_SEMITONES = 3.0
+SPEED_FACTOR = 1.05  # Ligeiramente mais rapido (estilo professora animada)
 
 
 def gerar_audio(texto):
     """Gera arquivo WAV com o texto falado. Retorna caminho ou None."""
     hash_texto = str(abs(hash(texto)))
     caminho = os.path.join(CACHE_DIR, f"{hash_texto}.wav")
+    caminho_raw = os.path.join(CACHE_DIR, f"{hash_texto}_raw.wav")
 
     if os.path.exists(caminho):
         return caminho
@@ -30,13 +35,31 @@ def gerar_audio(texto):
     if os.path.isfile(PIPER_BIN) and os.path.isfile(PIPER_VOZ):
         try:
             with subprocess.Popen(
-                [PIPER_BIN, "--model", PIPER_VOZ, "--output_file", caminho],
+                [PIPER_BIN, "--model", PIPER_VOZ, "--output_file", caminho_raw],
                 stdin=subprocess.PIPE,
                 stdout=subprocess.DEVNULL,
                 stderr=subprocess.DEVNULL,
             ) as proc:
                 proc.communicate(texto.encode("utf-8"), timeout=15)
-            if os.path.exists(caminho) and os.path.getsize(caminho) > 0:
+            if os.path.exists(caminho_raw) and os.path.getsize(caminho_raw) > 0:
+                # Se sox estiver disponivel, aumenta o pitch para voz feminina
+                if os.path.isfile(SOX_BIN):
+                    try:
+                        subprocess.run(
+                            [SOX_BIN, caminho_raw, caminho,
+                             "pitch", str(PITCH_SEMITONES * 100),
+                             "tempo", str(SPEED_FACTOR)],
+                            check=True,
+                            stdout=subprocess.DEVNULL,
+                            stderr=subprocess.DEVNULL,
+                        )
+                        os.remove(caminho_raw)
+                        if os.path.exists(caminho) and os.path.getsize(caminho) > 0:
+                            return caminho
+                    except Exception:
+                        pass
+                # Fallback: usa o audio original sem pitch
+                os.rename(caminho_raw, caminho)
                 return caminho
         except Exception:
             pass
