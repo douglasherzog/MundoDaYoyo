@@ -14,6 +14,10 @@ CACHE_DIR = os.path.expanduser("~/.cache/mundodayoyo-tts")
 os.makedirs(CACHE_DIR, exist_ok=True)
 
 
+PIPER_BIN = "/usr/local/bin/piper"
+PIPER_VOZ = os.path.expanduser("~/.local/share/piper/voices/pt_BR-faber-medium.onnx")
+
+
 def gerar_audio(texto):
     """Gera arquivo WAV com o texto falado. Retorna caminho ou None."""
     hash_texto = str(abs(hash(texto)))
@@ -22,7 +26,22 @@ def gerar_audio(texto):
     if os.path.exists(caminho):
         return caminho
 
-    # 1) RHVoice - melhor qualidade
+    # 1) Piper - voz neural (melhor qualidade, mais natural)
+    if os.path.isfile(PIPER_BIN) and os.path.isfile(PIPER_VOZ):
+        try:
+            with subprocess.Popen(
+                [PIPER_BIN, "--model", PIPER_VOZ, "--output_file", caminho],
+                stdin=subprocess.PIPE,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            ) as proc:
+                proc.communicate(texto.encode("utf-8"), timeout=15)
+            if os.path.exists(caminho) and os.path.getsize(caminho) > 0:
+                return caminho
+        except Exception:
+            pass
+
+    # 2) RHVoice - boa qualidade
     rhvoice_cmds = [
         ["RHVoice-test", "-p", "brazilian-portuguese", "-o", caminho],
         ["rhvoice-test", "-p", "brazilian-portuguese", "-o", caminho],
@@ -36,7 +55,7 @@ def gerar_audio(texto):
         except Exception:
             pass
 
-    # 2) pico2wave - boa qualidade robotica
+    # 3) pico2wave - qualidade razoavel
     try:
         subprocess.run(
             ["pico2wave", "-l", "pt-BR", "-w", caminho, texto],
@@ -48,7 +67,7 @@ def gerar_audio(texto):
     except Exception:
         pass
 
-    # 3) espeak - fallback basico
+    # 4) espeak - fallback basico
     try:
         subprocess.run(
             ["espeak", "-v", "pt-br", "-w", caminho, texto],
