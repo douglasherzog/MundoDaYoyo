@@ -43,7 +43,7 @@ def gerar_audio(texto):
                 stdout=subprocess.DEVNULL,
                 stderr=subprocess.DEVNULL,
             ) as proc:
-                proc.communicate(texto.encode("utf-8"), timeout=15)
+                proc.communicate(texto.encode("utf-8"), timeout=30)
             if os.path.exists(caminho_raw) and os.path.getsize(caminho_raw) > 0:
                 # Se sox estiver disponivel, aumenta o pitch para voz feminina
                 if os.path.isfile(SOX_BIN):
