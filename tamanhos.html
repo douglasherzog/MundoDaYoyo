@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tamanhos e Posições - Mundo da Yoyo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📏 Grande ou Pequeno?</h1>
+            <p>Clique na resposta certa!</p>
+        </header>
+
+        <main class="game">
+            <a href="index.html" class="btn-back">Início</a>
+            <div class="score">⭐ Pontos: <span id="pontos">0</span></div>
+
+            <div class="word-area">
+                <div id="tamanho-cena" style="font-size:1rem; line-height:1.6; margin: 10px 0 5px"></div>
+                <div class="animal-hint" id="tamanho-hint">Qual é maior?</div>
+            </div>
+
+            <div class="animals" id="opcoes"></div>
+
+            <div class="feedback" id="feedback"></div>
+
+            <div class="controls">
+                <button class="btn-speak" id="btn-speak">🔊 Ouvir</button>
+                <button class="btn-next" id="btn-next">Próxima ➜</button>
+            </div>
+        </main>
+
+        <footer>
+            <p>Feito com ❤️ para a Yoyo</p>
+        </footer>
+    </div>
+
+    <script src="stars.js"></script>
+    <script src="sounds.js"></script>
+    <script src="admin.js"></script>
+    <script src="tamanhos.js"></script>
+    <script src="tts.js"></script>
+</body>
+</html>
