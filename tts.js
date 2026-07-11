@@ -30,9 +30,17 @@ function falar(texto) {
         })
         .then(blob => {
             const audio = new Audio(URL.createObjectURL(blob));
-            audio.play();
+            audio.play().catch(err => {
+                console.log('Erro ao tocar audio TTS:', err);
+                // Tenta novamente com interacao simulada
+                document.addEventListener('click', function once() {
+                    audio.play();
+                    document.removeEventListener('click', once);
+                }, { once: true });
+            });
         })
-        .catch(() => {
+        .catch((err) => {
+            console.log('TTS server nao respondeu, usando Web Speech:', err);
             falarWeb(texto);
         });
 }
