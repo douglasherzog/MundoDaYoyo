@@ -3,6 +3,7 @@
 # Usa pico2wave (melhor qualidade) ou espeak como fallback
 
 import os
+import json
 import subprocess
 import tempfile
 import threading
@@ -107,90 +108,29 @@ def gerar_audio(texto):
     return None
 
 
-FRASES_COMUNS = [
-    "Muito bem!",
-    "Tente de novo",
-    "Tente de novo!",
-    "Parabens!",
-    "Isso mesmo!",
-    "Muito bem! Você acertou!",
-    "Clique nos bichinhos! Vai Yoyo!",
-    "Olhe os desenhos. São iguais ou diferentes?",
-    "Qual não encaixa com os outros?",
-    "Clique na figura que vem primeiro!",
-    "Qual é o maior?",
-    "Qual é o menor?",
-    "Ola Yoyo, bem vinda ao mundo magico!",
-    "Vamos brincar?",
-    "Você é muito inteligente!",
-    "Continue tentando!",
-    "Mandou bem!",
-    "Acertou!",
-    "Quase! Vamos tentar de novo!",
-    "Agora o que vem depois!",
-    "São iguais!",
-    "São diferentes!",
-    "O elefante é muito maior que o ratinho!",
-    "O gatinho é bem menor que o leão!",
-    "A melancia é muito maior que a uva!",
-    "O prédio é bem maior que a casa!",
-    "A baleia é o maior animal do mar!",
-    "A semente vira árvore e dá frutos!",
-    "O ovo vira lagarta e depois borboleta!",
-    "Amanhece, faz sol e depois anoitece!",
-    "Bebê vira criança e depois adulta!",
-    "Nuvem chove e depois aparece o arco-íris!",
-    "Milho vira pipoca e a Yoyo come!",
-    "Tijolos viram casa e depois lar doce lar!",
-    "Nuvem traz neve e depois faz boneco!",
-    "Trigo vira pão e depois sanduíche!",
-    "Broto vira flor e depois murcha!",
-    "A estrela brilhante é maior!",
-    "A lua cheia parece maior no céu!",
-    "O ônibus é muito maior que o carro!",
-    "A florzinha é menor!",
-    "A muda pequena ainda vai crescer!",
-    "O passarinho é bem menor que o leão!",
-    "Você fez pontos e acertou bichinhos!",
-    "Parabéns! Você fez pontos e acertou bichinhos!",
-    "O melão é grande e redondo!",
-    "A maçã é vermelha e doce!",
-    "A banana é amarela e comprida!",
-    "O tomate é vermelho e suculento!",
-    "A laranja é cítrica e suculenta!",
-    "A uva é pequena e doce!",
-    "A cenoura é laranja e crocante!",
-    "O brócolis é verde e saudável!",
-    "A beterraba é roxa e doce!",
-    "A abobrinha é verde e comprida!",
-    "O milho é amarelo e doce!",
-    "A batata é marrom e gostosa!",
-    "Você está feliz!",
-    "Você está triste!",
-    "Você está com raiva!",
-    "Você está surpresa!",
-    "Você está com medo!",
-    "Você está com sono!",
-    "Você está animada!",
-    "Você está cansada!",
-    "Você está confusa!",
-    "Você está com nojo!",
-    "Está feliz, sorrindo!",
-    "Está triste, chorando!",
-    "Está com raiva, brava!",
-    "Está surpresa, de boca aberta!",
-    "Está com medo, assustada!",
-    "Está com sono, bocejando!",
-    "Está animada, pulando!",
-    "Está cansada, deitada!",
-    "Está confusa, pensando!",
-    "Está com nojo, que nojo!",
+FRASES_JSON = os.path.join(CACHE_DIR, "frases.json")
+
+FRASES_COMUNS_FALLBACK = [
+    "Muito bem!", "Tente de novo", "Tente de novo!", "Parabens!",
+    "Isso mesmo!", "Vamos brincar?", "Acertou!", "Mandou bem!",
 ]
+
+
+def carregar_frases():
+    """Carrega lista de frases do JSON gerado pelo gerar-cache-tts.py."""
+    try:
+        if os.path.exists(FRASES_JSON):
+            with open(FRASES_JSON, 'r', encoding='utf-8') as f:
+                return json.load(f)
+    except Exception:
+        pass
+    return FRASES_COMUNS_FALLBACK
 
 
 def pre_carregar_frases():
     """Gera áudio das frases mais comuns em background na inicialização."""
-    for frase in FRASES_COMUNS:
+    frases = carregar_frases()
+    for frase in frases:
         caminho = os.path.join(CACHE_DIR, f"{abs(hash(frase))}.wav")
         if not os.path.exists(caminho):
             try:

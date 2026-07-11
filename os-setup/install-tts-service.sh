@@ -28,6 +28,14 @@ sudo systemctl enable mundodayoyo-tts
 sudo systemctl start mundodayoyo-tts
 
 echo ""
+echo "Gerando cache de todas as frases (pode demorar alguns minutos)..."
+sudo -u $USUARIO python3 /home/$USUARIO/MundoDaYoyo/os-setup/gerar-cache-tts.py
+
+echo ""
+echo "Reiniciando servico com cache completo..."
+sudo systemctl restart mundodayoyo-tts
+
+echo ""
 echo "Servico criado e iniciado!"
 echo "Status:"
 sudo systemctl status mundodayoyo-tts --no-pager
