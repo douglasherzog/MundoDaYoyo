@@ -32,7 +32,7 @@ def extrair_frases():
     ]
 
     for arquivo in os.listdir(BASE_DIR):
-        if not arquivo.endswith('.js'):
+        if not (arquivo.endswith('.js') or arquivo.endswith('.html')):
             continue
         caminho = os.path.join(BASE_DIR, arquivo)
         try:
