@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>O que não encaixa? - Mundo da Yoyo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔍 O que não encaixa?</h1>
+            <p>Encontre o que é diferente dos outros!</p>
+        </header>
+
+        <main class="game">
+            <a href="index.html" class="btn-back">Início</a>
+            <div class="score">⭐ Pontos: <span id="pontos">0</span></div>
+
+            <div class="word-area">
+                <div class="animal-hint" id="dica">Qual não encaixa?</div>
+            </div>
+
+            <div class="animals" id="opcoes"></div>
+
+            <div class="feedback" id="feedback"></div>
+
+            <div class="controls">
+                <button class="btn-speak" id="btn-speak">🔊 Ouvir</button>
+                <button class="btn-next" id="btn-next">Próximo ➜</button>
+            </div>
+        </main>
+
+        <footer>
+            <p>Feito com ❤️ para a Yoyo</p>
+        </footer>
+    </div>
+
+    <script src="stars.js"></script>
+    <script src="sounds.js"></script>
+    <script src="admin.js"></script>
+    <script src="nao-encaixa.js"></script>
+    <script src="tts.js"></script>
+</body>
+</html>
