@@ -1509,38 +1509,80 @@ header p {
 .controls {
     display: flex;
     justify-content: center;
-    gap: 15px;
+    gap: 20px;
     flex-wrap: wrap;
+    margin-top: 10px;
 }
 
-.controls button {
-    padding: 15px 30px;
-    font-size: 1.2rem;
+.controls button,
+.btn-next,
+.btn-clear,
+.btn-check {
+    padding: 22px 44px;
+    font-size: 1.8rem;
     border: none;
-    border-radius: 25px;
+    border-radius: 30px;
     cursor: pointer;
     font-weight: bold;
-    transition: transform 0.2s;
+    transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+    min-height: 80px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    touch-action: manipulation;
+    user-select: none;
 }
 
 .btn-speak {
-    background: #9575CD;
+    background: linear-gradient(135deg, #9575CD, #7E57C2);
     color: white;
+    box-shadow: 0 6px 18px rgba(126, 87, 194, 0.45);
 }
 
 .btn-next {
-    background: #4CAF50;
+    background: linear-gradient(135deg, #66BB6A, #43A047);
     color: white;
+    box-shadow: 0 6px 18px rgba(67, 160, 71, 0.45);
+    animation: pulse-next 2s ease-in-out infinite;
 }
 
-.controls button:hover {
-    transform: scale(1.05);
+/* Botão próximo solto (sem .controls) */
+main > .btn-next,
+.game-area > .btn-next,
+main > .order-buttons .btn-next,
+main > .spelling-buttons .btn-next {
+    display: flex;
+    margin: 20px auto;
+    min-width: 280px;
 }
 
-.controls button:disabled {
+@keyframes pulse-next {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.04); }
+}
+
+.controls button:hover,
+.btn-next:hover,
+.btn-clear:hover,
+.btn-check:hover {
+    transform: scale(1.08);
+}
+
+.controls button:active,
+.btn-next:active,
+.btn-clear:active,
+.btn-check:active {
+    transform: scale(0.95);
+}
+
+.controls button:disabled,
+.btn-next:disabled {
     opacity: 0.5;
     cursor: not-allowed;
     transform: none;
+    animation: none;
 }
 
 /* Menu principal */
@@ -1777,8 +1819,15 @@ header p {
 }
 
 .btn-clear {
-    background: #EF5350;
+    background: linear-gradient(135deg, #EF5350, #E53935);
     color: white;
+    box-shadow: 0 6px 18px rgba(239, 83, 80, 0.45);
+}
+
+.btn-check {
+    background: linear-gradient(135deg, #42A5F5, #1E88E5);
+    color: white;
+    box-shadow: 0 6px 18px rgba(33, 150, 243, 0.45);
 }
 
 /* Alfabeto */
