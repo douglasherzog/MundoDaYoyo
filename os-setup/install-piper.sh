@@ -23,12 +23,18 @@ if [ ! -f "$BIN_PIPER" ]; then
     fi
 
     TMP=$(mktemp -d)
-    wget -qO "$TMP/piper.tar.gz" "$URL"
+    wget -O "$TMP/piper.tar.gz" "$URL"
     tar xzf "$TMP/piper.tar.gz" -C "$TMP"
     sudo cp "$TMP/piper/piper" "$BIN_PIPER"
     sudo chmod +x "$BIN_PIPER"
+    # Copia bibliotecas necessarias
+    sudo cp $TMP/piper/libpiper_phonemize.so* /usr/local/lib/
+    sudo cp $TMP/piper/libonnxruntime.so* /usr/local/lib/
+    sudo cp $TMP/piper/libespeak-ng.so* /usr/local/lib/
+    sudo cp -r $TMP/piper/espeak-ng-data /usr/share/espeak-ng-data
+    sudo ldconfig
     rm -rf "$TMP"
-    echo "Binario Piper instalado em $BIN_PIPER"
+    echo "Binario Piper e bibliotecas instalados"
 else
     echo "Piper ja instalado."
 fi
@@ -44,10 +50,10 @@ VOZ_JSON="${VOZ_ONNX}.json"
 
 if [ ! -f "$VOZ_ONNX" ]; then
     echo "Baixando voz pt_BR-faber-medium..."
-    sudo -u $USUARIO wget -qO "$VOZ_ONNX" \
-        "https://huggingface.co/rhasspy/piper-voices/resolve/main/pt/BR/faber/medium/pt_BR-faber-medium.onnx"
-    sudo -u $USUARIO wget -qO "$VOZ_JSON" \
-        "https://huggingface.co/rhasspy/piper-voices/resolve/main/pt/BR/faber/medium/pt_BR-faber-medium.onnx.json"
+    sudo -u $USUARIO wget -O "$VOZ_ONNX" \
+        "https://huggingface.co/rhasspy/piper-voices/resolve/main/pt/pt_BR/faber/medium/pt_BR-faber-medium.onnx"
+    sudo -u $USUARIO wget -O "$VOZ_JSON" \
+        "https://huggingface.co/rhasspy/piper-voices/resolve/main/pt/pt_BR/faber/medium/pt_BR-faber-medium.onnx.json"
 else
     echo "Voz ja baixada."
 fi
