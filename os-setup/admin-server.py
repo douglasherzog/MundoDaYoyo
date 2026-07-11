@@ -47,7 +47,7 @@ class AdminHandler(BaseHTTPRequestHandler):
         self._responder(200, {})
 
     def do_POST(self):
-        if self.path not in ["/shutdown", "/reboot", "/volume"]:
+        if self.path not in ["/shutdown", "/reboot", "/volume", "/terminal"]:
             self._responder(404, {"status": "erro", "mensagem": "rota nao encontrada"})
             return
 
@@ -66,6 +66,8 @@ class AdminHandler(BaseHTTPRequestHandler):
         elif self.path == "/volume":
             nivel = dados.get("nivel", 70)
             resposta = executar(f"pactl set-sink-volume @DEFAULT_SINK@ {nivel}%")
+        elif self.path == "/terminal":
+            resposta = executar("DISPLAY=:0 XAUTHORITY=/home/yoyo/.Xauthority xterm &")
 
         self._responder(200, resposta)
 

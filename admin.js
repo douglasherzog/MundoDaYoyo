@@ -16,6 +16,7 @@
                     <span id="admin-volume-value">70%</span>
                 </div>
                 <div class="admin-buttons">
+                    <button id="admin-terminal" class="admin-btn admin-terminal">🖥️ Terminal</button>
                     <button id="admin-reboot" class="admin-btn admin-reboot">🔄 Reiniciar</button>
                     <button id="admin-shutdown" class="admin-btn admin-shutdown">⏻ Desligar</button>
                     <button id="admin-close" class="admin-btn admin-close">Fechar</button>
@@ -34,6 +35,11 @@
 
         slider.addEventListener("change", () => {
             ajustarVolume(parseInt(slider.value, 10));
+        });
+
+        painel.querySelector("#admin-terminal").addEventListener("click", () => {
+            enviarComando("/terminal");
+            esconderPainel();
         });
 
         painel.querySelector("#admin-shutdown").addEventListener("click", () => {
