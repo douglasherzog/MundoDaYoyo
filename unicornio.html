@@ -29,34 +29,34 @@
 
             <!-- Barras de status -->
             <div class="status-bars">
-                <div class="status-bar">
+                <div class="status-bar" data-speak="Comida">
                     <span class="status-icon">🍔</span>
-                    <span class="status-label">Fome</span>
+                    <span class="status-label">COMIDA</span>
                     <div class="bar-bg"><div class="bar-fill bar-food" id="bar-food"></div></div>
                 </div>
-                <div class="status-bar">
-                    <span class="status-icon">🧼</span>
-                    <span class="status-label">Limpeza</span>
+                <div class="status-bar" data-speak="Banho">
+                    <span class="status-icon">🛁</span>
+                    <span class="status-label">BANHO</span>
                     <div class="bar-bg"><div class="bar-fill bar-clean" id="bar-clean"></div></div>
                 </div>
-                <div class="status-bar">
-                    <span class="status-icon">😊</span>
-                    <span class="status-label">Felicidade</span>
+                <div class="status-bar" data-speak="Alegria">
+                    <span class="status-icon">�</span>
+                    <span class="status-label">ALEGRIA</span>
                     <div class="bar-bg"><div class="bar-fill bar-happy" id="bar-happy"></div></div>
                 </div>
-                <div class="status-bar">
+                <div class="status-bar" data-speak="Sono">
                     <span class="status-icon">💤</span>
-                    <span class="status-label">Energia</span>
+                    <span class="status-label">SONO</span>
                     <div class="bar-bg"><div class="bar-fill bar-energy" id="bar-energy"></div></div>
                 </div>
-                <div class="status-bar">
+                <div class="status-bar" data-speak="Brilho">
                     <span class="status-icon">✨</span>
-                    <span class="status-label">Brilho</span>
+                    <span class="status-label">BRILHO</span>
                     <div class="bar-bg"><div class="bar-fill bar-sparkle" id="bar-sparkle"></div></div>
                 </div>
-                <div class="status-bar">
+                <div class="status-bar" data-speak="Saúde">
                     <span class="status-icon">❤️</span>
-                    <span class="status-label">Saúde</span>
+                    <span class="status-label">SAÚDE</span>
                     <div class="bar-bg"><div class="bar-fill bar-health" id="bar-health"></div></div>
                 </div>
             </div>
@@ -133,57 +133,57 @@
             <div class="action-buttons" id="action-buttons">
                 <button class="action-btn food-btn" id="btn-cafe" data-action="cafe">
                     <span class="action-emoji">☀️</span>
-                    <span class="action-text">Café</span>
+                    <span class="action-text">CAFÉ</span>
                 </button>
                 <button class="action-btn food-btn" id="btn-almoco" data-action="almoco">
-                    <span class="action-emoji">🍽️</span>
-                    <span class="action-text">Almoço</span>
+                    <span class="action-emoji">�</span>
+                    <span class="action-text">ALMOÇO</span>
                 </button>
                 <button class="action-btn food-btn" id="btn-janta" data-action="janta">
                     <span class="action-emoji">🌙</span>
-                    <span class="action-text">Janta</span>
+                    <span class="action-text">JANTA</span>
                 </button>
                 <button class="action-btn care-btn" id="btn-banho" data-action="banho">
                     <span class="action-emoji">🛁</span>
-                    <span class="action-text">Banho</span>
+                    <span class="action-text">BANHO</span>
                 </button>
                 <button class="action-btn care-btn" id="btn-dentes" data-action="dentes">
                     <span class="action-emoji">🪥</span>
-                    <span class="action-text">Dentes</span>
+                    <span class="action-text">DENTES</span>
                 </button>
                 <button class="action-btn play-btn" id="btn-brincar" data-action="brincar">
-                    <span class="action-emoji">🎮</span>
-                    <span class="action-text">Brincar</span>
+                    <span class="action-emoji">⚽</span>
+                    <span class="action-text">BRINCAR</span>
                 </button>
                 <button class="action-btn love-btn" id="btn-carinho" data-action="carinho">
-                    <span class="action-emoji">💕</span>
-                    <span class="action-text">Carinho</span>
+                    <span class="action-emoji">�</span>
+                    <span class="action-text">CARINHO</span>
                 </button>
                 <button class="action-btn sleep-btn" id="btn-dormir" data-action="dormir">
                     <span class="action-emoji">😴</span>
-                    <span class="action-text">Dormir</span>
+                    <span class="action-text">DORMIR</span>
                 </button>
                 <button class="action-btn health-btn" id="btn-remedio" data-action="remedio" style="display:none">
                     <span class="action-emoji">💊</span>
-                    <span class="action-text">Remédio</span>
+                    <span class="action-text">REMÉDIO</span>
                 </button>
             </div>
 
-            <!-- Diário de cuidados -->
+            <!-- Diário visual -->
             <div class="care-diary" id="care-diary">
-                <h3>📋 Tarefas de Hoje</h3>
+                <h3>📋 O QUE EU FIZ HOJE</h3>
                 <div class="diary-tasks" id="diary-tasks"></div>
             </div>
 
             <!-- Estrelas do dia -->
             <div class="daily-stars" id="daily-stars">
-                <span class="stars-title">Estrelas de hoje:</span>
+                <span class="stars-title">⭐ MINHAS ESTRELAS ⭐</span>
                 <span class="stars-display" id="stars-display"></span>
             </div>
 
             <!-- Conquistas -->
             <div class="achievements-section" id="achievements-section">
-                <h3>🏆 Conquistas</h3>
+                <h3>🏆 MINHAS MEDALHAS</h3>
                 <div class="achievements-grid" id="achievements-grid"></div>
             </div>
         </main>

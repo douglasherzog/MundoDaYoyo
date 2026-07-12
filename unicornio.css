@@ -79,16 +79,22 @@
 }
 
 .status-icon {
-    font-size: 1.5rem;
-    width: 30px;
+    font-size: 2.2rem;
+    width: 40px;
     text-align: center;
 }
 
 .status-label {
-    font-size: 0.9rem;
-    color: #777;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #555;
     width: 80px;
     text-align: right;
+    letter-spacing: 1px;
+}
+
+.status-bar {
+    cursor: pointer;
 }
 
 .bar-bg {
@@ -808,20 +814,21 @@
 /* Mensagem do pet - BALÃO DE FALA HQ */
 .pet-message {
     text-align: center;
-    font-size: 1.4rem;
-    color: #666;
-    padding: 15px 25px;
+    font-size: 1.6rem;
+    color: #444;
+    padding: 18px 25px;
     background: #fff;
-    border-radius: 20px;
+    border-radius: 25px;
     border: 3px solid #FFD54F;
     margin-bottom: 20px;
-    min-height: 60px;
+    min-height: 70px;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: transform 0.3s;
     position: relative;
     box-shadow: 0 4px 15px rgba(255, 213, 79, 0.2);
+    line-height: 1.4;
 }
 
 /* Rabinho do balão de fala */
@@ -873,15 +880,15 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 18px 10px;
+    padding: 20px 10px;
     border: none;
-    border-radius: 20px;
+    border-radius: 25px;
     cursor: pointer;
     font-family: inherit;
     font-weight: bold;
     transition: transform 0.15s, box-shadow 0.15s;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    min-height: 100px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+    min-height: 120px;
     touch-action: manipulation;
     user-select: none;
 }
@@ -914,14 +921,16 @@
 }
 
 .action-emoji {
-    font-size: 2.5rem;
+    font-size: 3.5rem;
     line-height: 1;
     margin-bottom: 8px;
 }
 
 .action-text {
-    font-size: 1.1rem;
+    font-size: 1.3rem;
+    font-weight: bold;
     color: #fff;
+    letter-spacing: 2px;
 }
 
 /* Cores dos botões */
@@ -962,7 +971,8 @@
     text-align: center;
     color: #E65100;
     margin-bottom: 12px;
-    font-size: 1.3rem;
+    font-size: 1.5rem;
+    letter-spacing: 1px;
 }
 
 .diary-tasks {
@@ -1002,20 +1012,24 @@
 /* Estrelas do dia */
 .daily-stars {
     text-align: center;
-    padding: 12px;
+    padding: 15px;
     background: linear-gradient(135deg, #FFF8E1, #FFE082);
-    border-radius: 15px;
-    font-size: 1.2rem;
+    border-radius: 20px;
+    font-size: 1.4rem;
 }
 
 .stars-title {
     font-weight: bold;
     color: #FF8F00;
-    margin-right: 10px;
+    display: block;
+    margin-bottom: 8px;
+    font-size: 1.4rem;
+    letter-spacing: 1px;
 }
 
 .stars-display {
-    font-size: 1.4rem;
+    font-size: 2rem;
+    letter-spacing: 3px;
 }
 
 /* Responsivo */
@@ -1372,7 +1386,8 @@
     text-align: center;
     color: #6A1B9A;
     margin-bottom: 15px;
-    font-size: 1.3rem;
+    font-size: 1.5rem;
+    letter-spacing: 1px;
 }
 
 .achievements-grid {

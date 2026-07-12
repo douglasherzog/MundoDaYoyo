@@ -5,117 +5,104 @@ const STORAGE_KEY = 'mundodayoyo-unicornio';
 
 // Configuração das tarefas diárias
 const TAREFAS_DIARIAS = [
-    { id: 'cafe', nome: 'Café da manhã', emoji: '☀️', horaInicio: 6, horaFim: 10 },
-    { id: 'dentes_manha', nome: 'Escovar dentes (manhã)', emoji: '🪥', horaInicio: 6, horaFim: 11 },
-    { id: 'almoco', nome: 'Almoço', emoji: '🍽️', horaInicio: 11, horaFim: 14 },
-    { id: 'dentes_almoco', nome: 'Escovar dentes (almoço)', emoji: '🪥', horaInicio: 11, horaFim: 15 },
-    { id: 'banho', nome: 'Banho', emoji: '🛁', horaInicio: 16, horaFim: 21 },
-    { id: 'janta', nome: 'Janta', emoji: '🌙', horaInicio: 17, horaFim: 21 },
-    { id: 'dentes_noite', nome: 'Escovar dentes (noite)', emoji: '🪥', horaInicio: 18, horaFim: 22 },
-    { id: 'brincar', nome: 'Brincar', emoji: '🎮', horaInicio: 0, horaFim: 24 },
-    { id: 'carinho', nome: 'Carinho', emoji: '💕', horaInicio: 0, horaFim: 24 },
+    { id: 'cafe', nome: 'CAFÉ', emoji: '☀️', horaInicio: 6, horaFim: 10 },
+    { id: 'dentes_manha', nome: 'DENTES', emoji: '🪥', horaInicio: 6, horaFim: 11 },
+    { id: 'almoco', nome: 'ALMOÇO', emoji: '�', horaInicio: 11, horaFim: 14 },
+    { id: 'dentes_almoco', nome: 'DENTES', emoji: '🪥', horaInicio: 11, horaFim: 15 },
+    { id: 'banho', nome: 'BANHO', emoji: '🛁', horaInicio: 16, horaFim: 21 },
+    { id: 'janta', nome: 'JANTA', emoji: '🌙', horaInicio: 17, horaFim: 21 },
+    { id: 'dentes_noite', nome: 'DENTES', emoji: '🪥', horaInicio: 18, horaFim: 22 },
+    { id: 'brincar', nome: 'BRINCAR', emoji: '⚽', horaInicio: 0, horaFim: 24 },
+    { id: 'carinho', nome: 'CARINHO', emoji: '�', horaInicio: 0, horaFim: 24 },
 ];
 
 // Mensagens do unicórnio por ação
 const MENSAGENS = {
     cafe: [
-        'Hmmm, que café da manhã delicioso!',
-        'Adoro comer frutinhas de manhã!',
-        'Obrigada pelo café, Yoyo!',
-        'Que pãozinho gostoso, obrigada!',
+        'Hmm, café! 🥐 Gostoso!',
+        'Que frutinha boa! 🍎',
+        'Obrigada, Yoyo! ☀️',
     ],
     almoco: [
-        'Que almoço maravilhoso!',
-        'Estava com tanta fome, obrigada!',
-        'Adorei o almoço, Yoyo!',
-        'Que comidinha gostosa!',
+        'Que comidinha boa! 🍚',
+        'Hmmm, almoço! 😋',
+        'Obrigada, Yoyo! 🍽️',
     ],
     janta: [
-        'Que janta deliciosa!',
-        'Obrigada pela janta, estou satisfeita!',
-        'Adorei a comidinha da noite!',
-        'Hmmm, que gostoso!',
+        'Janta gostosa! 🌙',
+        'Hmmm, que bom! 😋',
+        'Obrigada, Yoyo! 💜',
     ],
     banho: [
-        'Que banho gostoso e quentinho!',
-        'Estou cheirosa agora!',
-        'Adoro tomar banho, fico toda brilhante!',
-        'Splash splash, que divertido!',
+        'Banho quentinho! 🛁',
+        'Estou cheirosa! 🫧',
+        'Splash splash! 💧',
     ],
     dentes: [
-        'Dentes brilhando de limpos!',
-        'Escovar os dentes é muito importante!',
-        'Meus dentes estão branquinhos!',
-        'Que sorriso bonito agora!',
+        'Dentes brilhando! ✨',
+        'Que sorriso bonito! 😁',
+        'Dentes limpos! 🪥',
     ],
     brincar: [
-        'Vamos brincar! Que divertido!',
-        'Adoro brincar com você, Yoyo!',
-        'Brincando eu fico tão feliz!',
-        'Que legal, mais uma brincadeira!',
-        'Estou pulando de alegria!',
+        'Oba! Brincar! ⚽',
+        'Que divertido! 🎈',
+        'Vamos brincar! 🌈',
     ],
     carinho: [
-        'Ai que carinho gostoso!',
-        'Eu te amo, Yoyo!',
-        'Que abraço quentinho!',
-        'Ronronron, estou tão feliz!',
-        'Obrigada pelo carinho!',
+        'Que carinho bom! 💖',
+        'Te amo, Yoyo! 🥰',
+        'Abraço quentinho! 💕',
     ],
     dormir: [
-        'Boa noite, Yoyo! Vou sonhar com arco-íris!',
-        'Que soninho gostoso, até amanhã!',
-        'Zzzz, hora de descansar!',
+        'Boa noite, Yoyo! 🌙',
+        'Hora de dormir! 💤',
+        'Até amanhã! ⭐',
     ],
     acordar: [
-        'Bom dia, Yoyo! Que dia lindo!',
-        'Acordei cheia de energia!',
-        'Bom dia! Estou com fome!',
+        'Bom dia, Yoyo! ☀️',
+        'Acordei! Bom dia! 🌅',
     ],
     fome: [
-        'Estou com fome, Yoyo!',
-        'Minha barriguinha está roncando!',
-        'Será que tem comidinha para mim?',
+        'Estou com fome! 🍔',
+        'Minha barriga ronca! 😋',
+        'Comida, Yoyo! 🍽️',
     ],
     suja: [
-        'Preciso de um banho!',
-        'Estou toda sujinha!',
-        'Um banho seria tão bom agora!',
+        'Preciso de banho! 🛁',
+        'Estou sujinha! 🧼',
     ],
     triste: [
-        'Estou um pouquinho triste, brinca comigo?',
-        'Preciso de carinho, Yoyo!',
-        'Vamos brincar? Quero ficar feliz!',
+        'Estou triste! 😢',
+        'Brinca comigo? 🥺',
+        'Carinho, Yoyo! 💜',
     ],
     cansada: [
-        'Estou cansadinha, preciso descansar!',
-        'Um cochilo seria bom agora!',
+        'Estou com sono! 😴',
+        'Que soninho! 💤',
     ],
     feliz: [
-        'Estou tão feliz! Obrigada por cuidar de mim!',
-        'Você é a melhor amiga do mundo!',
-        'Eu adoro a Yoyo!',
+        'Estou feliz! 😄',
+        'Oba! Te amo! 💖',
+        'Estou brilhando! ✨',
     ],
     nivelUp: [
-        'Eba! Subi de nível! Estou mais forte e brilhante!',
-        'Novo nível! Meu chifre está brilhando mais!',
-        'Estou crescendo! Olha como estou maior!',
-        'Subi de nível! Estou ficando mais bonita!',
+        'Eba! Cresci! 🌟',
+        'Olha! Estou maior! ⭐',
+        'Subi de nível! 👑',
     ],
     doente: [
-        'Ai, não estou me sentindo bem, Yoyo!',
-        'Acho que estou doentinha, preciso de remédio!',
-        'Meu chifre está sem brilho, estou mal!',
-        'Atchim! Acho que peguei um resfriado!',
+        'Estou doentinha! 🤒',
+        'Atchim! 🤧',
+        'Preciso de remédio! 💊',
     ],
     remedio: [
-        'O remédio é amargo, mas já estou melhorando!',
-        'Obrigada pelo remédio, Yoyo! Estou me sentindo melhor!',
-        'Que bom que você cuida de mim quando estou doentinha!',
+        'O remédio ajudou! 💊',
+        'Estou melhorando! 💪',
+        'Obrigada, Yoyo! ❤️',
     ],
     aniversario: [
-        'Hoje é meu aniversário! Feliz aniversário para mim!',
-        'Parabéns para mim! Obrigada por cuidar de mim, Yoyo!',
+        'Meu aniversário! 🎂🎉',
+        'Parabéns pra mim! 🎁',
     ],
 };
 
@@ -134,24 +121,24 @@ const CENAS = {
 
 // Definição de conquistas
 const CONQUISTAS = [
-    { id: 'primeiro_cafe', nome: 'Primeiro Café', emoji: '☕', desc: 'Deu o primeiro café da manhã' },
-    { id: 'primeiro_banho', nome: 'Primeiro Banho', emoji: '🛁', desc: 'Deu o primeiro banho' },
-    { id: 'primeiro_carinho', nome: 'Primeiro Carinho', emoji: '🥰', desc: 'Fez o primeiro carinho' },
-    { id: 'dias_3', nome: '3 Dias Seguidos', emoji: '🔥', desc: 'Visitou 3 dias consecutivos' },
-    { id: 'dias_7', nome: 'Semana Completa', emoji: '🌟', desc: 'Visitou 7 dias consecutivos' },
-    { id: 'dias_30', nome: 'Mês Inteiro!', emoji: '🏅', desc: 'Visitou 30 dias consecutivos' },
-    { id: 'nivel_3', nome: 'Cresceu!', emoji: '🌱', desc: 'Chegou ao nível 3' },
-    { id: 'nivel_5', nome: 'Ganhou Asas', emoji: '🪶', desc: 'Chegou ao nível 5' },
-    { id: 'nivel_7', nome: 'Adulto', emoji: '🦄', desc: 'Chegou ao nível 7' },
-    { id: 'nivel_10', nome: 'Lendário!', emoji: '👑', desc: 'Chegou ao nível 10' },
-    { id: 'curou_doenca', nome: 'Doutora Yoyo', emoji: '💉', desc: 'Curou o unicórnio doente' },
-    { id: 'estrelas_50', nome: '50 Estrelas', emoji: '⭐', desc: 'Ganhou 50 estrelas no total' },
-    { id: 'estrelas_100', nome: '100 Estrelas!', emoji: '🌠', desc: 'Ganhou 100 estrelas no total' },
-    { id: 'felicidade_max', nome: 'Felicidade Máxima', emoji: '😍', desc: 'Unicórnio com 100% de felicidade' },
-    { id: 'tudo_100', nome: 'Perfeito!', emoji: '🌈', desc: 'Todas as barras em 100%' },
-    { id: 'aniversario', nome: 'Aniversário!', emoji: '🎂', desc: 'Comemorou o aniversário do unicórnio' },
-    { id: 'dentes_3x', nome: 'Dentes Brilhantes', emoji: '🦷', desc: 'Escovou os dentes 3 vezes no dia' },
-    { id: 'dia_perfeito', nome: 'Dia Perfeito', emoji: '🌞', desc: 'Fez todas as tarefas obrigatórias do dia' },
+    { id: 'primeiro_cafe', nome: 'CAFÉ', emoji: '☕', desc: 'Primeiro café!' },
+    { id: 'primeiro_banho', nome: 'BANHO', emoji: '🛁', desc: 'Primeiro banho!' },
+    { id: 'primeiro_carinho', nome: 'CARINHO', emoji: '🥰', desc: 'Primeiro carinho!' },
+    { id: 'dias_3', nome: '3 DIAS', emoji: '🔥', desc: '3 dias seguidos!' },
+    { id: 'dias_7', nome: 'SEMANA', emoji: '🌟', desc: '7 dias seguidos!' },
+    { id: 'dias_30', nome: 'MÊS', emoji: '🏅', desc: '30 dias seguidos!' },
+    { id: 'nivel_3', nome: 'CRESCEU', emoji: '🌱', desc: 'Nível 3!' },
+    { id: 'nivel_5', nome: 'ASAS', emoji: '🪶', desc: 'Ganhou asas!' },
+    { id: 'nivel_7', nome: 'GRANDE', emoji: '🦄', desc: 'Ficou grande!' },
+    { id: 'nivel_10', nome: 'RAINHA', emoji: '👑', desc: 'Nível 10!' },
+    { id: 'curou_doenca', nome: 'DOUTORA', emoji: '💉', desc: 'Curou a doença!' },
+    { id: 'estrelas_50', nome: '50 ⭐', emoji: '⭐', desc: '50 estrelas!' },
+    { id: 'estrelas_100', nome: '100 ⭐', emoji: '🌠', desc: '100 estrelas!' },
+    { id: 'felicidade_max', nome: 'FELIZ', emoji: '😍', desc: 'Super feliz!' },
+    { id: 'tudo_100', nome: 'PERFEITO', emoji: '🌈', desc: 'Tudo perfeito!' },
+    { id: 'aniversario', nome: 'PARABÉNS', emoji: '🎂', desc: 'Aniversário!' },
+    { id: 'dentes_3x', nome: 'DENTES', emoji: '🦷', desc: 'Dentes 3 vezes!' },
+    { id: 'dia_perfeito', nome: 'DIA TOP', emoji: '🌞', desc: 'Dia perfeito!' },
 ];
 
 // Nomes de níveis
@@ -742,6 +729,8 @@ function mostrarMensagem(texto) {
     el.textContent = texto;
     el.classList.add('message-pop');
     setTimeout(() => el.classList.remove('message-pop'), 500);
+    // Sempre falar para a criança ouvir e associar palavra-som
+    falar(texto);
 }
 
 function animarCena(tipo) {
@@ -914,7 +903,6 @@ function verificarEstadoEmocional() {
 
     // Alerta contextual por horário
     if (hora >= 20 && estado.energia > 20) {
-        // À noite, sugere dormir
         if (Math.random() < 0.3) {
             animarBocejo();
             return;
@@ -924,15 +912,15 @@ function verificarEstadoEmocional() {
     if (hora >= 6 && hora < 9 && !estado.tarefasHoje.cafe) {
         if (Math.random() < 0.4) {
             animarPensamento('🥐');
-            mostrarMensagem('*Ronc ronc* Minha barriguinha está pedindo café da manhã!');
+            mostrarMensagem('Hora do café! ☀️');
             return;
         }
     }
 
     if (hora >= 11 && hora < 13 && !estado.tarefasHoje.almoco && estado.fome < 60) {
         if (Math.random() < 0.4) {
-            animarPensamento('🍽️');
-            mostrarMensagem('Já é hora do almoço, Yoyo! Estou ficando com fome!');
+            animarPensamento('🍚');
+            mostrarMensagem('Hora do almoço! 🍽️');
             return;
         }
     }
@@ -940,7 +928,7 @@ function verificarEstadoEmocional() {
     if (hora >= 18 && hora < 20 && !estado.tarefasHoje.janta) {
         if (Math.random() < 0.4) {
             animarPensamento('🌙');
-            mostrarMensagem('A noite está chegando... Que tal a janta?');
+            mostrarMensagem('Hora da janta! 🌙');
             return;
         }
     }
@@ -948,7 +936,7 @@ function verificarEstadoEmocional() {
     if (hora >= 17 && hora < 20 && !estado.tarefasHoje.banho) {
         if (Math.random() < 0.3) {
             animarPensamento('🛁');
-            mostrarMensagem('Hmmm, estou precisando de um banho quentinho!');
+            mostrarMensagem('Hora do banho! 🛁');
             return;
         }
     }
@@ -1124,12 +1112,18 @@ function atualizarConquistas() {
         const div = document.createElement('div');
         div.className = 'achievement' + (desbloqueada ? ' unlocked' : ' locked');
         div.innerHTML = `
-            <span class="achievement-emoji">${desbloqueada ? c.emoji : '🔒'}</span>
-            <span class="achievement-name">${desbloqueada ? c.nome : '???'}</span>
+            <span class="achievement-emoji">${c.emoji}</span>
+            <span class="achievement-name">${c.nome}</span>
         `;
-        if (desbloqueada) {
-            div.title = c.desc;
-        }
+        div.title = c.desc;
+        // Falar o nome da conquista ao tocar
+        div.addEventListener('click', () => {
+            if (desbloqueada) {
+                falar(c.nome + '! ' + c.desc);
+            } else {
+                falar(c.nome);
+            }
+        });
         grid.appendChild(div);
     });
 }
@@ -1175,37 +1169,27 @@ function renomearPet() {
 // Mensagem de boas-vindas baseada no estado
 function boasVindas() {
     const hora = new Date().getHours();
-    let saudacao;
-
-    if (hora >= 5 && hora < 12) saudacao = 'Bom dia';
-    else if (hora >= 12 && hora < 18) saudacao = 'Boa tarde';
-    else saudacao = 'Boa noite';
-
-    const media = (estado.fome + estado.limpeza + estado.felicidade + estado.energia + estado.brilho) / 5;
-
     let msg;
-    if (estado.diasConsecutivos > 1) {
-        msg = `${saudacao} Yoyo! Você veio me visitar ${estado.diasConsecutivos} dias seguidos! `;
+
+    if (hora >= 5 && hora < 12) {
+        msg = 'Bom dia, Yoyo! ☀️';
+    } else if (hora >= 12 && hora < 18) {
+        msg = 'Boa tarde, Yoyo! 🌤️';
     } else {
-        msg = `${saudacao} Yoyo! `;
+        msg = 'Boa noite, Yoyo! 🌙';
     }
 
     if (estado.doente) {
-        msg += 'Estou doentinha, preciso de remédio! 🤒';
+        msg += ' Estou doentinha! 🤒';
     } else if (hora >= 20) {
-        msg += 'Já está tarde, que tal me colocar para dormir? 🥱';
-    } else if (hora >= 5 && hora < 8) {
-        msg += 'Acordei cheia de energia! Vamos começar o dia?';
-    } else if (media >= 80) {
-        msg += 'Estou super feliz e brilhante! ✨';
-    } else if (media >= 50) {
-        msg += 'Estou bem, mas preciso de uns cuidados!';
+        msg += ' Hora de dormir! 😴';
+    } else if (estado.fome < 30) {
+        msg += ' Estou com fome! 🍔';
     } else {
-        msg += 'Estava com saudades! Preciso muito de você!';
+        msg += ' Te amo! 💖';
     }
 
     mostrarMensagem(msg);
-    setTimeout(() => falar(msg), 500);
 
     // Animação contextual
     if (hora >= 20) {
@@ -1223,11 +1207,22 @@ let estado = carregarEstado();
 document.querySelectorAll('.action-btn').forEach(btn => {
     btn.addEventListener('click', function() {
         const acao = this.dataset.action;
+        // Falar o nome do botão para a criança aprender a palavra
+        const texto = this.querySelector('.action-text').textContent;
+        falar(texto);
         executarAcao(acao);
     });
 });
 
 document.getElementById('btn-rename').addEventListener('click', renomearPet);
+
+// Barras de status falam ao tocar
+document.querySelectorAll('.status-bar').forEach(bar => {
+    bar.addEventListener('click', function() {
+        const palavra = this.dataset.speak;
+        if (palavra) falar(palavra);
+    });
+});
 
 // Clique no unicórnio para dar carinho
 document.getElementById('unicorn-container').addEventListener('click', function() {
@@ -1237,7 +1232,7 @@ document.getElementById('unicorn-container').addEventListener('click', function(
         animarCoracoes();
         animarRonronar();
         animarCena('carinho');
-        const msgs = ['Ai que gostoso!', 'Hehe! Faz cócegas!', 'Eu te amo, Yoyo!', 'Mais carinho!', 'Ronronron!'];
+        const msgs = ['Hehe! 💖', 'Te amo! 🥰', 'Gostoso! 💕', 'Mais! 💗'];
         const msg = msgs[Math.floor(Math.random() * msgs.length)];
         mostrarMensagem(msg);
         salvarEstado();
