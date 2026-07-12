@@ -120,13 +120,15 @@
     50% { opacity: 0.6; }
 }
 
-/* Área do pet */
+/* ===================== */
+/* ÁREA DO PET - CENÁRIO */
+/* ===================== */
 .pet-scene {
     position: relative;
     background: linear-gradient(180deg, #E3F2FD 0%, #C8E6C9 50%, #A5D6A7 100%);
     border-radius: 30px;
-    padding: 30px;
-    min-height: 250px;
+    padding: 30px 30px 40px;
+    min-height: 320px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -147,52 +149,620 @@
     top: 15px;
     right: 20px;
     animation: float 3s ease-in-out infinite;
+    z-index: 4;
 }
 
-.pet-avatar {
-    font-size: 8rem;
-    line-height: 1;
-    filter: drop-shadow(0 8px 12px rgba(0,0,0,0.15));
-    transition: transform 0.3s ease;
+.scene-bg {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 50px;
+    background: linear-gradient(180deg, transparent, rgba(139,195,74,0.3));
+    pointer-events: none;
+}
+
+/* ========================= */
+/* UNICÓRNIO DESENHADO EM CSS */
+/* ========================= */
+.unicorn-container {
+    position: relative;
+    z-index: 2;
     cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.unicorn-container:hover {
+    transform: scale(1.05);
+}
+
+.unicorn {
+    position: relative;
+    transition: transform 0.5s ease;
+}
+
+/* --- TAMANHOS POR NÍVEL (crescimento) --- */
+/* Nível 1-2: Bebê (pequeno, cabeça grande) */
+.unicorn.stage-baby {
+    transform: scale(0.6);
+}
+.unicorn.stage-baby .unicorn-head {
+    width: 110px;
+    height: 100px;
+}
+.unicorn.stage-baby .unicorn-body {
+    width: 90px;
+    height: 65px;
+}
+.unicorn.stage-baby .leg {
+    height: 20px;
+}
+
+/* Nível 3-4: Filhote */
+.unicorn.stage-young {
+    transform: scale(0.75);
+}
+.unicorn.stage-young .unicorn-head {
+    width: 110px;
+    height: 100px;
+}
+.unicorn.stage-young .unicorn-body {
+    width: 110px;
+    height: 75px;
+}
+.unicorn.stage-young .leg {
+    height: 30px;
+}
+
+/* Nível 5-6: Jovem */
+.unicorn.stage-teen {
+    transform: scale(0.88);
+}
+.unicorn.stage-teen .unicorn-head {
+    width: 110px;
+    height: 100px;
+}
+.unicorn.stage-teen .unicorn-body {
+    width: 125px;
+    height: 85px;
+}
+.unicorn.stage-teen .leg {
+    height: 38px;
+}
+
+/* Nível 7-8: Adulto */
+.unicorn.stage-adult {
+    transform: scale(1);
+}
+
+/* Nível 9-10: Majestoso */
+.unicorn.stage-majestic {
+    transform: scale(1.1);
+}
+.unicorn.stage-majestic .unicorn-horn {
+    height: 55px !important;
+}
+
+/* --- CABEÇA --- */
+.unicorn-head {
+    width: 110px;
+    height: 100px;
+    background: #fff;
+    border-radius: 50% 50% 45% 45%;
+    position: relative;
+    z-index: 3;
+    margin: 0 auto;
+    box-shadow: inset -5px -5px 15px rgba(200,180,220,0.3);
+    transition: background 0.5s, width 0.5s, height 0.5s;
+}
+
+/* --- OLHOS --- */
+.unicorn-eyes {
+    display: flex;
+    justify-content: center;
+    gap: 22px;
+    padding-top: 30px;
+    position: relative;
+}
+
+.eye {
+    width: 22px;
+    height: 26px;
+    background: #2c1810;
+    border-radius: 50%;
+    position: relative;
+    transition: all 0.3s;
+}
+
+.eye .pupil {
+    width: 10px;
+    height: 10px;
+    background: #fff;
+    border-radius: 50%;
+    position: absolute;
+    top: 5px;
+    right: 4px;
+}
+
+/* Olhos felizes (arcos) */
+.unicorn.mood-happy .eye {
+    height: 6px;
+    border-radius: 6px 6px 0 0;
+    margin-top: 10px;
+}
+.unicorn.mood-happy .eye .pupil {
+    display: none;
+}
+
+/* Olhos tristes */
+.unicorn.mood-sad .eye {
+    height: 20px;
+    background: #2c1810;
+}
+.unicorn.mood-sad .eye .pupil {
+    width: 12px;
+    height: 12px;
+    top: 6px;
+}
+
+/* Olhos dormindo */
+.unicorn.mood-sleeping .eye {
+    width: 18px;
+    height: 3px;
+    border-radius: 3px;
+    margin-top: 12px;
+}
+.unicorn.mood-sleeping .eye .pupil {
+    display: none;
+}
+
+/* Olhos de fome (olheiras) */
+.unicorn.mood-hungry .eye {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* --- BOCHECHAS --- */
+.unicorn-blush {
+    width: 20px;
+    height: 12px;
+    background: rgba(255, 150, 180, 0.5);
+    border-radius: 50%;
+    position: absolute;
+    top: 60px;
+    transition: opacity 0.3s;
+}
+.unicorn-blush.left { left: 10px; }
+.unicorn-blush.right { right: 10px; }
+
+.unicorn.mood-happy .unicorn-blush {
+    background: rgba(255, 100, 150, 0.7);
+}
+.unicorn.mood-sad .unicorn-blush,
+.unicorn.mood-hungry .unicorn-blush {
+    opacity: 0;
+}
+
+/* --- BOCA --- */
+.unicorn-mouth {
+    width: 16px;
+    height: 8px;
+    border-bottom: 3px solid #c9787c;
+    border-radius: 0 0 50% 50%;
+    margin: 6px auto 0;
+    transition: all 0.3s;
+}
+
+.unicorn.mood-happy .unicorn-mouth {
+    width: 24px;
+    height: 12px;
+    border-bottom: 3px solid #e06070;
+}
+
+.unicorn.mood-sad .unicorn-mouth {
+    width: 18px;
+    height: 6px;
+    border-bottom: none;
+    border-top: 3px solid #c9787c;
+    border-radius: 50% 50% 0 0;
+}
+
+.unicorn.mood-hungry .unicorn-mouth {
+    width: 14px;
+    height: 14px;
+    border: 2px solid #c9787c;
+    border-radius: 50%;
+    background: #3a1a1a;
+}
+
+/* --- FOCINHO --- */
+.unicorn-nose {
+    width: 8px;
+    height: 5px;
+    display: flex;
+    gap: 10px;
+    margin: 2px auto 0;
+}
+.unicorn-nose::before, .unicorn-nose::after {
+    content: '';
+    width: 4px;
+    height: 3px;
+    background: #d4a0a0;
+    border-radius: 50%;
+}
+
+/* --- CHIFRE --- */
+.unicorn-horn {
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 40px solid #FFD700;
+    position: absolute;
+    top: -35px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+    filter: drop-shadow(0 0 6px rgba(255,215,0,0.6));
+    transition: border-bottom-width 0.5s, filter 0.5s;
+}
+
+/* Chifre por nível */
+.unicorn.stage-baby .unicorn-horn {
+    border-bottom-width: 20px;
+    top: -16px;
+    border-left-width: 5px;
+    border-right-width: 5px;
+    filter: drop-shadow(0 0 2px rgba(255,215,0,0.3));
+}
+.unicorn.stage-young .unicorn-horn {
+    border-bottom-width: 28px;
+    top: -22px;
+}
+.unicorn.stage-teen .unicorn-horn {
+    border-bottom-width: 35px;
+    top: -28px;
+}
+
+/* Chifre brilhante (brilho alto) */
+.unicorn.sparkle-high .unicorn-horn {
+    filter: drop-shadow(0 0 12px rgba(255,215,0,0.9));
+    border-bottom-color: #FFE44D;
+}
+.unicorn.sparkle-high .unicorn-horn::after {
+    content: '✨';
+    position: absolute;
+    top: -8px;
+    left: -15px;
+    font-size: 1rem;
+    animation: sparkle-spin 2s linear infinite;
+}
+@keyframes sparkle-spin {
+    0% { transform: rotate(0deg) scale(1); opacity: 1; }
+    50% { transform: rotate(180deg) scale(1.3); opacity: 0.6; }
+    100% { transform: rotate(360deg) scale(1); opacity: 1; }
+}
+
+/* --- ORELHAS --- */
+.unicorn-ear {
+    width: 20px;
+    height: 30px;
+    background: #fff;
+    border-radius: 50% 50% 0 0;
+    position: absolute;
+    top: -12px;
+    z-index: 4;
+    border: 2px solid #f0d0e0;
+}
+.unicorn-ear.left {
+    left: 50%;
+    margin-left: -35px;
+    transform: rotate(-20deg);
+}
+.unicorn-ear.right {
+    right: 50%;
+    margin-right: -35px;
+    transform: rotate(20deg);
+}
+.unicorn-ear::after {
+    content: '';
+    width: 10px;
+    height: 16px;
+    background: #fdd;
+    border-radius: 50% 50% 0 0;
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* --- CRINA --- */
+.unicorn-mane {
+    position: absolute;
+    top: -5px;
+    right: -15px;
     z-index: 2;
 }
 
-.pet-avatar:hover {
-    transform: scale(1.1);
+.mane-strand {
+    border-radius: 50%;
+    position: absolute;
 }
 
-.pet-avatar.sleeping {
-    filter: drop-shadow(0 8px 12px rgba(0,0,0,0.3)) brightness(0.7);
-    animation: sleep-bob 4s ease-in-out infinite;
+.mane-strand.s1 {
+    width: 25px;
+    height: 35px;
+    background: #FF6B9D;
+    top: 0;
+    right: 0;
+    border-radius: 0 50% 50% 0;
+}
+.mane-strand.s2 {
+    width: 22px;
+    height: 30px;
+    background: #9C27B0;
+    top: 18px;
+    right: 5px;
+    border-radius: 0 50% 50% 0;
+}
+.mane-strand.s3 {
+    width: 18px;
+    height: 25px;
+    background: #42A5F5;
+    top: 35px;
+    right: 8px;
+    border-radius: 0 50% 50% 0;
 }
 
-.pet-avatar.bouncing {
-    animation: bounce-pet 2s ease-in-out infinite;
+/* Crina arco-íris nos níveis altos */
+.unicorn.stage-majestic .mane-strand.s1 { background: #FF1744; }
+.unicorn.stage-majestic .mane-strand.s2 { background: #FFD600; }
+.unicorn.stage-majestic .mane-strand.s3 { background: #00E676; }
+.unicorn.stage-adult .mane-strand.s1 { background: #FF4081; }
+.unicorn.stage-adult .mane-strand.s2 { background: #7C4DFF; }
+.unicorn.stage-adult .mane-strand.s3 { background: #18FFFF; }
+
+/* Crina suja */
+.unicorn.dirty .mane-strand {
+    filter: brightness(0.6) saturate(0.4);
 }
 
-.pet-expression {
+/* --- CORPO --- */
+.unicorn-body {
+    width: 130px;
+    height: 90px;
+    background: #fff;
+    border-radius: 55% 55% 45% 45%;
+    margin: -15px auto 0;
+    position: relative;
+    box-shadow: inset -5px -5px 15px rgba(200,180,220,0.2);
+    transition: width 0.5s, height 0.5s, background 0.5s;
+}
+
+/* Corpo sujo (manchinhas) */
+.unicorn.dirty .unicorn-body {
+    background: #f0e8d8;
+}
+.unicorn.dirty .unicorn-body::after {
+    content: '';
+    position: absolute;
+    width: 15px;
+    height: 12px;
+    background: #c9b896;
+    border-radius: 50%;
+    top: 20px;
+    left: 25px;
+    box-shadow: 35px 15px 0 5px #c9b896, 55px -5px 0 3px #c9b896;
+}
+.unicorn.dirty .unicorn-head {
+    background: #f5ede0;
+}
+
+/* --- PATAS --- */
+.unicorn-legs {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 15px;
+    position: absolute;
+    bottom: -30px;
+    left: 0;
+    right: 0;
+}
+
+.leg {
+    width: 18px;
+    height: 35px;
+    background: #fff;
+    border-radius: 0 0 8px 8px;
+    border-bottom: 6px solid #e0c0d0;
+    transition: height 0.5s;
+}
+
+/* Patas de bebê mais curtinhas */
+.unicorn.stage-baby .leg {
+    width: 14px;
+    border-bottom-width: 4px;
+}
+
+/* --- CAUDA --- */
+.unicorn-tail {
+    position: absolute;
+    left: -20px;
+    top: 15px;
+    animation: tail-wag 3s ease-in-out infinite;
+}
+
+.tail-strand {
+    width: 15px;
+    height: 20px;
+    border-radius: 50% 0 0 50%;
+    position: absolute;
+}
+.tail-strand.t1 {
+    background: #FF6B9D;
+    top: 0;
+    left: 0;
+}
+.tail-strand.t2 {
+    background: #9C27B0;
+    top: 12px;
+    left: -5px;
+}
+.tail-strand.t3 {
+    background: #42A5F5;
+    top: 24px;
+    left: -2px;
+}
+
+/* Cauda arco-íris nos níveis altos */
+.unicorn.stage-majestic .tail-strand.t1 { background: #FF1744; }
+.unicorn.stage-majestic .tail-strand.t2 { background: #FFD600; }
+.unicorn.stage-majestic .tail-strand.t3 { background: #00E676; }
+
+/* Cauda suja */
+.unicorn.dirty .tail-strand {
+    filter: brightness(0.6) saturate(0.4);
+}
+
+@keyframes tail-wag {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-10deg); }
+    75% { transform: rotate(10deg); }
+}
+
+/* --- ASAS (nível 5+) --- */
+.unicorn-wing {
+    width: 0;
+    height: 0;
+    position: absolute;
+    top: 5px;
+    transition: all 0.5s;
+    opacity: 0;
+}
+.unicorn-wing.left {
+    left: -30px;
+}
+.unicorn-wing.right {
+    right: -30px;
+}
+
+.unicorn.has-wings .unicorn-wing {
+    opacity: 1;
+}
+.unicorn.has-wings .unicorn-wing.left {
+    width: 45px;
+    height: 35px;
+    background: rgba(200, 220, 255, 0.8);
+    border-radius: 50% 0 50% 50%;
+    left: -35px;
+    animation: wing-flap-l 2s ease-in-out infinite;
+}
+.unicorn.has-wings .unicorn-wing.right {
+    width: 45px;
+    height: 35px;
+    background: rgba(200, 220, 255, 0.8);
+    border-radius: 0 50% 50% 50%;
+    right: -35px;
+    animation: wing-flap-r 2s ease-in-out infinite;
+}
+
+@keyframes wing-flap-l {
+    0%, 100% { transform: rotate(0deg) scaleY(1); }
+    50% { transform: rotate(-15deg) scaleY(0.8); }
+}
+@keyframes wing-flap-r {
+    0%, 100% { transform: rotate(0deg) scaleY(1); }
+    50% { transform: rotate(15deg) scaleY(0.8); }
+}
+
+/* Asas maiores nos níveis altos */
+.unicorn.stage-majestic.has-wings .unicorn-wing.left,
+.unicorn.stage-majestic.has-wings .unicorn-wing.right {
+    width: 60px;
+    height: 45px;
+    background: linear-gradient(135deg, rgba(200,220,255,0.9), rgba(255,200,255,0.7));
+}
+
+/* --- ACESSÓRIO (coroa nível 6+) --- */
+.unicorn-accessory {
+    position: absolute;
+    top: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.8rem;
+    z-index: 6;
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+.unicorn.has-crown .unicorn-accessory {
+    opacity: 1;
+    animation: crown-bob 3s ease-in-out infinite;
+}
+@keyframes crown-bob {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(-5px); }
+}
+
+/* --- INDICADORES DE ESTADO FLUTUANTES --- */
+.state-indicators {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 5px;
+    z-index: 10;
+}
+
+.state-icon {
     font-size: 1.5rem;
-    margin-top: 5px;
+    animation: float-indicator 2s ease-in-out infinite;
 }
 
-@keyframes float {
+.state-icon:nth-child(2) { animation-delay: 0.3s; }
+.state-icon:nth-child(3) { animation-delay: 0.6s; }
+
+@keyframes float-indicator {
     0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
+    50% { transform: translateY(-8px); }
 }
 
-@keyframes sleep-bob {
-    0%, 100% { transform: translateY(0) rotate(-5deg); }
-    50% { transform: translateY(5px) rotate(5deg); }
+/* --- ANIMAÇÕES DE HUMOR --- */
+.unicorn.mood-happy {
+    animation: happy-bounce 1.5s ease-in-out infinite;
+}
+@keyframes happy-bounce {
+    0%, 100% { transform: translateY(0) scale(var(--uni-scale, 1)); }
+    50% { transform: translateY(-12px) scale(var(--uni-scale, 1)); }
 }
 
-@keyframes bounce-pet {
-    0%, 100% { transform: translateY(0); }
-    25% { transform: translateY(-15px); }
-    75% { transform: translateY(-5px); }
+.unicorn.mood-sad {
+    animation: sad-sway 3s ease-in-out infinite;
+}
+@keyframes sad-sway {
+    0%, 100% { transform: translateY(0) scale(var(--uni-scale, 1)); }
+    50% { transform: translateY(3px) rotate(-2deg) scale(var(--uni-scale, 1)); }
 }
 
-/* Itens de cena (animações de ação) */
+.unicorn.mood-sleeping {
+    animation: sleep-breath 4s ease-in-out infinite;
+}
+@keyframes sleep-breath {
+    0%, 100% { transform: scale(var(--uni-scale, 1)); }
+    50% { transform: scale(calc(var(--uni-scale, 1) * 1.03)); }
+}
+
+.unicorn.mood-hungry {
+    animation: hungry-shake 0.5s ease-in-out infinite;
+}
+@keyframes hungry-shake {
+    0%, 100% { transform: translateX(0) scale(var(--uni-scale, 1)); }
+    25% { transform: translateX(-2px) scale(var(--uni-scale, 1)); }
+    75% { transform: translateX(2px) scale(var(--uni-scale, 1)); }
+}
+
+/* ========================= */
+/* ITENS DE CENA / ANIMAÇÕES */
+/* ========================= */
 .scene-items {
     position: absolute;
     top: 0;
@@ -238,6 +808,11 @@
 @keyframes level-flash {
     0%, 100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); }
     50% { box-shadow: 0 0 40px 15px rgba(255, 215, 0, 0.6); }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
 }
 
 /* Mensagem do pet */
@@ -313,7 +888,7 @@
 }
 
 .action-btn.done::after {
-    content: '✅';
+    content: '\2705';
     position: absolute;
     top: 5px;
     right: 5px;
@@ -445,12 +1020,8 @@
         font-size: 0.95rem;
     }
 
-    .pet-avatar {
-        font-size: 6rem;
-    }
-
     .pet-scene {
-        min-height: 200px;
+        min-height: 250px;
         padding: 20px;
     }
 
@@ -464,6 +1035,16 @@
 
     .pet-name {
         font-size: 1.8rem;
+    }
+
+    .unicorn {
+        transform: scale(0.8) !important;
+    }
+    .unicorn.stage-baby {
+        transform: scale(0.5) !important;
+    }
+    .unicorn.stage-young {
+        transform: scale(0.6) !important;
     }
 }
 

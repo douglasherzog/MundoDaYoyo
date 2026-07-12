@@ -99,6 +99,8 @@ const MENSAGENS = {
     nivelUp: [
         'Eba! Subi de nível! Estou mais forte e brilhante!',
         'Novo nível! Meu chifre está brilhando mais!',
+        'Estou crescendo! Olha como estou maior!',
+        'Subi de nível! Estou ficando mais bonita!',
     ],
 };
 
@@ -241,8 +243,24 @@ function ganharXP(quantidade) {
     const necessario = getXpParaProximoNivel();
     if (estado.xp >= necessario) {
         estado.xp -= necessario;
+        const nivelAnterior = estado.nivel;
         estado.nivel++;
-        const msg = mensagemAleatoria('nivelUp');
+
+        let msg;
+        if (estado.nivel === 3) {
+            msg = 'Eba! Estou crescendo! Já não sou mais bebê!';
+        } else if (estado.nivel === 5) {
+            msg = 'Olha, Yoyo! Ganhei asas! Agora posso voar!';
+        } else if (estado.nivel === 6) {
+            msg = 'Ganhei um lacinho! Estou tão bonita!';
+        } else if (estado.nivel === 7) {
+            msg = 'Estou adulta agora! Olha como cresci!';
+        } else if (estado.nivel === 9) {
+            msg = 'Ganhei uma coroa! Sou uma unicórnio real!';
+        } else {
+            msg = mensagemAleatoria('nivelUp');
+        }
+
         mostrarMensagem(msg);
         falar(msg);
         animarNivelUp();
@@ -424,44 +442,110 @@ function atualizarInfo() {
 }
 
 function atualizarAvatar() {
-    const avatar = document.getElementById('pet-avatar');
+    const unicorn = document.getElementById('unicorn');
     const mood = document.getElementById('pet-mood');
-    const expression = document.getElementById('pet-expression');
+    const indicators = document.getElementById('state-indicators');
+    const accessory = document.getElementById('unicorn-accessory');
+    const scene = document.getElementById('pet-scene');
+
+    // Limpar classes anteriores
+    unicorn.className = 'unicorn';
+
+    // === ESTÁGIO DE CRESCIMENTO (nível) ===
+    if (estado.nivel <= 2) {
+        unicorn.classList.add('stage-baby');
+    } else if (estado.nivel <= 4) {
+        unicorn.classList.add('stage-young');
+    } else if (estado.nivel <= 6) {
+        unicorn.classList.add('stage-teen');
+    } else if (estado.nivel <= 8) {
+        unicorn.classList.add('stage-adult');
+    } else {
+        unicorn.classList.add('stage-majestic');
+    }
+
+    // === ASAS (nível 5+) ===
+    if (estado.nivel >= 5) {
+        unicorn.classList.add('has-wings');
+    }
+
+    // === COROA (nível 6+) ===
+    if (estado.nivel >= 6) {
+        unicorn.classList.add('has-crown');
+        if (estado.nivel >= 9) {
+            accessory.textContent = '👑';
+        } else {
+            accessory.textContent = '🎀';
+        }
+    }
+
+    // === BRILHO DO CHIFRE ===
+    if (estado.brilho >= 70) {
+        unicorn.classList.add('sparkle-high');
+    }
+
+    // === SUJEIRA ===
+    if (estado.limpeza < 35) {
+        unicorn.classList.add('dirty');
+    }
+
+    // === HUMOR / EXPRESSÃO ===
+    const media = (estado.fome + estado.limpeza + estado.felicidade + estado.energia + estado.brilho) / 5;
 
     if (estado.dormindo) {
-        avatar.textContent = '🦄';
+        unicorn.classList.add('mood-sleeping');
         mood.textContent = '💤';
-        expression.textContent = '😴';
-        avatar.classList.add('sleeping');
-        document.getElementById('pet-scene').classList.add('night-scene');
+        scene.classList.add('night-scene');
     } else {
-        avatar.classList.remove('sleeping');
-        document.getElementById('pet-scene').classList.remove('night-scene');
+        scene.classList.remove('night-scene');
 
-        const media = (estado.fome + estado.limpeza + estado.felicidade + estado.energia + estado.brilho) / 5;
-
-        if (media >= 80) {
-            mood.textContent = '✨';
-            expression.textContent = '🌟';
-            avatar.classList.add('bouncing');
-        } else if (media >= 50) {
-            mood.textContent = '😊';
-            expression.textContent = '';
-            avatar.classList.remove('bouncing');
-        } else if (media >= 25) {
-            mood.textContent = '😟';
-            expression.textContent = '';
-            avatar.classList.remove('bouncing');
-        } else {
+        if (estado.fome < 20) {
+            unicorn.classList.add('mood-hungry');
+            mood.textContent = '�';
+        } else if (estado.felicidade < 20 || media < 25) {
+            unicorn.classList.add('mood-sad');
             mood.textContent = '😢';
-            expression.textContent = '💧';
-            avatar.classList.remove('bouncing');
+        } else if (media >= 70) {
+            unicorn.classList.add('mood-happy');
+            mood.textContent = '✨';
+        } else {
+            mood.textContent = '😊';
         }
+    }
+
+    // === INDICADORES FLUTUANTES DE NECESSIDADE ===
+    indicators.innerHTML = '';
+    if (!estado.dormindo) {
+        if (estado.fome < 25) {
+            addIndicator(indicators, '🍽️');
+        }
+        if (estado.limpeza < 25) {
+            addIndicator(indicators, '🛁');
+        }
+        if (estado.felicidade < 25) {
+            addIndicator(indicators, '�');
+        }
+        if (estado.energia < 15) {
+            addIndicator(indicators, '�');
+        }
+        if (media >= 80) {
+            addIndicator(indicators, '🌟');
+        }
+    } else {
+        addIndicator(indicators, '💤');
+        addIndicator(indicators, '⭐');
     }
 
     // Cor do cenário baseada no nível
     const nivelIdx = Math.min(estado.nivel - 1, CORES_NIVEL.length - 1);
-    document.getElementById('pet-scene').style.borderColor = CORES_NIVEL[nivelIdx];
+    scene.style.borderColor = CORES_NIVEL[nivelIdx];
+}
+
+function addIndicator(container, emoji) {
+    const span = document.createElement('span');
+    span.className = 'state-icon';
+    span.textContent = emoji;
+    container.appendChild(span);
 }
 
 function atualizarBotoes() {
@@ -658,6 +742,20 @@ document.querySelectorAll('.action-btn').forEach(btn => {
 });
 
 document.getElementById('btn-rename').addEventListener('click', renomearPet);
+
+// Clique no unicórnio para dar carinho
+document.getElementById('unicorn-container').addEventListener('click', function() {
+    if (!estado.dormindo) {
+        estado.felicidade = Math.min(100, estado.felicidade + 5);
+        estado.brilho = Math.min(100, estado.brilho + 2);
+        animarCena('carinho');
+        const msgs = ['Ai que gostoso!', 'Hehe!', 'Eu te amo!', 'Mais carinho!'];
+        const msg = msgs[Math.floor(Math.random() * msgs.length)];
+        mostrarMensagem(msg);
+        salvarEstado();
+        atualizarTela();
+    }
+});
 
 // Inicializar tela
 atualizarTela();
