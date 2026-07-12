@@ -1,0 +1,474 @@
+/* Tamagotchi de Unicórnio */
+
+.unicornio-game {
+    position: relative;
+    overflow: hidden;
+}
+
+/* Info do pet */
+.pet-info {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.pet-name-area {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 5px;
+}
+
+.pet-name {
+    font-size: 2.2rem;
+    font-weight: bold;
+    color: #FF6B9D;
+    text-shadow: 2px 2px 0 #fff;
+}
+
+.btn-rename {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+}
+
+.btn-rename:hover {
+    opacity: 1;
+}
+
+.pet-level {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.level-badge {
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    color: #fff;
+    padding: 5px 18px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 1rem;
+    box-shadow: 0 3px 8px rgba(255, 165, 0, 0.4);
+}
+
+.pet-age {
+    color: #999;
+    font-size: 1rem;
+}
+
+/* Barras de status */
+.status-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.status-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.status-icon {
+    font-size: 1.5rem;
+    width: 30px;
+    text-align: center;
+}
+
+.status-label {
+    font-size: 0.9rem;
+    color: #777;
+    width: 80px;
+    text-align: right;
+}
+
+.bar-bg {
+    flex: 1;
+    height: 22px;
+    background: #eee;
+    border-radius: 11px;
+    overflow: hidden;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.bar-fill {
+    height: 100%;
+    border-radius: 11px;
+    transition: width 0.5s ease;
+}
+
+.bar-food { background: linear-gradient(90deg, #FF9800, #FF5722); }
+.bar-clean { background: linear-gradient(90deg, #4FC3F7, #0288D1); }
+.bar-happy { background: linear-gradient(90deg, #FFD54F, #FF6F00); }
+.bar-energy { background: linear-gradient(90deg, #81C784, #388E3C); }
+.bar-sparkle { background: linear-gradient(90deg, #CE93D8, #7B1FA2); }
+
+.bar-low { background: linear-gradient(90deg, #EF5350, #B71C1C) !important; animation: pulse-bar 1s ease-in-out infinite; }
+.bar-medium { background: linear-gradient(90deg, #FFA726, #E65100) !important; }
+
+@keyframes pulse-bar {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+}
+
+/* Área do pet */
+.pet-scene {
+    position: relative;
+    background: linear-gradient(180deg, #E3F2FD 0%, #C8E6C9 50%, #A5D6A7 100%);
+    border-radius: 30px;
+    padding: 30px;
+    min-height: 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 5px solid #FFB6C1;
+    margin-bottom: 15px;
+    overflow: hidden;
+    transition: all 0.5s ease;
+}
+
+.night-scene {
+    background: linear-gradient(180deg, #1a237e 0%, #283593 50%, #303F9F 100%);
+}
+
+.pet-mood {
+    font-size: 2rem;
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    animation: float 3s ease-in-out infinite;
+}
+
+.pet-avatar {
+    font-size: 8rem;
+    line-height: 1;
+    filter: drop-shadow(0 8px 12px rgba(0,0,0,0.15));
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.pet-avatar:hover {
+    transform: scale(1.1);
+}
+
+.pet-avatar.sleeping {
+    filter: drop-shadow(0 8px 12px rgba(0,0,0,0.3)) brightness(0.7);
+    animation: sleep-bob 4s ease-in-out infinite;
+}
+
+.pet-avatar.bouncing {
+    animation: bounce-pet 2s ease-in-out infinite;
+}
+
+.pet-expression {
+    font-size: 1.5rem;
+    margin-top: 5px;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes sleep-bob {
+    0%, 100% { transform: translateY(0) rotate(-5deg); }
+    50% { transform: translateY(5px) rotate(5deg); }
+}
+
+@keyframes bounce-pet {
+    0%, 100% { transform: translateY(0); }
+    25% { transform: translateY(-15px); }
+    75% { transform: translateY(-5px); }
+}
+
+/* Itens de cena (animações de ação) */
+.scene-items {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 3;
+}
+
+.scene-item {
+    position: absolute;
+    font-size: 2.5rem;
+    animation: scene-float 2.5s ease-out forwards;
+    opacity: 0;
+}
+
+@keyframes scene-float {
+    0% { transform: translateY(100px) scale(0); opacity: 0; }
+    20% { opacity: 1; transform: translateY(0) scale(1.2); }
+    80% { opacity: 1; transform: translateY(-30px) scale(1); }
+    100% { opacity: 0; transform: translateY(-60px) scale(0.5); }
+}
+
+/* Confete de nível */
+.confetti-star {
+    position: absolute;
+    font-size: 2rem;
+    animation: confetti-fall 2.5s ease-out forwards;
+    top: -20px;
+}
+
+@keyframes confetti-fall {
+    0% { transform: translateY(0) rotate(0deg) scale(0); opacity: 0; }
+    20% { opacity: 1; transform: translateY(30px) rotate(180deg) scale(1.3); }
+    100% { opacity: 0; transform: translateY(200px) rotate(720deg) scale(0.3); }
+}
+
+.level-up-flash {
+    animation: level-flash 0.5s ease 3;
+}
+
+@keyframes level-flash {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); }
+    50% { box-shadow: 0 0 40px 15px rgba(255, 215, 0, 0.6); }
+}
+
+/* Mensagem do pet */
+.pet-message {
+    text-align: center;
+    font-size: 1.4rem;
+    color: #666;
+    padding: 15px 25px;
+    background: #FFF8E1;
+    border-radius: 20px;
+    border: 2px solid #FFD54F;
+    margin-bottom: 20px;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s;
+}
+
+.message-pop {
+    animation: pop 0.4s ease;
+}
+
+@keyframes pop {
+    0% { transform: scale(0.9); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* Botões de ação */
+.action-buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.action-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 18px 10px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: bold;
+    transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    min-height: 100px;
+    touch-action: manipulation;
+    user-select: none;
+}
+
+.action-btn:hover {
+    transform: scale(1.08);
+}
+
+.action-btn:active {
+    transform: scale(0.95);
+}
+
+.action-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.action-btn.done {
+    position: relative;
+    opacity: 0.6;
+}
+
+.action-btn.done::after {
+    content: '✅';
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 1rem;
+}
+
+.action-emoji {
+    font-size: 2.5rem;
+    line-height: 1;
+    margin-bottom: 8px;
+}
+
+.action-text {
+    font-size: 1.1rem;
+    color: #fff;
+}
+
+/* Cores dos botões */
+.food-btn {
+    background: linear-gradient(135deg, #FF9800, #E65100);
+    color: white;
+}
+
+.care-btn {
+    background: linear-gradient(135deg, #29B6F6, #0277BD);
+    color: white;
+}
+
+.play-btn {
+    background: linear-gradient(135deg, #66BB6A, #2E7D32);
+    color: white;
+}
+
+.love-btn {
+    background: linear-gradient(135deg, #EC407A, #AD1457);
+    color: white;
+}
+
+.sleep-btn {
+    background: linear-gradient(135deg, #7E57C2, #4527A0);
+    color: white;
+}
+
+/* Diário de cuidados */
+.care-diary {
+    background: #FFF3E0;
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 15px;
+}
+
+.care-diary h3 {
+    text-align: center;
+    color: #E65100;
+    margin-bottom: 12px;
+    font-size: 1.3rem;
+}
+
+.diary-tasks {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 8px;
+}
+
+.diary-task {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: white;
+    border-radius: 12px;
+    font-size: 1rem;
+}
+
+.diary-task.task-done {
+    background: #E8F5E9;
+    text-decoration: line-through;
+    opacity: 0.7;
+}
+
+.task-check {
+    font-size: 1.2rem;
+}
+
+.task-emoji {
+    font-size: 1.2rem;
+}
+
+.task-name {
+    color: #555;
+}
+
+/* Estrelas do dia */
+.daily-stars {
+    text-align: center;
+    padding: 12px;
+    background: linear-gradient(135deg, #FFF8E1, #FFE082);
+    border-radius: 15px;
+    font-size: 1.2rem;
+}
+
+.stars-title {
+    font-weight: bold;
+    color: #FF8F00;
+    margin-right: 10px;
+}
+
+.stars-display {
+    font-size: 1.4rem;
+}
+
+/* Responsivo */
+@media (max-width: 600px) {
+    .action-buttons {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+
+    .action-btn {
+        padding: 14px 8px;
+        min-height: 85px;
+    }
+
+    .action-emoji {
+        font-size: 2rem;
+    }
+
+    .action-text {
+        font-size: 0.95rem;
+    }
+
+    .pet-avatar {
+        font-size: 6rem;
+    }
+
+    .pet-scene {
+        min-height: 200px;
+        padding: 20px;
+    }
+
+    .status-label {
+        display: none;
+    }
+
+    .diary-tasks {
+        grid-template-columns: 1fr;
+    }
+
+    .pet-name {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .action-buttons {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
