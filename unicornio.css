@@ -152,16 +152,6 @@
     z-index: 4;
 }
 
-.scene-bg {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 50px;
-    background: linear-gradient(180deg, transparent, rgba(139,195,74,0.3));
-    pointer-events: none;
-}
-
 /* ========================= */
 /* UNICÓRNIO DESENHADO EM CSS */
 /* ========================= */
@@ -1051,5 +1041,203 @@
 @media (max-width: 400px) {
     .action-buttons {
         grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* ========================= */
+/* BARRA DE SAÚDE */
+/* ========================= */
+.bar-health { background: linear-gradient(90deg, #EF5350, #E91E63); }
+
+/* ========================= */
+/* DOENÇA */
+/* ========================= */
+.unicorn.sick .unicorn-head {
+    background: #fce4ec;
+}
+.unicorn.sick .unicorn-body {
+    background: #fce4ec;
+}
+.unicorn.sick .unicorn-horn {
+    filter: brightness(0.5) saturate(0.3) !important;
+}
+.unicorn.sick .unicorn-blush {
+    background: rgba(255, 50, 50, 0.5) !important;
+    width: 24px;
+    height: 15px;
+}
+.unicorn.sick .mane-strand,
+.unicorn.sick .tail-strand {
+    filter: brightness(0.7) saturate(0.5);
+}
+
+/* Botão de remédio */
+.health-btn {
+    background: linear-gradient(135deg, #EF5350, #C62828);
+    color: white;
+    animation: pulse-btn 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse-btn {
+    0%, 100% { transform: scale(1); box-shadow: 0 4px 12px rgba(239,83,80,0.3); }
+    50% { transform: scale(1.05); box-shadow: 0 6px 20px rgba(239,83,80,0.6); }
+}
+
+/* ========================= */
+/* CENÁRIO DINÂMICO */
+/* ========================= */
+.scene-bg {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.sky-objects {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 2rem;
+    letter-spacing: 10px;
+    z-index: 1;
+    animation: sky-float 5s ease-in-out infinite;
+}
+
+@keyframes sky-float {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(-5px); }
+}
+
+.weather-effects {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.raindrop {
+    position: absolute;
+    top: -20px;
+    font-size: 0.8rem;
+    animation: rain-fall linear infinite;
+    opacity: 0.6;
+}
+
+@keyframes rain-fall {
+    0% { transform: translateY(-20px); opacity: 0; }
+    10% { opacity: 0.6; }
+    100% { transform: translateY(350px); opacity: 0; }
+}
+
+.ground-decor {
+    position: absolute;
+    bottom: 5px;
+    left: 0;
+    right: 0;
+    height: 40px;
+    z-index: 1;
+}
+
+.ground-item {
+    position: absolute;
+    bottom: 0;
+    font-size: 1.4rem;
+    animation: ground-sway 4s ease-in-out infinite;
+}
+
+.ground-item:nth-child(2) { animation-delay: 1s; }
+.ground-item:nth-child(3) { animation-delay: 2s; }
+.ground-item:nth-child(4) { animation-delay: 0.5s; }
+
+@keyframes ground-sway {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-3deg); }
+    75% { transform: rotate(3deg); }
+}
+
+/* ========================= */
+/* CONQUISTAS */
+/* ========================= */
+.achievements-section {
+    background: linear-gradient(135deg, #F3E5F5, #E1BEE7);
+    border-radius: 20px;
+    padding: 20px;
+    margin-top: 15px;
+}
+
+.achievements-section h3 {
+    text-align: center;
+    color: #6A1B9A;
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+}
+
+.achievements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 10px;
+}
+
+.achievement {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px 8px;
+    border-radius: 15px;
+    text-align: center;
+    transition: transform 0.2s;
+}
+
+.achievement:hover {
+    transform: scale(1.08);
+}
+
+.achievement.unlocked {
+    background: linear-gradient(135deg, #FFF8E1, #FFD54F);
+    box-shadow: 0 3px 10px rgba(255, 193, 7, 0.3);
+}
+
+.achievement.locked {
+    background: rgba(0,0,0,0.05);
+    opacity: 0.5;
+}
+
+.achievement-emoji {
+    font-size: 2rem;
+    margin-bottom: 5px;
+}
+
+.achievement-name {
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: #555;
+    line-height: 1.2;
+}
+
+.achievement.unlocked .achievement-name {
+    color: #E65100;
+}
+
+@media (max-width: 600px) {
+    .achievements-grid {
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+        gap: 8px;
+    }
+    .achievement {
+        padding: 8px 4px;
+    }
+    .achievement-emoji {
+        font-size: 1.6rem;
+    }
+    .achievement-name {
+        font-size: 0.65rem;
     }
 }

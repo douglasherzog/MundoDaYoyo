@@ -102,6 +102,21 @@ const MENSAGENS = {
         'Estou crescendo! Olha como estou maior!',
         'Subi de nível! Estou ficando mais bonita!',
     ],
+    doente: [
+        'Ai, não estou me sentindo bem, Yoyo!',
+        'Acho que estou doentinha, preciso de remédio!',
+        'Meu chifre está sem brilho, estou mal!',
+        'Atchim! Acho que peguei um resfriado!',
+    ],
+    remedio: [
+        'O remédio é amargo, mas já estou melhorando!',
+        'Obrigada pelo remédio, Yoyo! Estou me sentindo melhor!',
+        'Que bom que você cuida de mim quando estou doentinha!',
+    ],
+    aniversario: [
+        'Hoje é meu aniversário! Feliz aniversário para mim!',
+        'Parabéns para mim! Obrigada por cuidar de mim, Yoyo!',
+    ],
 };
 
 // Animações de cena
@@ -114,7 +129,30 @@ const CENAS = {
     brincar: ['⚽', '🎈', '🌈', '🎪', '🎠'],
     carinho: ['💕', '💖', '💗', '💝', '🥰'],
     dormir: ['💤', '⭐', '🌙', '☁️'],
+    remedio: ['💊', '🌡️', '🩹', '❤️‍🩹'],
 };
+
+// Definição de conquistas
+const CONQUISTAS = [
+    { id: 'primeiro_cafe', nome: 'Primeiro Café', emoji: '☕', desc: 'Deu o primeiro café da manhã' },
+    { id: 'primeiro_banho', nome: 'Primeiro Banho', emoji: '🛁', desc: 'Deu o primeiro banho' },
+    { id: 'primeiro_carinho', nome: 'Primeiro Carinho', emoji: '🥰', desc: 'Fez o primeiro carinho' },
+    { id: 'dias_3', nome: '3 Dias Seguidos', emoji: '🔥', desc: 'Visitou 3 dias consecutivos' },
+    { id: 'dias_7', nome: 'Semana Completa', emoji: '🌟', desc: 'Visitou 7 dias consecutivos' },
+    { id: 'dias_30', nome: 'Mês Inteiro!', emoji: '🏅', desc: 'Visitou 30 dias consecutivos' },
+    { id: 'nivel_3', nome: 'Cresceu!', emoji: '🌱', desc: 'Chegou ao nível 3' },
+    { id: 'nivel_5', nome: 'Ganhou Asas', emoji: '🪶', desc: 'Chegou ao nível 5' },
+    { id: 'nivel_7', nome: 'Adulto', emoji: '🦄', desc: 'Chegou ao nível 7' },
+    { id: 'nivel_10', nome: 'Lendário!', emoji: '👑', desc: 'Chegou ao nível 10' },
+    { id: 'curou_doenca', nome: 'Doutora Yoyo', emoji: '💉', desc: 'Curou o unicórnio doente' },
+    { id: 'estrelas_50', nome: '50 Estrelas', emoji: '⭐', desc: 'Ganhou 50 estrelas no total' },
+    { id: 'estrelas_100', nome: '100 Estrelas!', emoji: '🌠', desc: 'Ganhou 100 estrelas no total' },
+    { id: 'felicidade_max', nome: 'Felicidade Máxima', emoji: '😍', desc: 'Unicórnio com 100% de felicidade' },
+    { id: 'tudo_100', nome: 'Perfeito!', emoji: '🌈', desc: 'Todas as barras em 100%' },
+    { id: 'aniversario', nome: 'Aniversário!', emoji: '🎂', desc: 'Comemorou o aniversário do unicórnio' },
+    { id: 'dentes_3x', nome: 'Dentes Brilhantes', emoji: '🦷', desc: 'Escovou os dentes 3 vezes no dia' },
+    { id: 'dia_perfeito', nome: 'Dia Perfeito', emoji: '🌞', desc: 'Fez todas as tarefas obrigatórias do dia' },
+];
 
 // Nomes de níveis
 const NIVEIS = [
@@ -148,6 +186,8 @@ function criarEstadoInicial() {
         felicidade: 80,
         energia: 80,
         brilho: 80,
+        saude: 100,
+        doente: false,
         dormindo: false,
         tarefasHoje: {},
         ultimoDia: new Date().toDateString(),
@@ -155,6 +195,8 @@ function criarEstadoInicial() {
         estrelasTotal: 0,
         estrelasHoje: 0,
         diasConsecutivos: 1,
+        conquistas: [],
+        climaHoje: null,
     };
 }
 
@@ -163,6 +205,11 @@ function carregarEstado() {
         const salvo = localStorage.getItem(STORAGE_KEY);
         if (salvo) {
             const estado = JSON.parse(salvo);
+            // Migração de estado antigo
+            if (estado.saude === undefined) estado.saude = 100;
+            if (estado.doente === undefined) estado.doente = false;
+            if (estado.conquistas === undefined) estado.conquistas = [];
+            if (estado.climaHoje === undefined) estado.climaHoje = null;
             verificarNovoDia(estado);
             calcularDecaimento(estado);
             return estado;
@@ -199,7 +246,21 @@ function verificarNovoDia(estado) {
         if (estado.diasConsecutivos >= 3) {
             estado.brilho = Math.min(100, estado.brilho + 10);
         }
+
+        // Gerar clima do dia
+        estado.climaHoje = gerarClima();
+
+        // Chance de doença se saúde baixa
+        if (estado.saude < 30 && Math.random() < 0.4) {
+            estado.doente = true;
+        }
     }
+}
+
+// Gerar clima aleatório para o dia
+function gerarClima() {
+    const climas = ['sol', 'sol', 'sol', 'nublado', 'nublado', 'chuva', 'arcoiris'];
+    return climas[Math.floor(Math.random() * climas.length)];
 }
 
 function calcularDecaimento(estado) {
@@ -214,6 +275,16 @@ function calcularDecaimento(estado) {
         estado.felicidade = Math.max(0, estado.felicidade - decaimento * 0.7);
         estado.energia = Math.min(100, estado.energia + decaimento * 0.3);
         estado.brilho = Math.max(0, estado.brilho - decaimento * 0.3);
+
+        // Saúde diminui se fome ou limpeza muito baixas
+        if (estado.fome < 15 || estado.limpeza < 15) {
+            estado.saude = Math.max(0, estado.saude - decaimento * 0.4);
+        }
+
+        // Chance de ficar doente se descuidado
+        if (estado.saude < 25 && !estado.doente && Math.random() < 0.3) {
+            estado.doente = true;
+        }
     }
 }
 
@@ -298,6 +369,8 @@ function acaoDisponivel(acao) {
             return true;
         case 'dormir':
             return true;
+        case 'remedio':
+            return estado.doente;
         default:
             return false;
     }
@@ -403,10 +476,24 @@ function executarAcao(acao) {
                 ganharXP(2);
             }
             break;
+
+        case 'remedio':
+            if (estado.doente) {
+                estado.doente = false;
+                estado.saude = Math.min(100, estado.saude + 40);
+                estado.felicidade = Math.min(100, estado.felicidade + 10);
+                msg = mensagemAleatoria('remedio');
+                animarCena('remedio');
+                ganharXP(3);
+                ganharEstrela();
+                desbloquearConquista('curou_doenca');
+            }
+            break;
     }
 
     mostrarMensagem(msg);
     falar(msg);
+    verificarConquistas(acao);
     salvarEstado();
     atualizarTela();
 }
@@ -424,9 +511,10 @@ function atualizarBarras() {
     document.getElementById('bar-happy').style.width = estado.felicidade + '%';
     document.getElementById('bar-energy').style.width = estado.energia + '%';
     document.getElementById('bar-sparkle').style.width = estado.brilho + '%';
+    document.getElementById('bar-health').style.width = estado.saude + '%';
 
     // Cores das barras baseadas no valor
-    ['bar-food', 'bar-clean', 'bar-happy', 'bar-energy', 'bar-sparkle'].forEach(id => {
+    ['bar-food', 'bar-clean', 'bar-happy', 'bar-energy', 'bar-sparkle', 'bar-health'].forEach(id => {
         const el = document.getElementById(id);
         const valor = parseFloat(el.style.width);
         if (valor < 25) el.classList.add('bar-low');
@@ -489,6 +577,11 @@ function atualizarAvatar() {
         unicorn.classList.add('dirty');
     }
 
+    // === DOENÇA ===
+    if (estado.doente) {
+        unicorn.classList.add('sick');
+    }
+
     // === HUMOR / EXPRESSÃO ===
     const media = (estado.fome + estado.limpeza + estado.felicidade + estado.energia + estado.brilho) / 5;
 
@@ -499,7 +592,10 @@ function atualizarAvatar() {
     } else {
         scene.classList.remove('night-scene');
 
-        if (estado.fome < 20) {
+        if (estado.doente) {
+            unicorn.classList.add('mood-sad');
+            mood.textContent = '🤒';
+        } else if (estado.fome < 20) {
             unicorn.classList.add('mood-hungry');
             mood.textContent = '�';
         } else if (estado.felicidade < 20 || media < 25) {
@@ -516,6 +612,10 @@ function atualizarAvatar() {
     // === INDICADORES FLUTUANTES DE NECESSIDADE ===
     indicators.innerHTML = '';
     if (!estado.dormindo) {
+        if (estado.doente) {
+            addIndicator(indicators, '🤒');
+            addIndicator(indicators, '💊');
+        }
         if (estado.fome < 25) {
             addIndicator(indicators, '🍽️');
         }
@@ -584,6 +684,15 @@ function atualizarBotoes() {
     if (hora >= 6 && hora < 11 && estado.tarefasHoje.dentes_manha) btnDentes.classList.add('done');
     if (hora >= 11 && hora < 15 && estado.tarefasHoje.dentes_almoco) btnDentes.classList.add('done');
     if (hora >= 18 && hora < 22 && estado.tarefasHoje.dentes_noite) btnDentes.classList.add('done');
+
+    // Botão de remédio - mostrar só quando doente
+    const btnRemedio = document.getElementById('btn-remedio');
+    if (estado.doente) {
+        btnRemedio.style.display = '';
+        btnRemedio.disabled = false;
+    } else {
+        btnRemedio.style.display = 'none';
+    }
 }
 
 function atualizarDiario() {
@@ -623,6 +732,8 @@ function atualizarTela() {
     atualizarBotoes();
     atualizarDiario();
     atualizarEstrelas();
+    atualizarCenario();
+    atualizarConquistas();
 }
 
 function mostrarMensagem(texto) {
@@ -673,7 +784,9 @@ function animarNivelUp() {
 function verificarEstadoEmocional() {
     if (estado.dormindo) return;
 
-    if (estado.fome < 20) {
+    if (estado.doente) {
+        mostrarMensagem(mensagemAleatoria('doente'));
+    } else if (estado.fome < 20) {
         mostrarMensagem(mensagemAleatoria('fome'));
     } else if (estado.limpeza < 20) {
         mostrarMensagem(mensagemAleatoria('suja'));
@@ -683,6 +796,178 @@ function verificarEstadoEmocional() {
         mostrarMensagem(mensagemAleatoria('cansada'));
     } else if ((estado.fome + estado.limpeza + estado.felicidade + estado.energia + estado.brilho) / 5 >= 70) {
         mostrarMensagem(mensagemAleatoria('feliz'));
+    }
+}
+
+// === CENÁRIO DINÂMICO ===
+
+function atualizarCenario() {
+    const hora = new Date().getHours();
+    const scene = document.getElementById('pet-scene');
+    const skyObj = document.getElementById('sky-objects');
+    const weather = document.getElementById('weather-effects');
+    const ground = document.getElementById('ground-decor');
+
+    // Fundo baseado na hora
+    if (estado.dormindo || hora >= 20 || hora < 5) {
+        scene.style.background = 'linear-gradient(180deg, #0d1b2a 0%, #1b2838 40%, #2c3e50 100%)';
+        skyObj.innerHTML = '🌙 ⭐ ✨ ⭐ ✨ ⭐';
+    } else if (hora >= 5 && hora < 8) {
+        scene.style.background = 'linear-gradient(180deg, #FFD194 0%, #D1913C 30%, #C8E6C9 100%)';
+        skyObj.innerHTML = '🌅';
+    } else if (hora >= 8 && hora < 17) {
+        scene.style.background = 'linear-gradient(180deg, #87CEEB 0%, #B2EBF2 40%, #C8E6C9 70%, #A5D6A7 100%)';
+        skyObj.innerHTML = '☀️';
+    } else if (hora >= 17 && hora < 20) {
+        scene.style.background = 'linear-gradient(180deg, #FF6B6B 0%, #FFB347 30%, #C8E6C9 100%)';
+        skyObj.innerHTML = '🌇';
+    }
+
+    // Clima do dia
+    const clima = estado.climaHoje || 'sol';
+    weather.innerHTML = '';
+
+    if (clima === 'chuva' && !estado.dormindo && hora >= 5 && hora < 20) {
+        for (let i = 0; i < 15; i++) {
+            const drop = document.createElement('span');
+            drop.className = 'raindrop';
+            drop.textContent = '💧';
+            drop.style.left = Math.random() * 100 + '%';
+            drop.style.animationDelay = Math.random() * 2 + 's';
+            drop.style.animationDuration = (1 + Math.random()) + 's';
+            weather.appendChild(drop);
+        }
+        skyObj.innerHTML = '☁️ ☁️ ☁️';
+    } else if (clima === 'nublado' && !estado.dormindo && hora >= 5 && hora < 20) {
+        skyObj.innerHTML = '⛅ ☁️';
+    } else if (clima === 'arcoiris' && !estado.dormindo && hora >= 5 && hora < 20) {
+        skyObj.innerHTML = '☀️ 🌈';
+    }
+
+    // Decoração do chão baseada no humor
+    const media = (estado.fome + estado.limpeza + estado.felicidade + estado.energia + estado.brilho) / 5;
+    ground.innerHTML = '';
+
+    if (!estado.dormindo && media >= 70) {
+        const decor = ['🌸', '🌺', '🌼', '🦋', '🐝'];
+        for (let i = 0; i < 4; i++) {
+            const item = document.createElement('span');
+            item.className = 'ground-item';
+            item.textContent = decor[Math.floor(Math.random() * decor.length)];
+            item.style.left = (10 + i * 22) + '%';
+            ground.appendChild(item);
+        }
+    } else if (!estado.dormindo && media < 30) {
+        ground.innerHTML = '<span class="ground-item" style="left:30%">🥀</span><span class="ground-item" style="left:60%">🍂</span>';
+    }
+}
+
+// === CONQUISTAS ===
+
+function desbloquearConquista(id) {
+    if (!estado.conquistas.includes(id)) {
+        estado.conquistas.push(id);
+        const conquista = CONQUISTAS.find(c => c.id === id);
+        if (conquista) {
+            const msg = `🏆 Nova conquista: ${conquista.emoji} ${conquista.nome}!`;
+            setTimeout(() => {
+                mostrarMensagem(msg);
+                falar(msg);
+            }, 1500);
+        }
+        salvarEstado();
+    }
+}
+
+function verificarConquistas(acaoRealizada) {
+    // Primeiras ações
+    if (acaoRealizada === 'cafe' && !estado.conquistas.includes('primeiro_cafe')) {
+        desbloquearConquista('primeiro_cafe');
+    }
+    if (acaoRealizada === 'banho' && !estado.conquistas.includes('primeiro_banho')) {
+        desbloquearConquista('primeiro_banho');
+    }
+    if (acaoRealizada === 'carinho' && !estado.conquistas.includes('primeiro_carinho')) {
+        desbloquearConquista('primeiro_carinho');
+    }
+
+    // Dias consecutivos
+    if (estado.diasConsecutivos >= 3) desbloquearConquista('dias_3');
+    if (estado.diasConsecutivos >= 7) desbloquearConquista('dias_7');
+    if (estado.diasConsecutivos >= 30) desbloquearConquista('dias_30');
+
+    // Níveis
+    if (estado.nivel >= 3) desbloquearConquista('nivel_3');
+    if (estado.nivel >= 5) desbloquearConquista('nivel_5');
+    if (estado.nivel >= 7) desbloquearConquista('nivel_7');
+    if (estado.nivel >= 10) desbloquearConquista('nivel_10');
+
+    // Estrelas
+    if (estado.estrelasTotal >= 50) desbloquearConquista('estrelas_50');
+    if (estado.estrelasTotal >= 100) desbloquearConquista('estrelas_100');
+
+    // Felicidade máxima
+    if (estado.felicidade >= 100) desbloquearConquista('felicidade_max');
+
+    // Tudo 100%
+    if (estado.fome >= 100 && estado.limpeza >= 100 && estado.felicidade >= 100 &&
+        estado.energia >= 100 && estado.brilho >= 100 && estado.saude >= 100) {
+        desbloquearConquista('tudo_100');
+    }
+
+    // Dentes 3x
+    if (estado.tarefasHoje.dentes_manha && estado.tarefasHoje.dentes_almoco && estado.tarefasHoje.dentes_noite) {
+        desbloquearConquista('dentes_3x');
+    }
+
+    // Dia perfeito (todas tarefas obrigatórias feitas)
+    if (estado.tarefasHoje.cafe && estado.tarefasHoje.almoco && estado.tarefasHoje.janta &&
+        estado.tarefasHoje.banho && (estado.tarefasHoje.dentes_manha || estado.tarefasHoje.dentes_almoco || estado.tarefasHoje.dentes_noite)) {
+        desbloquearConquista('dia_perfeito');
+    }
+}
+
+function atualizarConquistas() {
+    const grid = document.getElementById('achievements-grid');
+    grid.innerHTML = '';
+
+    CONQUISTAS.forEach(c => {
+        const desbloqueada = estado.conquistas.includes(c.id);
+        const div = document.createElement('div');
+        div.className = 'achievement' + (desbloqueada ? ' unlocked' : ' locked');
+        div.innerHTML = `
+            <span class="achievement-emoji">${desbloqueada ? c.emoji : '🔒'}</span>
+            <span class="achievement-name">${desbloqueada ? c.nome : '???'}</span>
+        `;
+        if (desbloqueada) {
+            div.title = c.desc;
+        }
+        grid.appendChild(div);
+    });
+}
+
+// === ANIVERSÁRIO ===
+
+function verificarAniversario() {
+    const nascimento = new Date(estado.dataNascimento);
+    const hoje = new Date();
+    if (nascimento.getMonth() === hoje.getMonth() && nascimento.getDate() === hoje.getDate()) {
+        const idade = hoje.getFullYear() - nascimento.getFullYear();
+        if (idade > 0) {
+            setTimeout(() => {
+                const msg = mensagemAleatoria('aniversario');
+                mostrarMensagem(msg);
+                falar(msg);
+                animarCena('brincar');
+                desbloquearConquista('aniversario');
+                // Bônus de aniversário
+                estado.felicidade = 100;
+                estado.brilho = 100;
+                estado.saude = 100;
+                salvarEstado();
+                atualizarTela();
+            }, 3000);
+        }
     }
 }
 
@@ -762,6 +1047,9 @@ atualizarTela();
 
 // Boas-vindas após carregar
 setTimeout(boasVindas, 1000);
+
+// Verificar aniversário
+setTimeout(verificarAniversario, 2000);
 
 // Verificar estado emocional a cada 30 segundos
 setInterval(() => {

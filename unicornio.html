@@ -54,6 +54,11 @@
                     <span class="status-label">Brilho</span>
                     <div class="bar-bg"><div class="bar-fill bar-sparkle" id="bar-sparkle"></div></div>
                 </div>
+                <div class="status-bar">
+                    <span class="status-icon">❤️</span>
+                    <span class="status-label">Saúde</span>
+                    <div class="bar-bg"><div class="bar-fill bar-health" id="bar-health"></div></div>
+                </div>
             </div>
 
             <!-- Área do unicórnio -->
@@ -114,7 +119,11 @@
                 </div>
                 <div class="scene-items" id="scene-items"></div>
                 <!-- Cenário de fundo dinâmico -->
-                <div class="scene-bg" id="scene-bg"></div>
+                <div class="scene-bg" id="scene-bg">
+                    <div class="sky-objects" id="sky-objects"></div>
+                    <div class="weather-effects" id="weather-effects"></div>
+                    <div class="ground-decor" id="ground-decor"></div>
+                </div>
             </div>
 
             <!-- Mensagem do unicórnio -->
@@ -154,6 +163,10 @@
                     <span class="action-emoji">😴</span>
                     <span class="action-text">Dormir</span>
                 </button>
+                <button class="action-btn health-btn" id="btn-remedio" data-action="remedio" style="display:none">
+                    <span class="action-emoji">💊</span>
+                    <span class="action-text">Remédio</span>
+                </button>
             </div>
 
             <!-- Diário de cuidados -->
@@ -166,6 +179,12 @@
             <div class="daily-stars" id="daily-stars">
                 <span class="stars-title">Estrelas de hoje:</span>
                 <span class="stars-display" id="stars-display"></span>
+            </div>
+
+            <!-- Conquistas -->
+            <div class="achievements-section" id="achievements-section">
+                <h3>🏆 Conquistas</h3>
+                <div class="achievements-grid" id="achievements-grid"></div>
             </div>
         </main>
     </div>
