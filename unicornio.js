@@ -734,6 +734,7 @@ function atualizarTela() {
     atualizarEstrelas();
     atualizarCenario();
     atualizarConquistas();
+    atualizarTermometro();
 }
 
 function mostrarMensagem(texto) {
@@ -780,22 +781,209 @@ function animarNivelUp() {
     setTimeout(() => { items.innerHTML = ''; }, 3000);
 }
 
-// Verificar estado e mostrar mensagem contextual
-function verificarEstadoEmocional() {
-    if (estado.dormindo) return;
+// === ANIMAÇÕES EXPRESSIVAS ===
 
+// Piscada de olho periódica
+function animarPiscada() {
+    if (estado.dormindo) return;
+    const unicorn = document.getElementById('unicorn');
+    unicorn.classList.add('blinking');
+    setTimeout(() => unicorn.classList.remove('blinking'), 200);
+}
+
+// Espirro quando doente
+function animarEspirro() {
+    if (!estado.doente) return;
+    const unicorn = document.getElementById('unicorn');
+    const container = document.getElementById('unicorn-container');
+
+    unicorn.classList.add('sneezing');
+
+    // Partículas de espirro
+    const particulas = ['💦', '✨', '💫'];
+    for (let i = 0; i < 4; i++) {
+        const p = document.createElement('span');
+        p.className = 'sneeze-particle';
+        p.textContent = particulas[Math.floor(Math.random() * particulas.length)];
+        p.style.top = '30%';
+        p.style.left = '60%';
+        p.style.setProperty('--sx', (20 + Math.random() * 50) + 'px');
+        p.style.setProperty('--sy', (-10 - Math.random() * 40) + 'px');
+        p.style.animationDelay = (i * 0.1) + 's';
+        container.appendChild(p);
+    }
+
+    mostrarMensagem('Atchim! 🤧');
+
+    setTimeout(() => {
+        unicorn.classList.remove('sneezing');
+        container.querySelectorAll('.sneeze-particle').forEach(el => el.remove());
+    }, 1200);
+}
+
+// Bocejo quando cansado ou perto da hora de dormir
+function animarBocejo() {
+    if (estado.dormindo) return;
+    const unicorn = document.getElementById('unicorn');
+    unicorn.classList.add('yawning');
+
+    const hora = new Date().getHours();
+    if (hora >= 20 || hora < 5) {
+        mostrarMensagem('*Ahhh* 🥱 Estou com sono, Yoyo... Hora de dormir!');
+    } else if (estado.energia < 20) {
+        mostrarMensagem('*Ahhh* 🥱 Que soninho...');
+    }
+
+    setTimeout(() => unicorn.classList.remove('yawning'), 2500);
+}
+
+// Ronronar quando feliz e recebe carinho
+function animarRonronar() {
+    const unicorn = document.getElementById('unicorn');
+    unicorn.classList.add('purring');
+    setTimeout(() => unicorn.classList.remove('purring'), 3000);
+}
+
+// Corações flutuantes ao dar carinho
+function animarCoracoes() {
+    const container = document.getElementById('unicorn-container');
+    const coracoes = ['💕', '💖', '💗', '💝', '❤️'];
+    for (let i = 0; i < 3; i++) {
+        const heart = document.createElement('span');
+        heart.className = 'love-burst';
+        heart.textContent = coracoes[Math.floor(Math.random() * coracoes.length)];
+        heart.style.left = (30 + Math.random() * 40) + '%';
+        heart.style.top = (20 + Math.random() * 30) + '%';
+        heart.style.animationDelay = (i * 0.3) + 's';
+        container.appendChild(heart);
+    }
+    setTimeout(() => container.querySelectorAll('.love-burst').forEach(el => el.remove()), 2000);
+}
+
+// Zzz flutuante quando dormindo
+function animarZzz() {
+    if (!estado.dormindo) return;
+    const container = document.getElementById('unicorn-container');
+    const zzz = document.createElement('span');
+    zzz.className = 'zzz-float';
+    zzz.textContent = 'Z';
+    zzz.style.left = (50 + Math.random() * 20) + '%';
+    zzz.style.top = '20%';
+    zzz.style.fontSize = (1.2 + Math.random() * 0.8) + 'rem';
+    container.appendChild(zzz);
+    setTimeout(() => zzz.remove(), 3500);
+}
+
+// Balão de pensamento (o unicórnio pensa em algo)
+function animarPensamento(emoji) {
+    const container = document.getElementById('unicorn-container');
+    // Remover pensamento anterior se existir
+    container.querySelectorAll('.thought-bubble').forEach(el => el.remove());
+    const thought = document.createElement('span');
+    thought.className = 'thought-bubble';
+    thought.textContent = emoji;
+    container.appendChild(thought);
+    setTimeout(() => thought.remove(), 3500);
+}
+
+// Termômetro flutuante quando doente
+function atualizarTermometro() {
+    const container = document.getElementById('unicorn-container');
+    const existente = container.querySelector('.thermometer-float');
+
+    if (estado.doente && !existente) {
+        const thermo = document.createElement('span');
+        thermo.className = 'thermometer-float';
+        thermo.textContent = '🌡️';
+        container.appendChild(thermo);
+    } else if (!estado.doente && existente) {
+        existente.remove();
+    }
+}
+
+// === PERCEPÇÃO DE TEMPO ===
+
+function verificarEstadoEmocional() {
+    if (estado.dormindo) {
+        animarZzz();
+        return;
+    }
+
+    const hora = new Date().getHours();
+    const minuto = new Date().getMinutes();
+
+    // Alerta contextual por horário
+    if (hora >= 20 && estado.energia > 20) {
+        // À noite, sugere dormir
+        if (Math.random() < 0.3) {
+            animarBocejo();
+            return;
+        }
+    }
+
+    if (hora >= 6 && hora < 9 && !estado.tarefasHoje.cafe) {
+        if (Math.random() < 0.4) {
+            animarPensamento('🥐');
+            mostrarMensagem('*Ronc ronc* Minha barriguinha está pedindo café da manhã!');
+            return;
+        }
+    }
+
+    if (hora >= 11 && hora < 13 && !estado.tarefasHoje.almoco && estado.fome < 60) {
+        if (Math.random() < 0.4) {
+            animarPensamento('🍽️');
+            mostrarMensagem('Já é hora do almoço, Yoyo! Estou ficando com fome!');
+            return;
+        }
+    }
+
+    if (hora >= 18 && hora < 20 && !estado.tarefasHoje.janta) {
+        if (Math.random() < 0.4) {
+            animarPensamento('🌙');
+            mostrarMensagem('A noite está chegando... Que tal a janta?');
+            return;
+        }
+    }
+
+    if (hora >= 17 && hora < 20 && !estado.tarefasHoje.banho) {
+        if (Math.random() < 0.3) {
+            animarPensamento('🛁');
+            mostrarMensagem('Hmmm, estou precisando de um banho quentinho!');
+            return;
+        }
+    }
+
+    // Estado emocional
     if (estado.doente) {
-        mostrarMensagem(mensagemAleatoria('doente'));
+        if (Math.random() < 0.5) {
+            animarEspirro();
+        } else {
+            mostrarMensagem(mensagemAleatoria('doente'));
+        }
+    } else if (estado.energia < 15) {
+        animarBocejo();
     } else if (estado.fome < 20) {
+        animarPensamento('🍔');
         mostrarMensagem(mensagemAleatoria('fome'));
     } else if (estado.limpeza < 20) {
+        animarPensamento('🧼');
         mostrarMensagem(mensagemAleatoria('suja'));
     } else if (estado.felicidade < 20) {
         mostrarMensagem(mensagemAleatoria('triste'));
-    } else if (estado.energia < 15) {
-        mostrarMensagem(mensagemAleatoria('cansada'));
     } else if ((estado.fome + estado.limpeza + estado.felicidade + estado.energia + estado.brilho) / 5 >= 70) {
+        if (Math.random() < 0.5) {
+            animarRonronar();
+        }
         mostrarMensagem(mensagemAleatoria('feliz'));
+    } else {
+        // Micro-expressões aleatórias em estados neutros
+        const rand = Math.random();
+        if (rand < 0.15) {
+            animarPiscada();
+        } else if (rand < 0.25) {
+            const pensamentos = ['🌸', '🌈', '⭐', '🎵', '🦋'];
+            animarPensamento(pensamentos[Math.floor(Math.random() * pensamentos.length)]);
+        }
     }
 }
 
@@ -1002,8 +1190,14 @@ function boasVindas() {
         msg = `${saudacao} Yoyo! `;
     }
 
-    if (media >= 80) {
-        msg += 'Estou super feliz e brilhante!';
+    if (estado.doente) {
+        msg += 'Estou doentinha, preciso de remédio! 🤒';
+    } else if (hora >= 20) {
+        msg += 'Já está tarde, que tal me colocar para dormir? 🥱';
+    } else if (hora >= 5 && hora < 8) {
+        msg += 'Acordei cheia de energia! Vamos começar o dia?';
+    } else if (media >= 80) {
+        msg += 'Estou super feliz e brilhante! ✨';
     } else if (media >= 50) {
         msg += 'Estou bem, mas preciso de uns cuidados!';
     } else {
@@ -1012,6 +1206,13 @@ function boasVindas() {
 
     mostrarMensagem(msg);
     setTimeout(() => falar(msg), 500);
+
+    // Animação contextual
+    if (hora >= 20) {
+        setTimeout(animarBocejo, 2000);
+    } else if (estado.doente) {
+        setTimeout(animarEspirro, 2000);
+    }
 }
 
 // === Inicialização ===
@@ -1033,8 +1234,10 @@ document.getElementById('unicorn-container').addEventListener('click', function(
     if (!estado.dormindo) {
         estado.felicidade = Math.min(100, estado.felicidade + 5);
         estado.brilho = Math.min(100, estado.brilho + 2);
+        animarCoracoes();
+        animarRonronar();
         animarCena('carinho');
-        const msgs = ['Ai que gostoso!', 'Hehe!', 'Eu te amo!', 'Mais carinho!'];
+        const msgs = ['Ai que gostoso!', 'Hehe! Faz cócegas!', 'Eu te amo, Yoyo!', 'Mais carinho!', 'Ronronron!'];
         const msg = msgs[Math.floor(Math.random() * msgs.length)];
         mostrarMensagem(msg);
         salvarEstado();
@@ -1057,12 +1260,37 @@ setInterval(() => {
     atualizarBotoes();
 }, 30000);
 
+// Piscada de olho aleatória a cada 4-8 segundos
+setInterval(() => {
+    if (!estado.dormindo && !estado.doente) {
+        animarPiscada();
+    }
+}, 4000 + Math.random() * 4000);
+
+// Zzz flutuante quando dormindo
+setInterval(() => {
+    if (estado.dormindo) {
+        animarZzz();
+    }
+}, 4000);
+
+// Espirro periódico quando doente
+setInterval(() => {
+    if (estado.doente && !estado.dormindo && Math.random() < 0.3) {
+        animarEspirro();
+    }
+}, 12000);
+
 // Atualizar barras a cada minuto (decaimento visual suave)
 setInterval(() => {
     estado.fome = Math.max(0, estado.fome - 0.1);
     estado.limpeza = Math.max(0, estado.limpeza - 0.05);
     estado.felicidade = Math.max(0, estado.felicidade - 0.07);
     estado.brilho = Math.max(0, estado.brilho - 0.03);
+    if (estado.doente) {
+        estado.saude = Math.max(0, estado.saude - 0.1);
+    }
     atualizarBarras();
+    atualizarTermometro();
     salvarEstado();
 }, 60000);

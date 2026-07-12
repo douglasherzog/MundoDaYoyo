@@ -805,21 +805,49 @@
     50% { transform: translateY(-10px); }
 }
 
-/* Mensagem do pet */
+/* Mensagem do pet - BALÃO DE FALA HQ */
 .pet-message {
     text-align: center;
     font-size: 1.4rem;
     color: #666;
     padding: 15px 25px;
-    background: #FFF8E1;
+    background: #fff;
     border-radius: 20px;
-    border: 2px solid #FFD54F;
+    border: 3px solid #FFD54F;
     margin-bottom: 20px;
     min-height: 60px;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: transform 0.3s;
+    position: relative;
+    box-shadow: 0 4px 15px rgba(255, 213, 79, 0.2);
+}
+
+/* Rabinho do balão de fala */
+.pet-message::before {
+    content: '';
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 12px solid transparent;
+    border-right: 12px solid transparent;
+    border-bottom: 15px solid #FFD54F;
+}
+.pet-message::after {
+    content: '';
+    position: absolute;
+    top: -11px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 12px solid #fff;
 }
 
 .message-pop {
@@ -1081,6 +1109,173 @@
 @keyframes pulse-btn {
     0%, 100% { transform: scale(1); box-shadow: 0 4px 12px rgba(239,83,80,0.3); }
     50% { transform: scale(1.05); box-shadow: 0 6px 20px rgba(239,83,80,0.6); }
+}
+
+/* ========================= */
+/* ANIMAÇÕES EXPRESSIVAS     */
+/* ========================= */
+
+/* Doente: tremor contínuo */
+.unicorn.sick {
+    animation: sick-shiver 0.4s ease-in-out infinite !important;
+}
+@keyframes sick-shiver {
+    0%, 100% { transform: translateX(0) rotate(0deg); }
+    25% { transform: translateX(-2px) rotate(-1deg); }
+    75% { transform: translateX(2px) rotate(1deg); }
+}
+
+/* Espirro animado - aplicado via JS */
+.unicorn.sneezing {
+    animation: sneeze-anim 0.8s ease forwards !important;
+}
+@keyframes sneeze-anim {
+    0% { transform: scale(1) rotate(0); }
+    15% { transform: scale(1.05) rotate(-2deg); }
+    30% { transform: scale(0.9) rotate(3deg); }
+    50% { transform: scale(1.2) rotate(-5deg) translateY(-5px); }
+    70% { transform: scale(0.95) rotate(2deg); }
+    100% { transform: scale(1) rotate(0); }
+}
+
+/* Partículas de espirro */
+.sneeze-particle {
+    position: absolute;
+    font-size: 1.5rem;
+    animation: sneeze-fly 1s ease-out forwards;
+    z-index: 20;
+    pointer-events: none;
+}
+@keyframes sneeze-fly {
+    0% { transform: translate(0, 0) scale(1); opacity: 1; }
+    100% { transform: translate(var(--sx, 40px), var(--sy, -30px)) scale(0.3); opacity: 0; }
+}
+
+/* Bocejo animado - aplicado via JS */
+.unicorn.yawning .unicorn-mouth {
+    width: 22px !important;
+    height: 18px !important;
+    border: 2px solid #c9787c !important;
+    border-radius: 50% !important;
+    background: #3a1a1a !important;
+    animation: yawn-mouth 2s ease forwards;
+}
+@keyframes yawn-mouth {
+    0% { width: 14px; height: 8px; }
+    30% { width: 22px; height: 18px; }
+    60% { width: 22px; height: 18px; }
+    100% { width: 14px; height: 8px; }
+}
+
+.unicorn.yawning .eye {
+    height: 4px !important;
+    border-radius: 4px !important;
+    margin-top: 12px;
+    transition: height 0.3s;
+}
+.unicorn.yawning .eye .pupil {
+    display: none;
+}
+
+/* Piscada de olho - aplicado via JS periodicamente */
+.unicorn.blinking .eye {
+    height: 3px !important;
+    border-radius: 3px !important;
+    transition: height 0.1s;
+}
+.unicorn.blinking .eye .pupil {
+    display: none;
+}
+
+/* Termômetro flutuante quando doente */
+.thermometer-float {
+    position: absolute;
+    top: -10px;
+    right: -25px;
+    font-size: 1.8rem;
+    z-index: 15;
+    animation: thermo-wobble 2s ease-in-out infinite;
+}
+@keyframes thermo-wobble {
+    0%, 100% { transform: rotate(-10deg); }
+    50% { transform: rotate(10deg); }
+}
+
+/* Coração pulsante ao dar carinho */
+.love-burst {
+    position: absolute;
+    font-size: 2rem;
+    animation: love-float 1.5s ease-out forwards;
+    pointer-events: none;
+    z-index: 20;
+}
+@keyframes love-float {
+    0% { transform: translateY(0) scale(0.5); opacity: 1; }
+    100% { transform: translateY(-60px) scale(1.5); opacity: 0; }
+}
+
+/* Zzz flutuante quando dormindo */
+.zzz-float {
+    position: absolute;
+    font-size: 1.6rem;
+    animation: zzz-drift 3s ease-out forwards;
+    pointer-events: none;
+    z-index: 20;
+    opacity: 0.8;
+}
+@keyframes zzz-drift {
+    0% { transform: translate(0, 0) scale(0.8); opacity: 0.8; }
+    100% { transform: translate(30px, -50px) scale(1.4); opacity: 0; }
+}
+
+/* Bolha de pensamento */
+.thought-bubble {
+    position: absolute;
+    top: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.8rem;
+    z-index: 20;
+    animation: thought-pop 3s ease forwards;
+    pointer-events: none;
+}
+.thought-bubble::before {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 8px;
+    height: 8px;
+    background: rgba(255,255,255,0.8);
+    border-radius: 50%;
+}
+.thought-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -16px;
+    left: 50%;
+    transform: translateX(-5px);
+    width: 5px;
+    height: 5px;
+    background: rgba(255,255,255,0.6);
+    border-radius: 50%;
+}
+@keyframes thought-pop {
+    0% { transform: translateX(-50%) scale(0); opacity: 0; }
+    15% { transform: translateX(-50%) scale(1.2); opacity: 1; }
+    75% { transform: translateX(-50%) scale(1); opacity: 1; }
+    100% { transform: translateX(-50%) scale(0.5); opacity: 0; }
+}
+
+/* Ronronar (vibrando suavemente de felicidade) */
+.unicorn.purring {
+    animation: purr-vibrate 0.15s linear infinite !important;
+}
+@keyframes purr-vibrate {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-1px); }
+    100% { transform: translateY(0); }
 }
 
 /* ========================= */
