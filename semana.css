@@ -1,0 +1,444 @@
+/* A SEMANA DA YOYO - Estilos */
+
+.semana-game {
+    padding: 15px;
+}
+
+.semana-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, #E1BEE7, #F8BBD0);
+    border-radius: 20px;
+    padding: 12px 18px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.day-badge {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #6A1B9A;
+    background: #fff;
+    padding: 8px 15px;
+    border-radius: 15px;
+    letter-spacing: 1px;
+}
+
+.time-display {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #E65100;
+    background: #FFF3E0;
+    padding: 8px 15px;
+    border-radius: 15px;
+    font-family: monospace;
+}
+
+.stars-line {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #FF8F00;
+}
+
+/* Cenário principal */
+.scene-card {
+    background: linear-gradient(180deg, #B3E5FC 0%, #E1F5FE 50%, #FFF8E1 100%);
+    border-radius: 25px;
+    padding: 20px;
+    margin-bottom: 15px;
+    border: 4px solid #81D4FA;
+    position: relative;
+    overflow: hidden;
+    min-height: 220px;
+}
+
+.building {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.laundry-floor {
+    background: linear-gradient(135deg, #90CAF9, #42A5F5);
+    padding: 15px;
+    text-align: center;
+    border-bottom: 4px solid #fff;
+    position: relative;
+}
+
+.laundry-sign {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #fff;
+    background: #1565C0;
+    padding: 5px 10px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.washing-machines {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    font-size: 2rem;
+}
+
+.machine {
+    animation: spin-machine 3s linear infinite;
+}
+
+@keyframes spin-machine {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.apartment-floor {
+    background: linear-gradient(135deg, #FFCCBC, #FFAB91);
+    padding: 25px;
+    text-align: center;
+}
+
+.window {
+    background: #B3E5FC;
+    border: 4px solid #fff;
+    border-radius: 15px;
+    padding: 15px;
+    font-size: 3.5rem;
+    box-shadow: inset 0 0 20px rgba(255,255,255,0.5);
+}
+
+/* Fileira de personagens */
+.characters-row {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+    min-height: 80px;
+}
+
+.character {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #fff;
+    border-radius: 15px;
+    padding: 8px 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.character:hover {
+    transform: scale(1.1);
+}
+
+.character-emoji {
+    font-size: 2.5rem;
+    line-height: 1;
+}
+
+.character-name {
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: #555;
+    margin-top: 5px;
+}
+
+/* Balão de fala */
+.speech-bubble {
+    background: #fff;
+    border: 4px solid #FFD54F;
+    border-radius: 25px;
+    padding: 18px 22px;
+    font-size: 1.5rem;
+    color: #444;
+    text-align: center;
+    margin-bottom: 15px;
+    position: relative;
+    box-shadow: 0 4px 15px rgba(255,213,79,0.2);
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.4;
+}
+
+.speech-bubble::before {
+    content: '';
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 12px solid transparent;
+    border-right: 12px solid transparent;
+    border-bottom: 15px solid #FFD54F;
+}
+
+.speech-bubble::after {
+    content: '';
+    position: absolute;
+    top: -11px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 12px solid #fff;
+}
+
+/* Área de fase */
+.phase-area {
+    background: linear-gradient(135deg, #FFF9C4, #FFF59D);
+    border-radius: 25px;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 15px;
+    border: 3px solid #FDD835;
+}
+
+.phase-emoji {
+    font-size: 4.5rem;
+    margin-bottom: 10px;
+}
+
+.phase-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #F57F17;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+}
+
+.phase-instruction {
+    font-size: 1.3rem;
+    color: #666;
+}
+
+/* Botões grandes */
+.phase-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.big-action-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 18px 25px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: bold;
+    transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+    min-width: 140px;
+    min-height: 110px;
+    touch-action: manipulation;
+    user-select: none;
+    background: linear-gradient(135deg, #66BB6A, #2E7D32);
+    color: white;
+}
+
+.big-action-btn:hover {
+    transform: scale(1.05);
+}
+
+.big-action-btn:active {
+    transform: scale(0.95);
+}
+
+.btn-emoji {
+    font-size: 3rem;
+    line-height: 1;
+    margin-bottom: 8px;
+}
+
+.btn-text {
+    font-size: 1.4rem;
+    letter-spacing: 2px;
+}
+
+.choice-btn {
+    background: linear-gradient(135deg, #AB47BC, #7B1FA2);
+}
+
+.choice-btn.yes {
+    background: linear-gradient(135deg, #66BB6A, #2E7D32);
+}
+
+.choice-btn.no {
+    background: linear-gradient(135deg, #EF5350, #C62828);
+}
+
+/* Barra de progresso da semana */
+.week-progress {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.day-dot {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #E0E0E0;
+    color: #777;
+    font-size: 0.85rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+    border: 3px solid #BDBDBD;
+}
+
+.day-dot:hover {
+    transform: scale(1.1);
+}
+
+.day-dot.active {
+    background: #FFD54F;
+    color: #6A1B9A;
+    border-color: #FF8F00;
+    transform: scale(1.15);
+}
+
+.day-dot.weekend {
+    background: #E1BEE7;
+    border-color: #AB47BC;
+}
+
+.day-dot.weekend.active {
+    background: #E1BEE7;
+    border-color: #6A1B9A;
+}
+
+.day-dot.completed {
+    background: #81C784;
+    color: #fff;
+    border-color: #388E3C;
+}
+
+/* Medalhas */
+.semana-medals {
+    background: linear-gradient(135deg, #F3E5F5, #E1BEE7);
+    border-radius: 20px;
+    padding: 20px;
+}
+
+.semana-medals h3 {
+    text-align: center;
+    color: #6A1B9A;
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+}
+
+.medals-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    gap: 10px;
+}
+
+.medal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #fff;
+    border-radius: 15px;
+    padding: 10px 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: transform 0.2s;
+    opacity: 0.6;
+}
+
+.medal:hover {
+    transform: scale(1.05);
+}
+
+.medal.unlocked {
+    opacity: 1;
+    background: #FFF8E1;
+    border: 2px solid #FFD54F;
+}
+
+.medal-emoji {
+    font-size: 2.2rem;
+    line-height: 1;
+    margin-bottom: 5px;
+}
+
+.medal-name {
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: #6A1B9A;
+    text-align: center;
+}
+
+/* Animações extras */
+.bounce {
+    animation: bounce 0.6s ease infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.heart-pop {
+    position: absolute;
+    font-size: 2rem;
+    animation: heart-float 1.5s ease-out forwards;
+    pointer-events: none;
+}
+
+@keyframes heart-float {
+    0% { transform: translateY(0) scale(0.8); opacity: 1; }
+    100% { transform: translateY(-50px) scale(1.5); opacity: 0; }
+}
+
+/* Responsivo */
+@media (max-width: 600px) {
+    .semana-top {
+        flex-direction: column;
+    }
+    
+    .day-badge, .time-display, .stars-line {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .phase-emoji {
+        font-size: 3.5rem;
+    }
+    
+    .phase-title {
+        font-size: 1.5rem;
+    }
+    
+    .big-action-btn {
+        min-width: 120px;
+        min-height: 100px;
+    }
+}

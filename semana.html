@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Semana da Yoyo - Mundo da Yoyo</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="semana.css">
+</head>
+<body>
+    <div class="container">
+        <header class="game-header">
+            <a href="index.html" class="btn-back">Início</a>
+            <h1>🏠 A SEMANA DA YOYO</h1>
+            <p class="subtitle">Aprenda a obedecer papai e mamãe!</p>
+        </header>
+
+        <main class="game semana-game">
+            <!-- Painel superior -->
+            <div class="semana-top">
+                <div class="day-badge" id="day-badge">SEGUNDA-FEIRA</div>
+                <div class="time-display" id="time-display">07:30</div>
+                <div class="stars-line">⭐ <span id="stars-count">0</span></div>
+            </div>
+
+            <!-- Cenário -->
+            <div class="scene-card" id="scene-card">
+                <div class="scene-illustration" id="scene-illustration">
+                    <div class="building">
+                        <div class="laundry-floor">
+                            <span class="laundry-sign">🫧 LAVANDERIA DO SENHOR JESUS 🫧</span>
+                            <div class="washing-machines">
+                                <span class="machine">🧺</span>
+                                <span class="machine">🧺</span>
+                                <span class="machine">🧺</span>
+                            </div>
+                        </div>
+                        <div class="apartment-floor">
+                            <div class="window">
+                                <span class="family-emoji">👨‍👩‍👧‍👦</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="characters-row" id="characters-row"></div>
+            </div>
+
+            <!-- Balão de fala -->
+            <div class="speech-bubble" id="speech-bubble">
+                Bom dia, Yoyo! Vamos começar a segunda-feira! 🌅
+            </div>
+
+            <!-- Ação atual -->
+            <div class="phase-area" id="phase-area">
+                <div class="phase-emoji" id="phase-emoji">🌅</div>
+                <div class="phase-title" id="phase-title">ACORDAR</div>
+                <div class="phase-instruction" id="phase-instruction">Aperta o botão para começar!</div>
+            </div>
+
+            <!-- Botões de interação -->
+            <div class="phase-buttons" id="phase-buttons">
+                <button class="big-action-btn" id="btn-next" data-speak="Próximo">
+                    <span class="btn-emoji">▶️</span>
+                    <span class="btn-text">PRÓXIMO</span>
+                </button>
+            </div>
+
+            <!-- Barra de progresso da semana -->
+            <div class="week-progress">
+                <span class="day-dot active" data-day="seg" data-speak="Segunda">SEG</span>
+                <span class="day-dot" data-day="ter" data-speak="Terça">TER</span>
+                <span class="day-dot" data-day="qua" data-speak="Quarta">QUA</span>
+                <span class="day-dot" data-day="qui" data-speak="Quinta">QUI</span>
+                <span class="day-dot" data-day="sex" data-speak="Sexta">SEX</span>
+                <span class="day-dot weekend" data-day="sab" data-speak="Sábado">SÁB</span>
+                <span class="day-dot weekend" data-day="dom" data-speak="Domingo">DOM</span>
+            </div>
+
+            <!-- Medalhas -->
+            <div class="semana-medals" id="semana-medals">
+                <h3>🏆 MINHAS MEDALHAS</h3>
+                <div class="medals-grid" id="medals-grid"></div>
+            </div>
+        </main>
+    </div>
+
+    <script src="stars.js"></script>
+    <script src="sounds.js"></script>
+    <script src="tts.js"></script>
+    <script src="semana.js"></script>
+</body>
+</html>
