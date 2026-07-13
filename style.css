@@ -1639,6 +1639,20 @@ main > .spelling-buttons .btn-next {
     box-shadow: 0 10px 30px rgba(230, 81, 0, 0.3);
 }
 
+.jesus-card {
+    background: linear-gradient(135deg, #FFF8E1 0%, #FFD54F 50%, #FFB74D 100%);
+    border-color: #FF8F00;
+}
+
+.jesus-card h2 {
+    color: #E65100;
+}
+
+.jesus-card:hover {
+    border-color: #EF6C00;
+    box-shadow: 0 10px 30px rgba(255, 143, 0, 0.3);
+}
+
 .color-card {
     background: linear-gradient(135deg, #FFCDD2 0%, #F8BBD0 25%, #E1BEE7 50%, #C5CAE9 75%, #B2EBF2 100%);
     border-color: #F48FB1;
