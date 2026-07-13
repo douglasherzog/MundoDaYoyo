@@ -48,6 +48,66 @@ const FASES = [
         acao: 'clicar-pescadores',
         medalha: 'discipulo',
         som: 'Vamos seguir Jesus!'
+    },
+    {
+        id: 'bemaventurancas',
+        numero: 5,
+        emoji: '😊',
+        titulo: 'JESUS ENSINA',
+        fala: 'Eu ensinei no monte: felizes são os que amam a Deus e aos outros! 😊',
+        instrucao: 'Toque nas crianças para abraçar o amor de Jesus!',
+        cenario: 'monte',
+        acao: 'clicar-criancas',
+        medalha: 'abençoada',
+        som: 'Eu sou feliz com Jesus!'
+    },
+    {
+        id: 'curaciego',
+        numero: 6,
+        emoji: '👁️',
+        titulo: 'JESUS CURA',
+        fala: 'Eu curei um cego com amor! Jesus cuida de todos! ✨',
+        instrucao: 'Toque no cego para Jesus fazer o milagre!',
+        cenario: 'curaciego',
+        acao: 'clicar-cego',
+        medalha: 'milagre',
+        som: 'Agora eu vejo!'
+    },
+    {
+        id: 'paes',
+        numero: 7,
+        emoji: '🍞',
+        titulo: 'JESUS MULTIPLICA',
+        fala: 'Com poucos pães e peixes, eu alimentei muitas pessoas! 🍞🐟',
+        instrucao: 'Toque nos pães e peixes para multiplicar a comida!',
+        cenario: 'paes',
+        acao: 'clicar-paes',
+        medalha: 'compaixao',
+        som: 'Obrigado, Jesus!'
+    },
+    {
+        id: 'aguas',
+        numero: 8,
+        emoji: '🌊',
+        titulo: 'JESUS ANDA SOBRE AGUA',
+        fala: 'Eu andei sobre o mar para chegar até meus amigos! Não tenham medo! 🌊',
+        instrucao: 'Toque no mar para Jesus caminhar sobre as águas!',
+        cenario: 'aguas',
+        acao: 'clicar-aguas',
+        medalha: 'fe',
+        som: 'Jesus tem poder!'
+    },
+    {
+        id: 'zaqueu',
+        numero: 9,
+        emoji: '🌳',
+        titulo: 'ZAQUEU SOBE NA ARVORE',
+        fala: 'Zaqueu era pequeno e subiu em uma árvore para me ver! Eu disse: vou na sua casa! 🌳',
+        instrucao: 'Toque na árvore para abaixar Zaqueu!',
+        cenario: 'zaqueu',
+        acao: 'clicar-arvore',
+        medalha: 'amigo',
+        som: 'Jesus vem na minha casa!'
     }
 ];
 
@@ -56,9 +116,11 @@ const MEDALHAS = [
     { id: 'batismo', nome: 'BATIZADO', emoji: '💧' },
     { id: 'obediente', nome: 'OBEDIENTE', emoji: '📖' },
     { id: 'discipulo', nome: 'DISCIPULO', emoji: '🎣' },
+    { id: 'abençoada', nome: 'ABENÇOADA', emoji: '😊' },
     { id: 'milagre', nome: 'MILAGRE', emoji: '✨' },
     { id: 'compaixao', nome: 'AMOR', emoji: '💖' },
     { id: 'fe', nome: 'FE', emoji: '🌊' },
+    { id: 'amigo', nome: 'AMIGO', emoji: '🌳' },
     { id: 'ressurreicao', nome: 'RESSURREICAO', emoji: '🌅' },
 ];
 
@@ -166,6 +228,84 @@ function renderizarCenario(fase) {
                 });
             }, 100);
             break;
+
+        case 'monte':
+            content.innerHTML = `
+                <div class="mountain">⛰️</div>
+                <div class="jesus-on-mountain">🙏</div>
+                <div class="children-group">
+                    <div class="child interactive-element" id="c1">🧒</div>
+                    <div class="child interactive-element" id="c2">👧</div>
+                    <div class="child interactive-element" id="c3">👶</div>
+                </div>
+                <div class="sun">☀️</div>
+            `;
+            setTimeout(() => {
+                ['c1', 'c2', 'c3'].forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.addEventListener('click', () => executarAcaoFase(fase));
+                });
+            }, 100);
+            break;
+
+        case 'curaciego':
+            content.innerHTML = `
+                <div class="village-bg"></div>
+                <div class="jesus-healer">🙏</div>
+                <div class="blind-man interactive-element" id="blind-man">🧑‍🦯</div>
+                <div class="mud" id="mud">🟤</div>
+                <div class="healed-eyes" id="healed-eyes">👁️</div>
+            `;
+            setTimeout(() => {
+                const blind = document.getElementById('blind-man');
+                if (blind) blind.addEventListener('click', () => executarAcaoFase(fase));
+            }, 100);
+            break;
+
+        case 'paes':
+            content.innerHTML = `
+                <div class="grass"></div>
+                <div class="crowd">👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦</div>
+                <div class="basket interactive-element" id="basket">🧺</div>
+                <div class="food-items" id="food-items">
+                    <span class="food-item">🍞</span>
+                    <span class="food-item">🐟</span>
+                </div>
+                <div class="jesus-bread">🙏</div>
+            `;
+            setTimeout(() => {
+                const basket = document.getElementById('basket');
+                if (basket) basket.addEventListener('click', () => executarAcaoFase(fase));
+            }, 100);
+            break;
+
+        case 'aguas':
+            content.innerHTML = `
+                <div class="stormy-sea"></div>
+                <div class="boat-storm" id="boat-storm">🛶</div>
+                <div class="jesus-walking interactive-element" id="jesus-walking">🙏</div>
+                <div class="disciples-scared">😨</div>
+                <div class="lightning">⚡</div>
+            `;
+            setTimeout(() => {
+                const jesus = document.getElementById('jesus-walking');
+                if (jesus) jesus.addEventListener('click', () => executarAcaoFase(fase));
+            }, 100);
+            break;
+
+        case 'zaqueu':
+            content.innerHTML = `
+                <div class="city-bg"></div>
+                <div class="tree interactive-element" id="tree">🌳</div>
+                <div class="zaqueu" id="zaqueu">🧍</div>
+                <div class="jesus-looks-up">🙏</div>
+                <div class="house">🏠</div>
+            `;
+            setTimeout(() => {
+                const tree = document.getElementById('tree');
+                if (tree) tree.addEventListener('click', () => executarAcaoFase(fase));
+            }, 100);
+            break;
     }
 }
 
@@ -182,6 +322,91 @@ function executarAcaoFase(fase) {
                 p.textContent = '🙋';
             }, i * 200);
         });
+    }
+
+    if (fase.acao === 'clicar-criancas') {
+        document.querySelectorAll('.child').forEach((c, i) => {
+            setTimeout(() => {
+                c.style.transform = 'scale(1.2) translateY(-15px)';
+                c.textContent = '🤗';
+            }, i * 200);
+        });
+        const sun = document.querySelector('.sun');
+        if (sun) {
+            sun.style.animation = 'sun-pulse 1s ease-in-out infinite';
+        }
+    }
+
+    if (fase.acao === 'clicar-cego') {
+        const blind = document.getElementById('blind-man');
+        const healed = document.getElementById('healed-eyes');
+        if (blind) {
+            blind.textContent = '🙋';
+            blind.style.transform = 'scale(1.2)';
+        }
+        if (healed) {
+            healed.style.opacity = '1';
+            healed.style.animation = 'eyes-blink 1s ease-in-out infinite';
+        }
+        for (let i = 0; i < 5; i++) {
+            setTimeout(() => criarRaioDeLuz(), i * 300);
+        }
+    }
+
+    if (fase.acao === 'clicar-paes') {
+        const basket = document.getElementById('basket');
+        const foodContainer = document.getElementById('food-items');
+        if (basket) {
+            basket.style.transform = 'scale(1.2)';
+            basket.textContent = '🧺✨';
+        }
+        if (foodContainer) {
+            foodContainer.innerHTML = '';
+            for (let i = 0; i < 12; i++) {
+                const food = document.createElement('span');
+                food.className = 'food-item';
+                food.textContent = i % 2 === 0 ? '🍞' : '🐟';
+                food.style.animationDelay = (i * 0.1) + 's';
+                foodContainer.appendChild(food);
+            }
+            foodContainer.classList.add('food-multiplied');
+        }
+    }
+
+    if (fase.acao === 'clicar-aguas') {
+        const jesus = document.getElementById('jesus-walking');
+        const boat = document.getElementById('boat-storm');
+        if (jesus) {
+            jesus.style.transition = 'all 2s ease-in-out';
+            jesus.style.transform = 'translateX(120px) translateY(-20px)';
+        }
+        if (boat) {
+            boat.style.animation = 'boat-calm 2s ease-in-out infinite';
+        }
+        const sea = document.querySelector('.stormy-sea');
+        if (sea) {
+            sea.classList.add('calm-sea');
+        }
+    }
+
+    if (fase.acao === 'clicar-arvore') {
+        const tree = document.getElementById('tree');
+        const zaqueu = document.getElementById('zaqueu');
+        if (tree) {
+            tree.style.transform = 'rotate(5deg)';
+        }
+        if (zaqueu) {
+            zaqueu.style.transition = 'all 1s ease-in-out';
+            zaqueu.style.transform = 'translateY(80px)';
+            zaqueu.textContent = '🙋';
+        }
+        setTimeout(() => {
+            const house = document.querySelector('.house');
+            if (house) {
+                house.style.transform = 'scale(1.1)';
+                house.style.boxShadow = '0 0 30px rgba(255,215,0,0.6)';
+            }
+        }, 1000);
     }
 
     ganharEstrela();
@@ -321,6 +546,15 @@ function animarCoracoes() {
         container.appendChild(heart);
         setTimeout(() => heart.remove(), 1500);
     }
+}
+
+function criarRaioDeLuz() {
+    const container = document.getElementById('scene-card');
+    const ray = document.createElement('div');
+    ray.className = 'light-ray';
+    ray.style.left = (30 + Math.random() * 40) + '%';
+    container.appendChild(ray);
+    setTimeout(() => ray.remove(), 2000);
 }
 
 // Inicialização
