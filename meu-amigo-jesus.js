@@ -108,6 +108,54 @@ const FASES = [
         acao: 'clicar-arvore',
         medalha: 'amigo',
         som: 'Jesus vem na minha casa!'
+    },
+    {
+        id: 'jerusalem',
+        numero: 10,
+        emoji: '🌿',
+        titulo: 'ENTRADA EM JERUSALEM',
+        fala: 'As pessoas me receberam com alegria! Elas gritavam: Hosana! O Rei está chegando! 🌿',
+        instrucao: 'Toque nos ramos para agitar e dizer Hosana!',
+        cenario: 'jerusalem',
+        acao: 'clicar-ramos',
+        medalha: 'hosana',
+        som: 'Hosana! Hosana!'
+    },
+    {
+        id: 'ceia',
+        numero: 11,
+        emoji: '🍞',
+        titulo: 'A ULTIMA CEIA',
+        fala: 'Eu partilhei pão e vinho com meus amigos. Eles devem lembrar de mim sempre! 🍞🍷',
+        instrucao: 'Toque no pão e no vinho para partilhar com Jesus!',
+        cenario: 'ceia',
+        acao: 'clicar-ceia',
+        medalha: 'ceia',
+        som: 'Eu lembro de você, Jesus!'
+    },
+    {
+        id: 'cruz',
+        numero: 12,
+        emoji: '✝️',
+        titulo: 'JESUS NOS AMA',
+        fala: 'Eu sofri muito, mas foi porque amo muito você, Yoyo. O amor de Jesus é maior que tudo! 💜',
+        instrucao: 'Toque no coração para sentir o amor de Jesus!',
+        cenario: 'cruz',
+        acao: 'clicar-coracao',
+        medalha: 'amor_maior',
+        som: 'Jesus me ama!'
+    },
+    {
+        id: 'ressurreicao',
+        numero: 13,
+        emoji: '🌅',
+        titulo: 'JESUS RESSUSCITOU',
+        fala: 'No terceiro dia, eu voltei! A morte não venceu! Jesus vive para sempre! ✨',
+        instrucao: 'Toque na pedra para ver o túmulo vazio!',
+        cenario: 'ressurreicao',
+        acao: 'clicar-pedra',
+        medalha: 'ressurreicao',
+        som: 'Jesus vive! Aleluia!'
     }
 ];
 
@@ -121,6 +169,9 @@ const MEDALHAS = [
     { id: 'compaixao', nome: 'AMOR', emoji: '💖' },
     { id: 'fe', nome: 'FE', emoji: '🌊' },
     { id: 'amigo', nome: 'AMIGO', emoji: '🌳' },
+    { id: 'hosana', nome: 'HOSANA', emoji: '🌿' },
+    { id: 'ceia', nome: 'CEIA', emoji: '🍞' },
+    { id: 'amor_maior', nome: 'AMOR MAIOR', emoji: '💜' },
     { id: 'ressurreicao', nome: 'RESSURREICAO', emoji: '🌅' },
 ];
 
@@ -306,6 +357,74 @@ function renderizarCenario(fase) {
                 if (tree) tree.addEventListener('click', () => executarAcaoFase(fase));
             }, 100);
             break;
+
+        case 'jerusalem':
+            content.innerHTML = `
+                <div class="city-gate"></div>
+                <div class="jesus-on-donkey">🙏🐴</div>
+                <div class="crowd-cheering">👨‍👩‍👧‍👦👨‍👩‍👧‍👦</div>
+                <div class="palms-group">
+                    <div class="palm interactive-element" id="palm1">🌿</div>
+                    <div class="palm interactive-element" id="palm2">🌿</div>
+                    <div class="palm interactive-element" id="palm3">🌿</div>
+                    <div class="palm interactive-element" id="palm4">🌿</div>
+                </div>
+                <div class="hosana-text" id="hosana-text">HOSANA!</div>
+            `;
+            setTimeout(() => {
+                ['palm1', 'palm2', 'palm3', 'palm4'].forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.addEventListener('click', () => executarAcaoFase(fase));
+                });
+            }, 100);
+            break;
+
+        case 'ceia':
+            content.innerHTML = `
+                <div class="dinner-room"></div>
+                <div class="table">🍽️</div>
+                <div class="bread interactive-element" id="last-bread">🍞</div>
+                <div class="wine interactive-element" id="last-wine">🍷</div>
+                <div class="disciples-table">🧑‍🦱🧑👨👦</div>
+                <div class="jesus-at-table">🙏</div>
+            `;
+            setTimeout(() => {
+                const bread = document.getElementById('last-bread');
+                const wine = document.getElementById('last-wine');
+                if (bread) bread.addEventListener('click', () => executarAcaoFase(fase));
+                if (wine) wine.addEventListener('click', () => executarAcaoFase(fase));
+            }, 100);
+            break;
+
+        case 'cruz':
+            content.innerHTML = `
+                <div class="calvary-hill"></div>
+                <div class="sky-glow"></div>
+                <div class="cross-gentle" id="cross-gentle">✝️</div>
+                <div class="love-heart interactive-element" id="love-heart">💜</div>
+                <div class="angels-comfort">👼👼</div>
+                <div class="yoyo-prays" id="yoyo-prays">🧎</div>
+            `;
+            setTimeout(() => {
+                const heart = document.getElementById('love-heart');
+                if (heart) heart.addEventListener('click', () => executarAcaoFase(fase));
+            }, 100);
+            break;
+
+        case 'ressurreicao':
+            content.innerHTML = `
+                <div class="garden-morning"></div>
+                <div class="tomb" id="tomb">⛰️</div>
+                <div class="stone interactive-element" id="stone">🪨</div>
+                <div class="jesus-risen" id="jesus-risen">🙏</div>
+                <div class="sun-rise">🌅</div>
+                <div class="angels-tomb">👼👼</div>
+            `;
+            setTimeout(() => {
+                const stone = document.getElementById('stone');
+                if (stone) stone.addEventListener('click', () => executarAcaoFase(fase));
+            }, 100);
+            break;
     }
 }
 
@@ -409,6 +528,88 @@ function executarAcaoFase(fase) {
         }, 1000);
     }
 
+    if (fase.acao === 'clicar-ramos') {
+        document.querySelectorAll('.palm').forEach((p, i) => {
+            setTimeout(() => {
+                p.style.transform = 'rotate(-20deg) scale(1.3)';
+                p.style.animation = 'palm-wave 0.5s ease-in-out 3';
+            }, i * 100);
+        });
+        const hosana = document.getElementById('hosana-text');
+        if (hosana) {
+            hosana.style.opacity = '1';
+            hosana.style.transform = 'scale(1.5)';
+            hosana.style.animation = 'hosana-bounce 1s ease-in-out infinite';
+        }
+        const donkey = document.querySelector('.jesus-on-donkey');
+        if (donkey) {
+            donkey.style.animation = 'donkey-walk 2s ease-in-out forwards';
+        }
+    }
+
+    if (fase.acao === 'clicar-ceia') {
+        const bread = document.getElementById('last-bread');
+        const wine = document.getElementById('last-wine');
+        if (bread) {
+            bread.style.transform = 'scale(1.2)';
+            bread.textContent = '🍞✨';
+        }
+        if (wine) {
+            wine.style.transform = 'scale(1.2)';
+            wine.textContent = '🍷✨';
+        }
+        const table = document.querySelector('.disciples-table');
+        if (table) {
+            table.style.animation = 'disciples-eat 1s ease-in-out infinite';
+        }
+    }
+
+    if (fase.acao === 'clicar-coracao') {
+        const heart = document.getElementById('love-heart');
+        const cross = document.getElementById('cross-gentle');
+        if (heart) {
+            heart.style.animation = 'heart-grow 2s ease-in-out infinite';
+            heart.style.transform = 'scale(1.5)';
+        }
+        if (cross) {
+            cross.style.boxShadow = '0 0 50px rgba(255,215,0,0.8)';
+        }
+        const yoyo = document.getElementById('yoyo-prays');
+        if (yoyo) {
+            yoyo.textContent = '🙏';
+            yoyo.style.animation = 'yoyo-pray 2s ease-in-out infinite';
+        }
+        for (let i = 0; i < 8; i++) {
+            setTimeout(() => criarRaioDeLuz(), i * 250);
+        }
+    }
+
+    if (fase.acao === 'clicar-pedra') {
+        const stone = document.getElementById('stone');
+        const jesus = document.getElementById('jesus-risen');
+        const tomb = document.getElementById('tomb');
+        if (stone) {
+            stone.style.transition = 'all 2s ease-in-out';
+            stone.style.transform = 'translateX(150px) rotate(360deg)';
+            stone.style.opacity = '0.5';
+        }
+        if (tomb) {
+            tomb.style.boxShadow = 'inset 0 0 40px rgba(255,215,0,0.8)';
+        }
+        if (jesus) {
+            jesus.style.opacity = '1';
+            jesus.style.transform = 'translateY(-60px) scale(1.2)';
+            jesus.style.animation = 'jesus-glow 2s ease-in-out infinite';
+        }
+        const sun = document.querySelector('.sun-rise');
+        if (sun) {
+            sun.style.animation = 'sun-rise-big 3s ease-in-out forwards';
+        }
+        for (let i = 0; i < 10; i++) {
+            setTimeout(() => criarRaioDeLuz(), i * 200);
+        }
+    }
+
     ganharEstrela();
     desbloquearMedalha(fase.medalha);
     animarCoracoes();
@@ -475,14 +676,18 @@ function avancarFase() {
         salvarEstado();
         atualizarTela();
     } else {
-        falar('Parabéns Yoyo! Você aprendeu muito com Jesus!');
-        document.getElementById('speech-bubble').textContent = 'Parabéns, Yoyo! Você é amiga de Jesus! Em breve teremos mais fases! ✨';
+        const msg = 'Parabéns, Yoyo! Você completou a jornada de Jesus! Ele nasceu, ensinou, amou, morreu por nós e ressuscitou. Jesus vive e é seu amigo para sempre! ✨🌅';
+        falar(msg);
+        document.getElementById('speech-bubble').textContent = msg;
         document.getElementById('phase-buttons').innerHTML = `
             <button class="big-action-btn" onclick="location.reload()">
                 <span class="btn-emoji">🔄</span>
                 <span class="btn-text">JOGAR DE NOVO</span>
             </button>
         `;
+        for (let i = 0; i < 15; i++) {
+            setTimeout(() => criarRaioDeLuz(), i * 150);
+        }
     }
 }
 

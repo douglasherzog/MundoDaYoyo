@@ -127,6 +127,22 @@
     background: linear-gradient(180deg, #B3E5FC 0%, #E1F5FE 40%, #C8E6C9 70%, #A5D6A7 100%);
 }
 
+.scene-background.jerusalem {
+    background: linear-gradient(180deg, #FFF8E1 0%, #FFE082 40%, #FFD54F 100%);
+}
+
+.scene-background.ceia {
+    background: linear-gradient(180deg, #3E2723 0%, #5D4037 50%, #795548 100%);
+}
+
+.scene-background.cruz {
+    background: linear-gradient(180deg, #1A237E 0%, #283593 30%, #3949AB 60%, #F3E5F5 100%);
+}
+
+.scene-background.ressurreicao {
+    background: linear-gradient(180deg, #FFEB3B 0%, #FFF176 20%, #E1F5FE 50%, #A5D6A7 100%);
+}
+
 .scene-content {
     position: relative;
     z-index: 1;
@@ -649,6 +665,286 @@
     font-size: 4rem;
     z-index: 2;
     transition: transform 0.5s, box-shadow 0.5s;
+}
+
+/* Cenário da Entrada em Jerusalém */
+.city-gate {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 40%;
+    background: linear-gradient(180deg, #D7CCC8, #8D6E63);
+    border-radius: 0 0 20px 20px;
+}
+
+.jesus-on-donkey {
+    position: absolute;
+    bottom: 25%;
+    left: 20%;
+    font-size: 4rem;
+    z-index: 2;
+}
+
+@keyframes donkey-walk {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(100px); }
+}
+
+.crowd-cheering {
+    position: absolute;
+    bottom: 35%;
+    font-size: 2.5rem;
+    z-index: 2;
+    animation: crowd-jump 0.8s ease-in-out infinite;
+}
+
+@keyframes crowd-jump {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.palms-group {
+    display: flex;
+    gap: 30px;
+    position: absolute;
+    bottom: 10%;
+    z-index: 3;
+}
+
+.palm {
+    font-size: 3rem;
+    cursor: pointer;
+    transition: transform 0.2s;
+    transform-origin: bottom center;
+}
+
+@keyframes palm-wave {
+    0%, 100% { transform: rotate(-20deg) scale(1.3); }
+    50% { transform: rotate(20deg) scale(1.3); }
+}
+
+.hosana-text {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 2rem;
+    font-weight: bold;
+    color: #E65100;
+    background: rgba(255,255,255,0.8);
+    padding: 8px 20px;
+    border-radius: 15px;
+    opacity: 0;
+    transition: opacity 0.5s, transform 0.5s;
+    z-index: 4;
+}
+
+@keyframes hosana-bounce {
+    0%, 100% { transform: translateX(-50%) scale(1.5); }
+    50% { transform: translateX(-50%) scale(1.7); }
+}
+
+/* Cenário da Última Ceia */
+.dinner-room {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 45%;
+    background: linear-gradient(180deg, #6D4C41, #3E2723);
+    border-radius: 0 0 20px 20px;
+}
+
+.table {
+    position: absolute;
+    bottom: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 5rem;
+    z-index: 2;
+}
+
+.bread {
+    position: absolute;
+    bottom: 30%;
+    left: 35%;
+    font-size: 3rem;
+    z-index: 3;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.wine {
+    position: absolute;
+    bottom: 30%;
+    right: 35%;
+    font-size: 3rem;
+    z-index: 3;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.disciples-table {
+    position: absolute;
+    bottom: 40%;
+    font-size: 2.5rem;
+    z-index: 2;
+}
+
+@keyframes disciples-eat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.jesus-at-table {
+    position: absolute;
+    bottom: 50%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 4rem;
+    z-index: 3;
+}
+
+/* Cenário do amor de Jesus na cruz (suave) */
+.calvary-hill {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 35%;
+    background: linear-gradient(180deg, #A5D6A7, #66BB6A);
+    border-radius: 0 0 20px 20px;
+}
+
+.sky-glow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 50% 40%, rgba(255,215,0,0.3) 0%, transparent 70%);
+    border-radius: 20px;
+    pointer-events: none;
+}
+
+.cross-gentle {
+    position: absolute;
+    bottom: 25%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 5rem;
+    z-index: 2;
+    transition: box-shadow 1s;
+}
+
+.love-heart {
+    position: absolute;
+    bottom: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 4rem;
+    z-index: 3;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+@keyframes heart-grow {
+    0%, 100% { transform: translateX(-50%) scale(1.5); }
+    50% { transform: translateX(-50%) scale(1.8); }
+}
+
+.angels-comfort {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 3rem;
+    z-index: 2;
+    animation: angel-float 3s ease-in-out infinite;
+}
+
+.yoyo-prays {
+    position: absolute;
+    bottom: 5%;
+    right: 20%;
+    font-size: 3rem;
+    z-index: 3;
+}
+
+@keyframes yoyo-pray {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* Cenário da Ressurreição */
+.garden-morning {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 40%;
+    background: linear-gradient(180deg, #A5D6A7, #66BB6A);
+    border-radius: 0 0 20px 20px;
+}
+
+.tomb {
+    position: absolute;
+    bottom: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 6rem;
+    z-index: 2;
+    transition: box-shadow 1s;
+}
+
+.stone {
+    position: absolute;
+    bottom: 20%;
+    left: 35%;
+    font-size: 3rem;
+    z-index: 3;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.jesus-risen {
+    position: absolute;
+    bottom: 35%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 4rem;
+    z-index: 4;
+    opacity: 0;
+    transition: opacity 1s, transform 1s;
+}
+
+@keyframes jesus-glow {
+    0%, 100% { filter: drop-shadow(0 0 10px #FFD54F); }
+    50% { filter: drop-shadow(0 0 30px #FFD54F); }
+}
+
+.sun-rise {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 4rem;
+    z-index: 1;
+}
+
+@keyframes sun-rise-big {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.5); filter: brightness(1.5); }
+}
+
+.angels-tomb {
+    position: absolute;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 3rem;
+    z-index: 2;
+    animation: angel-float 3s ease-in-out infinite;
 }
 
 /* Balão de fala */
