@@ -7,22 +7,37 @@ function selecionarVozPTBR() {
 
 function falarWeb(texto) {
     if (!('speechSynthesis' in window)) return false;
-    window.speechSynthesis.cancel();
+    const sintese = window.speechSynthesis;
+    sintese.cancel();
+    sintese.resume();
     const msg = new SpeechSynthesisUtterance(texto);
     const voz = selecionarVozPTBR();
     if (voz) msg.voice = voz;
     msg.lang = 'pt-BR';
     msg.rate = 0.9;
-    window.speechSynthesis.speak(msg);
+    msg.pitch = 1.1;
+    msg.onstart = () => sintese.resume();
+    sintese.speak(msg);
     return true;
 }
 
+function usarServidorTtsLocal() {
+    return location.protocol === 'http:' &&
+        (location.hostname === 'localhost' || location.hostname === '127.0.0.1');
+}
+
 function falar(texto) {
-    if (!texto) return;
+    const textoLimpo = String(texto || '').replace(/\s+/g, ' ').trim();
+    if (!textoLimpo) return;
+
+    if (!usarServidorTtsLocal()) {
+        falarWeb(textoLimpo);
+        return;
+    }
 
     // Tenta o servidor TTS local primeiro (Linux)
     // Se nao estiver disponivel, usa Web Speech API (Windows/Android)
-    const url = `http://127.0.0.1:8766/falar?texto=${encodeURIComponent(texto)}`;
+    const url = `http://127.0.0.1:8766/falar?texto=${encodeURIComponent(textoLimpo)}`;
     fetch(url)
         .then(response => {
             if (!response.ok) throw new Error('TTS server error');
@@ -41,6 +56,11 @@ function falar(texto) {
         })
         .catch((err) => {
             console.log('TTS server nao respondeu, usando Web Speech:', err);
-            falarWeb(texto);
+            falarWeb(textoLimpo);
         });
+}
+
+if ('speechSynthesis' in window) {
+    window.speechSynthesis.addEventListener('voiceschanged', selecionarVozPTBR);
+    window.addEventListener('pageshow', () => window.speechSynthesis.resume());
 }
