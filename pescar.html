@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mundo da Yoyo - Pescaria</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .pond {
+            position: relative;
+            width: 100%;
+            height: 60vh;
+            min-height: 320px;
+            background: linear-gradient(180deg, #4fc3f7 0%, #0288d1 100%);
+            border-radius: 24px;
+            overflow: hidden;
+            border: 6px solid #81d4fa;
+            margin: 16px 0;
+            box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.15);
+        }
+        .fish {
+            position: absolute;
+            font-size: 3rem;
+            user-select: none;
+            pointer-events: none;
+            transition: transform 0.1s linear;
+            filter: drop-shadow(2px 4px 4px rgba(0,0,0,0.2));
+        }
+        .hook-line {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 3px;
+            background: rgba(255, 255, 255, 0.85);
+            transform-origin: top;
+            pointer-events: none;
+            border-radius: 2px;
+        }
+        .hook {
+            position: absolute;
+            font-size: 2.2rem;
+            pointer-events: none;
+            filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.3));
+        }
+        .bobber {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            background: #ff5252;
+            border-radius: 50%;
+            border: 3px solid #fff;
+            pointer-events: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .ripple {
+            position: absolute;
+            border: 3px solid rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+            animation: ripple 0.8s linear forwards;
+            pointer-events: none;
+        }
+        @keyframes ripple {
+            to { transform: scale(3); opacity: 0; }
+        }
+        .catch-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.55);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.8rem;
+            text-align: center;
+            border-radius: 24px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        .catch-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .catch-fish {
+            font-size: 7rem;
+            animation: pop 0.6s ease-out;
+            filter: drop-shadow(0 8px 12px rgba(0,0,0,0.3));
+        }
+        @keyframes pop {
+            0% { transform: scale(0); }
+            80% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        .score-board {
+            font-size: 1.5rem;
+            text-align: center;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #01579b;
+        }
+        .instruction {
+            font-size: 1.25rem;
+            text-align: center;
+            margin-bottom: 4px;
+        }
+        @media (max-width: 600px) {
+            .pond { height: 55vh; min-height: 280px; }
+            .catch-fish { font-size: 5rem; }
+            .catch-overlay { font-size: 1.4rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="game-header">
+            <a href="index.html" class="back-button">Início</a>
+            <h1>Pescaria 🎣</h1>
+            <div class="stars-counter">
+                <span class="star-icon">⭐</span>
+                <span id="stars-count">0</span>
+            </div>
+        </header>
+
+        <main class="game-area">
+            <p class="instruction">Clique na água para jogar o anzol e pescar!</p>
+            <div class="score-board">Peixes pescados: <span id="score">0</span></div>
+
+            <div class="pond" id="pond">
+                <div class="hook-line" id="hook-line"></div>
+                <div class="hook" id="hook">🪝</div>
+                <div class="bobber" id="bobber"></div>
+
+                <div class="catch-overlay" id="catch-overlay">
+                    <div class="catch-fish" id="catch-fish">🐟</div>
+                    <p id="catch-text">Você pescou um peixinho!</p>
+                    <button class="btn-next" id="btn-continue">Pescar de novo 🎣</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="stars.js"></script>
+    <script src="sounds.js"></script>
+    <script src="tts.js"></script>
+    <script src="admin.js"></script>
+    <script src="pescar.js"></script>
+</body>
+</html>
