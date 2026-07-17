@@ -46,9 +46,9 @@ const DOT_POSITIONS = {
 let nivelIdx = 0;
 let tabuleiro = [];
 let mao = [];
-let pecasRestantes = [];
 let pecaIdCounter = 0;
 let jogando = false;
+let bloquearClick = false;
 
 const el = {
     telaInicio: document.getElementById('tela-inicio'),
@@ -77,21 +77,30 @@ function embaralhar(arr) {
     return arr.slice().sort(() => Math.random() - 0.5);
 }
 
-function gerarTodasPecas(nivel) {
-    let valores;
-    if (nivel.tipo === 'emoji') {
-        valores = nivel.valores;
-    } else {
-        valores = [];
-        for (let i = 0; i <= nivel.maxNum; i++) valores.push(i);
-    }
-    const pecas = [];
-    for (let i = 0; i < valores.length; i++) {
-        for (let j = i; j < valores.length; j++) {
-            pecas.push({ left: valores[i], right: valores[j], id: ++pecaIdCounter });
+function getValores(nivel) {
+    if (nivel.tipo === 'emoji') return nivel.valores.slice();
+    const v = [];
+    for (let i = 0; i <= nivel.maxNum; i++) v.push(i);
+    return v;
+}
+
+function gerarCadeia(nivel) {
+    const valores = getValores(nivel);
+    const cadeia = [];
+    let prevRight = valores[Math.floor(Math.random() * valores.length)];
+    for (let i = 0; i < nivel.numPecas; i++) {
+        const left = prevRight;
+        const outros = valores.filter(v => v !== left);
+        let right;
+        if (outros.length > 0 && Math.random() < 0.75) {
+            right = outros[Math.floor(Math.random() * outros.length)];
+        } else {
+            right = valores[Math.floor(Math.random() * valores.length)];
         }
+        cadeia.push({ left, right, id: ++pecaIdCounter });
+        prevRight = right;
     }
-    return pecas;
+    return cadeia;
 }
 
 function renderDots(num) {
@@ -196,32 +205,30 @@ function mostrarFeedback(texto, tipo) {
     el.feedback.className = 'domino-feedback' + (tipo ? ' ' + tipo : '');
 }
 
-function destacarPecasValidas() {
-    const nivel = getNivel();
-    const temValida = mao.some(p => podeEncaixar(p));
-    if (!temValida && mao.length > 0) {
-        darNovaPeca();
-    }
+function garantirPecaValida() {
+    if (mao.length === 0) return;
+    if (mao.some(p => podeEncaixar(p))) return;
+    darNovaPeca();
     renderizarMao();
 }
 
 function darNovaPeca() {
-    while (pecasRestantes.length > 0) {
-        const peca = pecasRestantes.shift();
-        mao.push(peca);
-        if (podeEncaixar(peca)) return;
-    }
-    if (mao.length > 0 && !mao.some(p => podeEncaixar(p))) {
-        const ends = getOpenEnds();
-        const novaPeca = { left: ends.right, right: ends.right, id: ++pecaIdCounter };
-        mao.push(novaPeca);
-    }
+    const ends = getOpenEnds();
+    const nivel = getNivel();
+    const valores = getValores(nivel);
+    const outros = valores.filter(v => v !== ends.right);
+    const otherVal = outros.length > 0
+        ? outros[Math.floor(Math.random() * outros.length)]
+        : ends.right;
+    const novaPeca = { left: ends.right, right: otherVal, id: ++pecaIdCounter };
+    mao.push(novaPeca);
 }
 
 function clicarPeca(peca, divEl) {
-    if (!jogando) return;
+    if (!jogando || bloquearClick) return;
 
     if (podeEncaixar(peca)) {
+        bloquearClick = true;
         encaixarPeca(peca);
         mao = mao.filter(p => p.id !== peca.id);
 
@@ -235,17 +242,15 @@ function clicarPeca(peca, divEl) {
 
         if (mao.length === 0) {
             finalizarRodada();
+            bloquearClick = false;
         } else {
+            garantirPecaValida();
             setTimeout(() => {
-                destacarPecasValidas();
-                if (mao.length > 0 && mao.some(p => podeEncaixar(p))) {
-                    const nivelAtual = getNivel();
-                    const ends = getOpenEnds();
-                    setTimeout(() => {
-                        falar('Encaixa a peça que está brilhando!');
-                    }, 800);
+                bloquearClick = false;
+                if (jogando && mao.some(p => podeEncaixar(p))) {
+                    falar('Encaixa a peça que está brilhando!');
                 }
-            }, 500);
+            }, 600);
         }
     } else {
         divEl.classList.add('invalida-tentativa');
@@ -279,22 +284,22 @@ function finalizarRodada() {
 
 function iniciarRodada() {
     const nivel = getNivel();
-    const todas = embaralhar(gerarTodasPecas(nivel));
+    const cadeia = gerarCadeia(nivel);
 
-    tabuleiro = [todas[0]];
-    mao = todas.slice(1, nivel.numPecas);
-    pecasRestantes = todas.slice(nivel.numPecas);
+    tabuleiro = [cadeia[0]];
+    mao = embaralhar(cadeia.slice(1));
 
     el.nivelBar.innerHTML =
         '<span class="nivel-num">' + (nivelIdx + 1) + '</span>' +
         '<span>🁢 ' + nivel.nome + '</span>';
 
     jogando = true;
+    bloquearClick = false;
     el.btnProximo.style.display = 'none';
     mostrarFeedback('', '');
 
     renderizarTudo();
-    destacarPecasValidas();
+    garantirPecaValida();
 
     setTimeout(() => {
         falar(nivel.instrucao);
@@ -338,12 +343,11 @@ el.btnJogar.addEventListener('click', () => {
 el.btnDica.addEventListener('click', () => {
     if (!jogando) return;
     const nivel = getNivel();
-    const ends = getOpenEnds();
     const temValida = mao.some(p => podeEncaixar(p));
     if (temValida) {
         falar('Olha as peças que estão brilhando! ' + nivel.instrucao);
     } else {
-        falar('Você não tem peças para encaixar agora. Vamos pegar uma nova peça!');
+        falar('Vamos pegar uma peça que encaixa!');
         darNovaPeca();
         renderizarMao();
     }
