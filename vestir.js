@@ -5,10 +5,8 @@ const dollSvg = document.getElementById('doll');
 const dollWrapper = document.getElementById('doll-wrapper');
 const leftOptions = document.getElementById('left-options');
 const rightOptions = document.getElementById('right-options');
-const stepIndicator = document.getElementById('step-indicator');
 const stepTitle = document.getElementById('step-title');
 const stepHint = document.getElementById('step-hint');
-const btnFinish = null;
 const celebration = document.getElementById('celebration');
 const celebTitle = document.getElementById('celeb-title');
 const finalDoll = document.getElementById('final-doll');
@@ -21,7 +19,6 @@ let genero = null;
 let ocasiaoAtual = null;
 let etapaAtual = 0;
 let estado = {};
-let acertosEtapa = 0;
 
 const CORES_CABELO = [
     { id: 'preto', cor: '#3e2723', nome: 'preto' },
@@ -34,211 +31,84 @@ const CORES_CABELO = [
     { id: 'roxo', cor: '#7b1fa2', nome: 'roxo' },
 ];
 
-const ESTILOS_CABELO = [
-    { id: 'longo_liso', nome: 'longo e liso' },
-    { id: 'longo_ondas', nome: 'longo com ondas' },
-    { id: 'curto', nome: 'curto' },
-    { id: 'rabo_cavalo', nome: 'rabo de cavalo' },
-    { id: 'tranca', nome: 'trança' },
-    { id: 'cocar', nome: 'cocar' },
-    { id: 'moicano', nome: 'moicano' },
-    { id: 'lateral', nome: 'lateral' },
-    { id: 'cacheado', nome: 'cacheado' },
-    { id: 'careca', nome: 'careca' },
-];
-
 const CABECA_OPCOES = [
-    { id: 'bone',      emoji: '🧢', nome: 'boné' },
-    { id: 'boina',     emoji: '🎩', nome: 'boina' },
-    { id: 'flores',    emoji: '🌸', nome: 'flores' },
-    { id: 'coroa',     emoji: '👑', nome: 'coroa' },
-    { id: 'cowboy',    emoji: '🤠', nome: 'chapéu de cowboy' },
-    { id: 'pirata',    emoji: '🏴', nome: 'chapéu de pirata' },
-    { id: 'laco',      emoji: '🎀', nome: 'laço' },
-    { id: 'gorro',     emoji: '🧶', nome: 'gorro' },
-    { id: 'orelhas',   emoji: '🐱', nome: 'orelhas de gato' },
-    { id: 'nenhum',    emoji: '🚫', nome: 'sem chapéu' },
+    { id: 'bone', nome: 'boné' }, { id: 'boina', nome: 'boina' },
+    { id: 'flores', nome: 'flores' }, { id: 'coroa', nome: 'coroa' },
+    { id: 'cowboy', nome: 'chapéu de cowboy' }, { id: 'pirata', nome: 'chapéu de pirata' },
+    { id: 'laco', nome: 'laço' }, { id: 'gorro', nome: 'gorro' },
+    { id: 'orelhas', nome: 'orelhas de gato' }, { id: 'nenhum', nome: 'sem chapéu' },
 ];
 
 const TRONCO_OPCOES = [
-    { id: 'rosa',      cor: '#f48fb1', nome: 'blusa rosa' },
-    { id: 'verde',     cor: '#66bb6a', nome: 'blusa verde' },
-    { id: 'azul',      cor: '#42a5f5', nome: 'blusa azul' },
-    { id: 'amarela',   cor: '#ffeb3b', nome: 'blusa amarela' },
-    { id: 'roxo',      cor: '#ab47bc', nome: 'blusa roxa' },
-    { id: 'vestido',   cor: '#ef5350', nome: 'vestido vermelho' },
-    { id: 'casaco',    cor: '#5c6bc0', nome: 'casaco' },
-    { id: 'moletom',   cor: '#78909c', nome: 'moletom' },
-    { id: 'jaqueta',   cor: '#37474f', nome: 'jaqueta' },
-    { id: 'regata',    cor: '#26c6da', nome: 'regata' },
+    { id: 'rosa', nome: 'blusa rosa' }, { id: 'verde', nome: 'blusa verde' },
+    { id: 'azul', nome: 'blusa azul' }, { id: 'amarela', nome: 'blusa amarela' },
+    { id: 'roxo', nome: 'blusa roxa' }, { id: 'vestido', nome: 'vestido vermelho' },
+    { id: 'casaco', nome: 'casaco' }, { id: 'moletom', nome: 'moletom' },
+    { id: 'jaqueta', nome: 'jaqueta' }, { id: 'regata', nome: 'regata' },
 ];
 
 const PERNAS_OPCOES = [
-    { id: 'jeans',       cor: '#5c6bc0', nome: 'calça jeans' },
-    { id: 'preto',       cor: '#424242', nome: 'calça preta' },
-    { id: 'bege',        cor: '#a1887f', nome: 'calça bege' },
-    { id: 'verde',       cor: '#66bb6a', nome: 'calça verde' },
-    { id: 'vermelha',    cor: '#ef5350', nome: 'calça vermelha' },
-    { id: 'short',       cor: '#ff7043', nome: 'short' },
-    { id: 'calca_grossa',cor: '#6d4c41', nome: 'calça grossa' },
-    { id: 'legging',     cor: '#26a69a', nome: 'legging' },
-    { id: 'saia_longa',  cor: '#ec407a', nome: 'saia longa' },
-    { id: 'bermuda',     cor: '#8d6e63', nome: 'bermuda' },
+    { id: 'jeans', nome: 'calça jeans' }, { id: 'preto', nome: 'calça preta' },
+    { id: 'bege', nome: 'calça bege' }, { id: 'verde', nome: 'calça verde' },
+    { id: 'vermelha', nome: 'calça vermelha' }, { id: 'short', nome: 'short' },
+    { id: 'calca_grossa', nome: 'calça grossa' }, { id: 'legging', nome: 'legging' },
+    { id: 'saia_longa', nome: 'saia longa' }, { id: 'bermuda', nome: 'bermuda' },
 ];
 
 const PES_OPCOES = [
-    { id: 'sapatilha',   cor: '#f48fb1', nome: 'sapatilha' },
-    { id: 'tenis_branco',cor: '#f5f5f5', nome: 'tênis branco' },
-    { id: 'bota_marrom', cor: '#8d6e63', nome: 'bota marrom' },
-    { id: 'sandalia',    cor: '#ab47bc', nome: 'sandália' },
-    { id: 'salto',       cor: '#e91e63', nome: 'salto' },
-    { id: 'galocha',     cor: '#ff7043', nome: 'galocha' },
-    { id: 'chinelo',     cor: '#26c6da', nome: 'chinelo' },
-    { id: 'tenis_fechado',cor:'#42a5f5', nome: 'tênis fechado' },
-    { id: 'papete',      cor: '#558b2f', nome: 'papete' },
-    { id: 'crocs',       cor: '#ff7043', nome: 'crocs' },
+    { id: 'sapatilha', nome: 'sapatilha' }, { id: 'tenis_branco', nome: 'tênis branco' },
+    { id: 'bota_marrom', nome: 'bota marrom' }, { id: 'sandalia', nome: 'sandália' },
+    { id: 'salto', nome: 'salto' }, { id: 'galocha', nome: 'galocha' },
+    { id: 'chinelo', nome: 'chinelo' }, { id: 'tenis_fechado', nome: 'tênis fechado' },
+    { id: 'papete', nome: 'papete' }, { id: 'crocs', nome: 'crocs' },
 ];
 
 const ACESSORIOS_OPCOES = [
-    { id: 'relogio',   emoji: '⌚', nome: 'relógio' },
-    { id: 'pulseira',  emoji: '💍', nome: 'pulseira' },
-    { id: 'cachecol',  emoji: '🧣', nome: 'cachecol' },
-    { id: 'luvas',     emoji: '🧤', nome: 'luvas' },
-    { id: 'touca',     emoji: '🧶', nome: 'touca' },
-    { id: 'oculos',    emoji: '🕶️', nome: 'óculos' },
-    { id: 'mochila',   emoji: '🎒', nome: 'mochila' },
-    { id: 'cinto',     emoji: '👔', nome: 'cinto' },
-    { id: 'cola',      emoji: '🦗', nome: 'cola' },
-    { id: 'nada',      emoji: '🚫', nome: 'sem acessório' },
+    { id: 'relogio', nome: 'relógio' }, { id: 'pulseira', nome: 'pulseira' },
+    { id: 'cachecol', nome: 'cachecol' }, { id: 'luvas', nome: 'luvas' },
+    { id: 'touca', nome: 'touca' }, { id: 'oculos', nome: 'óculos' },
+    { id: 'mochila', nome: 'mochila' }, { id: 'cinto', nome: 'cinto' },
+    { id: 'cola', nome: 'cola' }, { id: 'nada', nome: 'sem acessório' },
 ];
 
 const ETAPAS = [
-    { id: 'cabeca',      nome: 'Cabeça',  emoji: '🧢', hint: 'Escolha o que colocar na cabeça!' },
-    { id: 'tronco',      nome: 'Tronco',  emoji: '👕', hint: 'Agora vamos vestir o tronco!' },
-    { id: 'pernas',      nome: 'Pernas',  emoji: '👖', hint: 'Vamos vestir as pernas!' },
-    { id: 'pes',         nome: 'Pés',     emoji: '👟', hint: 'Escolha os calçados!' },
-    { id: 'acessorios',  nome: 'Acessórios', emoji: '⌚', hint: 'Escolha um acessório!' },
+    { id: 'cabeca', nome: 'Cabeça', emoji: '🧢', hint: 'Escolha o que colocar na cabeça!' },
+    { id: 'tronco', nome: 'Tronco', emoji: '👕', hint: 'Agora vamos vestir o tronco!' },
+    { id: 'pernas', nome: 'Pernas', emoji: '👖', hint: 'Vamos vestir as pernas!' },
+    { id: 'pes', nome: 'Pés', emoji: '👟', hint: 'Escolha os calçados!' },
+    { id: 'acessorios', nome: 'Acessórios', emoji: '⌚', hint: 'Escolha um acessório!' },
 ];
 
 const OCASIOES = [
-    {
-        id: 'parque_inverno',
-        nome: 'Parque no Inverno',
-        emoji: '🧣',
-        bg: 'quarto',
-        descricao: 'Está frio! Vamos brincar no parque!',
-        corretas: {
-            cabeca:     ['gorro', 'boina', 'flores'],
-            tronco:     ['casaco', 'moletom', 'jaqueta'],
-            pernas:     ['jeans', 'calca_grossa', 'preto'],
-            pes:        ['bota_marrom', 'tenis_fechado', 'galocha'],
-            acessorios: ['cachecol', 'luvas', 'touca'],
-        }
-    },
-    {
-        id: 'escola',
-        nome: 'Ir para a Escola',
-        emoji: '🏫',
-        bg: 'jardim',
-        descricao: 'Vamos arrumar a roupa da escola!',
-        corretas: {
-            cabeca:     ['nenhum', 'bone', 'laco'],
-            tronco:     ['verde', 'azul', 'amarela'],
-            pernas:     ['jeans', 'preto', 'bege'],
-            pes:        ['tenis_branco', 'tenis_fechado', 'sapatilha'],
-            acessorios: ['mochila', 'relogio', 'cinto'],
-        }
-    },
-    {
-        id: 'praia',
-        nome: 'Praia de Mar',
-        emoji: '🏖️',
-        bg: 'praia',
-        descricao: 'Vamos à praia! Sol e mar!',
-        corretas: {
-            cabeca:     ['coroa', 'flores', 'nenhum'],
-            tronco:     ['regata', 'vestido', 'amarela'],
-            pernas:     ['short', 'bermuda', 'saia_longa'],
-            pes:        ['chinelo', 'sandalia', 'crocs'],
-            acessorios: ['oculos', 'nada', 'pulseira'],
-        }
-    },
-    {
-        id: 'piscina',
-        nome: 'Piscina no Clube',
-        emoji: '🏊',
-        bg: 'praia',
-        descricao: 'Vamos nadar na piscina!',
-        corretas: {
-            cabeca:     ['gorro', 'nenhum', 'coroa'],
-            tronco:     ['regata', 'rosa', 'azul'],
-            pernas:     ['short', 'bermuda', 'legging'],
-            pes:        ['chinelo', 'crocs', 'sandalia'],
-            acessorios: ['oculos', 'nada', 'pulseira'],
-        }
-    },
-    {
-        id: 'academia',
-        nome: 'Academia com a Mamãe',
-        emoji: '💪',
-        bg: 'palco',
-        descricao: 'Vamos fazer exercício!',
-        corretas: {
-            cabeca:     ['nenhum', 'bone', 'laco'],
-            tronco:     ['regata', 'rosa', 'verde'],
-            pernas:     ['legging', 'short', 'bermuda'],
-            pes:        ['tenis_branco', 'tenis_fechado', 'papete'],
-            acessorios: ['relogio', 'nada', 'pulseira'],
-        }
-    },
-    {
-        id: 'shopping',
-        nome: 'Passeio no Shopping',
-        emoji: '🛍️',
-        bg: 'quarto',
-        descricao: 'Vamos passear no shopping!',
-        corretas: {
-            cabeca:     ['laco', 'flores', 'bone'],
-            tronco:     ['roxo', 'vestido', 'azul'],
-            pernas:     ['jeans', 'saia_longa', 'legging'],
-            pes:        ['sapatilha', 'tenis_branco', 'salto'],
-            acessorios: ['pulseira', 'relogio', 'oculos'],
-        }
-    },
-    {
-        id: 'vovo',
-        nome: 'Casa da Vovó',
-        emoji: '👵',
-        bg: 'jardim',
-        descricao: 'Vamos visitar a vovó!',
-        corretas: {
-            cabeca:     ['flores', 'laco', 'nenhum'],
-            tronco:     ['verde', 'rosa', 'amarela'],
-            pernas:     ['jeans', 'saia_longa', 'bege'],
-            pes:        ['sapatilha', 'tenis_branco', 'sandalia'],
-            acessorios: ['pulseira', 'relogio', 'nada'],
-        }
-    },
-    {
-        id: 'festa',
-        nome: 'Festa de Aniversário',
-        emoji: '🎂',
-        bg: 'palco',
-        descricao: 'Vamos caprichar para a festa!',
-        corretas: {
-            cabeca:     ['coroa', 'laco', 'flores'],
-            tronco:     ['vestido', 'roxo', 'rosa'],
-            pernas:     ['saia_longa', 'legging', 'jeans'],
-            pes:        ['salto', 'sapatilha', 'sandalia'],
-            acessorios: ['pulseira', 'relogio', 'cola'],
-        }
-    },
+    { id: 'parque_inverno', nome: 'Parque no Inverno', emoji: '🧣', bg: 'quarto', descricao: 'Está frio! Vamos brincar no parque!',
+      corretas: { cabeca: ['gorro','boina','flores'], tronco: ['casaco','moletom','jaqueta'], pernas: ['jeans','calca_grossa','preto'], pes: ['bota_marrom','tenis_fechado','galocha'], acessorios: ['cachecol','luvas','touca'] } },
+    { id: 'escola', nome: 'Ir para a Escola', emoji: '🏫', bg: 'jardim', descricao: 'Vamos arrumar a roupa da escola!',
+      corretas: { cabeca: ['nenhum','bone','laco'], tronco: ['verde','azul','amarela'], pernas: ['jeans','preto','bege'], pes: ['tenis_branco','tenis_fechado','sapatilha'], acessorios: ['mochila','relogio','cinto'] } },
+    { id: 'praia', nome: 'Praia de Mar', emoji: '🏖️', bg: 'praia', descricao: 'Vamos à praia! Sol e mar!',
+      corretas: { cabeca: ['coroa','flores','nenhum'], tronco: ['regata','vestido','amarela'], pernas: ['short','bermuda','saia_longa'], pes: ['chinelo','sandalia','crocs'], acessorios: ['oculos','nada','pulseira'] } },
+    { id: 'piscina', nome: 'Piscina no Clube', emoji: '🏊', bg: 'praia', descricao: 'Vamos nadar na piscina!',
+      corretas: { cabeca: ['gorro','nenhum','coroa'], tronco: ['regata','rosa','azul'], pernas: ['short','bermuda','legging'], pes: ['chinelo','crocs','sandalia'], acessorios: ['oculos','nada','pulseira'] } },
+    { id: 'academia', nome: 'Academia com a Mamãe', emoji: '💪', bg: 'palco', descricao: 'Vamos fazer exercício!',
+      corretas: { cabeca: ['nenhum','bone','laco'], tronco: ['regata','rosa','verde'], pernas: ['legging','short','bermuda'], pes: ['tenis_branco','tenis_fechado','papete'], acessorios: ['relogio','nada','pulseira'] } },
+    { id: 'shopping', nome: 'Passeio no Shopping', emoji: '🛍️', bg: 'quarto', descricao: 'Vamos passear no shopping!',
+      corretas: { cabeca: ['laco','flores','bone'], tronco: ['roxo','vestido','azul'], pernas: ['jeans','saia_longa','legging'], pes: ['sapatilha','tenis_branco','salto'], acessorios: ['pulseira','relogio','oculos'] } },
+    { id: 'vovo', nome: 'Casa da Vovó', emoji: '👵', bg: 'jardim', descricao: 'Vamos visitar a vovó!',
+      corretas: { cabeca: ['flores','laco','nenhum'], tronco: ['verde','rosa','amarela'], pernas: ['jeans','saia_longa','bege'], pes: ['sapatilha','tenis_branco','sandalia'], acessorios: ['pulseira','relogio','nada'] } },
+    { id: 'festa', nome: 'Festa de Aniversário', emoji: '🎂', bg: 'palco', descricao: 'Vamos caprichar para a festa!',
+      corretas: { cabeca: ['coroa','laco','flores'], tronco: ['vestido','roxo','rosa'], pernas: ['saia_longa','legging','jeans'], pes: ['salto','sapatilha','sandalia'], acessorios: ['pulseira','relogio','cola'] } },
 ];
 
 const BG_CLASSES = { quarto: 'bg-quarto', jardim: 'bg-jardim', praia: 'bg-praia', palco: 'bg-palco' };
 
-function atualizarEstrelas() {
-    if (typeof obterEstrelas === 'function') starsEl.textContent = obterEstrelas();
+function atualizarEstrelas() { if (typeof obterEstrelas === 'function') starsEl.textContent = obterEstrelas(); }
+
+function getIconForOption(etapaId, optId) {
+    if (etapaId === 'cabeca') return iconHead(optId);
+    if (etapaId === 'tronco') return iconTrunk(optId);
+    if (etapaId === 'pernas') return iconLegs(optId);
+    if (etapaId === 'pes') return iconFeet(optId);
+    if (etapaId === 'acessorios') return iconAcc(optId);
+    return '';
 }
 
 function getOpcoes(etapaId) {
@@ -255,9 +125,7 @@ function selecionarPersonagem(g) {
     selectScreen.style.display = 'none';
     occasionScreen.style.display = 'block';
     renderizarOcasioes();
-    setTimeout(() => {
-        falar(g === 'menina' ? 'Que linda menina! Escolha a ocasião!' : 'Que legal menino! Escolha a ocasião!');
-    }, 300);
+    setTimeout(() => falar(g === 'menina' ? 'Que linda menina! Escolha a ocasião!' : 'Que legal menino! Escolha a ocasião!'), 300);
 }
 
 function renderizarOcasioes() {
@@ -277,24 +145,14 @@ function selecionarOcasiao(oc) {
     occasionScreen.style.display = 'none';
     dressScreen.style.display = 'flex';
     etapaAtual = 0;
-    acertosEtapa = 0;
-    estado = {
-        cabeca: null,
-        tronco: null,
-        pernas: null,
-        pes: null,
-        acessorios: null,
-        cabelo_cor: 'castanho',
-        cabelo_estilo: genero === 'menina' ? 'longo_liso' : 'curto',
-    };
+    estado = { cabeca: null, tronco: null, pernas: null, pes: null, acessorios: null,
+               cabelo_cor: 'castanho', cabelo_estilo: genero === 'menina' ? 'longo_liso' : 'curto' };
     dollWrapper.className = 'doll-wrapper ' + (BG_CLASSES[oc.bg] || '');
     bgSelector.querySelectorAll('.bg-btn').forEach(b => b.classList.toggle('active', b.dataset.bg === oc.bg));
     renderizarEtapa();
     renderizarBoneco();
     atualizarEstrelas();
-    setTimeout(() => {
-        falar(oc.descricao);
-    }, 300);
+    setTimeout(() => falar(oc.descricao), 300);
 }
 
 function renderizarEtapa() {
@@ -312,8 +170,6 @@ function renderizarEtapa() {
     const opcoes = getOpcoes(etapa.id);
     const corretas = ocasiaoAtual.corretas[etapa.id] || [];
     const metade = Math.ceil(opcoes.length / 2);
-    const leftList = opcoes.slice(0, metade);
-    const rightList = opcoes.slice(metade);
 
     function buildOptions(list, container) {
         container.innerHTML = '';
@@ -321,30 +177,24 @@ function renderizarEtapa() {
             const btn = document.createElement('button');
             const isCorrect = corretas.includes(o.id);
             btn.className = 'opt-btn' + (isCorrect ? ' hint-pulse' : '');
-            let display = o.emoji || '';
-            if (o.cor && !o.emoji) {
-                display = '<div style="width:36px;height:36px;border-radius:8px;background:' + o.cor + ';border:2px solid #ddd;"></div>';
-            }
-            btn.innerHTML = display + '<span class="opt-check">✓</span>';
+            btn.innerHTML = getIconForOption(etapa.id, o.id) + '<span class="opt-check">✓</span>';
             btn.title = o.nome;
             btn.onclick = (e) => escolherOpcao(etapa.id, o, isCorrect, e.currentTarget);
             container.appendChild(btn);
         });
     }
-    buildOptions(leftList, leftOptions);
-    buildOptions(rightList, rightOptions);
+    buildOptions(opcoes.slice(0, metade), leftOptions);
+    buildOptions(opcoes.slice(metade), rightOptions);
 }
 
 function escolherOpcao(etapaId, opcao, isCorrect, btnEl) {
     estado[etapaId] = opcao.id;
     renderizarBoneco();
-
     document.querySelectorAll('.opt-btn').forEach(b => { b.classList.remove('active'); b.style.pointerEvents = 'none'; });
     if (btnEl) btnEl.classList.add('active');
     document.querySelectorAll('.hint-pulse').forEach(b => b.classList.remove('hint-pulse'));
 
     if (isCorrect) {
-        acertosEtapa++;
         criarSparkle();
         falar('Muito bem! ' + opcao.nome + '!');
         if (typeof playSuccess === 'function') playSuccess();
@@ -357,8 +207,7 @@ function escolherOpcao(etapaId, opcao, isCorrect, btnEl) {
             const corretas = ocasiaoAtual.corretas[etapaId] || [];
             opcoes.forEach(o => {
                 if (corretas.includes(o.id)) {
-                    const btns = document.querySelectorAll('.opt-btn');
-                    btns.forEach(b => { if (b.title === o.nome) b.classList.add('hint-pulse'); });
+                    document.querySelectorAll('.opt-btn').forEach(b => { if (b.title === o.nome) b.classList.add('hint-pulse'); });
                 }
             });
             estado[etapaId] = null;
@@ -369,141 +218,237 @@ function escolherOpcao(etapaId, opcao, isCorrect, btnEl) {
 
     setTimeout(() => {
         etapaAtual++;
-        if (etapaAtual >= ETAPAS.length) {
-            finalizarFase();
-        } else {
-            renderizarEtapa();
-            const etapa = ETAPAS[etapaAtual];
-            setTimeout(() => falar(etapa.hint), 300);
-        }
+        if (etapaAtual >= ETAPAS.length) finalizarFase();
+        else { renderizarEtapa(); setTimeout(() => falar(ETAPAS[etapaAtual].hint), 300); }
     }, 1500);
 }
 
-function corCabelo() {
-    const c = CORES_CABELO.find(x => x.id === estado.cabelo_cor);
-    return c ? c.cor : '#6d4c41';
-}
+function corCabelo() { const c = CORES_CABELO.find(x => x.id === estado.cabelo_cor); return c ? c.cor : '#6d4c41'; }
 
+/* ====== DOLL SVG RENDERING ====== */
 function renderizarBoneco() {
     const cc = corCabelo();
-    const skin = '#ffccbc';
-    const skinDark = '#e0a999';
-    let svg = '';
-    const estilo = estado.cabelo_estilo;
+    const ccLight = shadeColor(cc, 15);
     const isGirl = genero === 'menina';
     const cx = 110;
+    const estilo = estado.cabelo_estilo || (isGirl ? 'longo_liso' : 'curto');
+    let svg = '';
 
     svg += '<defs>';
-    svg += '<linearGradient id="skinG" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ffe0d0"/><stop offset="100%" stop-color="#ffccbc"/></linearGradient>';
-    svg += '<linearGradient id="bodyG" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff3e0"/><stop offset="100%" stop-color="#ffe0b2"/></linearGradient>';
+    svg += '<linearGradient id="skinG" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ffe5d9"/><stop offset="100%" stop-color="#ffccbc"/></linearGradient>';
+    svg += '<linearGradient id="skinG2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#fff0e8"/><stop offset="100%" stop-color="#ffccbc"/></linearGradient>';
+    svg += '<radialGradient id="cheekG"><stop offset="0%" stop-color="#f48fb1" stop-opacity="0.5"/><stop offset="100%" stop-color="#f48fb1" stop-opacity="0"/></radialGradient>';
+    svg += '<linearGradient id="hairG" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="' + ccLight + '"/><stop offset="100%" stop-color="' + shadeColor(cc, -20) + '"/></linearGradient>';
     svg += '</defs>';
 
+    // ===== BODY (breathing) =====
+    svg += '<g class="doll-body">';
+
+    // Legs (skin)
+    svg += '<path d="M' + (cx-22) + ' 280 L' + (cx-22) + ' 395 Q' + (cx-22) + ' 405 ' + (cx-16) + ' 405 L' + (cx-10) + ' 405 Q' + (cx-8) + ' 405 ' + (cx-8) + ' 395 L' + (cx-8) + ' 285 Z" fill="url(#skinG2)" stroke="#e0a999" stroke-width="1.5"/>';
+    svg += '<path d="M' + (cx+8) + ' 285 L' + (cx+8) + ' 395 Q' + (cx+8) + ' 405 ' + (cx+10) + ' 405 L' + (cx+16) + ' 405 Q' + (cx+22) + ' 405 ' + (cx+22) + ' 395 L' + (cx+22) + ' 280 Z" fill="url(#skinG2)" stroke="#e0a999" stroke-width="1.5"/>';
+
+    // Arms
+    svg += '<g class="arm-left"><path d="M' + (cx-42) + ' 200 Q' + (cx-55) + ' 230 ' + (cx-52) + ' 270 Q' + (cx-50) + ' 280 ' + (cx-44) + ' 278 Q' + (cx-42) + ' 240 ' + (cx-38) + ' 210 Z" fill="url(#skinG2)" stroke="#e0a999" stroke-width="1.5"/></g>';
+    svg += '<g class="arm-right"><path d="M' + (cx+42) + ' 200 Q' + (cx+55) + ' 230 ' + (cx+52) + ' 270 Q' + (cx+50) + ' 280 ' + (cx+44) + ' 278 Q' + (cx+42) + ' 240 ' + (cx+38) + ' 210 Z" fill="url(#skinG2)" stroke="#e0a999" stroke-width="1.5"/></g>';
+
+    // Hands
+    svg += '<circle cx="' + (cx-48) + '" cy="278" r="8" fill="url(#skinG)" stroke="#e0a999" stroke-width="1.5"/>';
+    svg += '<circle cx="' + (cx+48) + '" cy="278" r="8" fill="url(#skinG)" stroke="#e0a999" stroke-width="1.5"/>';
+
+    // Torso base
+    svg += '<path d="M' + (cx-38) + ' 175 Q' + (cx-42) + ' 195 ' + (cx-40) + ' 210 L' + (cx-42) + ' 270 L' + (cx+42) + ' 270 L' + (cx+40) + ' 210 Q' + (cx+42) + ' 195 ' + (cx+38) + ' 175 Z" fill="url(#skinG2)" stroke="#e0a999" stroke-width="1.5"/>';
+
+    // Neck
+    svg += '<rect x="' + (cx-14) + '" y="155" width="28" height="28" rx="10" fill="url(#skinG)" stroke="#e0a999" stroke-width="1.5"/>';
+
+    // === TRONCO CLOTHING ===
     if (estado.tronco) {
-        const t = TRONCO_OPCOES.find(x => x.id === estado.tronco);
-        const tc = t ? t.cor : '#f48fb1';
+        const tc = getTroncoColor(estado.tronco);
+        const tcD = shadeColor(tc, -25);
         if (estado.tronco === 'vestido') {
-            svg += '<path d="M' + (cx-50) + ' 210 L' + (cx-50) + ' 290 L' + (cx-70) + ' 400 L' + (cx+70) + ' 400 L' + (cx+50) + ' 290 L' + (cx+50) + ' 210 Z" fill="' + tc + '" stroke="#c62828" stroke-width="2"/>';
-            svg += '<rect x="' + (cx-50) + '" y="200" width="100" height="22" rx="10" fill="' + tc + '" stroke="#c62828" stroke-width="2"/>';
+            svg += '<path d="M' + (cx-40) + ' 175 L' + (cx-42) + ' 210 L' + (cx-55) + ' 270 L' + (cx-75) + ' 390 L' + (cx+75) + ' 390 L' + (cx+55) + ' 270 L' + (cx+42) + ' 210 L' + (cx+40) + ' 175 Z" fill="' + tc + '" stroke="' + tcD + '" stroke-width="2"/>';
+            svg += '<path d="M' + (cx-38) + ' 178 Q' + (cx-30) + ' 172 ' + (cx-20) + ' 172 L' + (cx+20) + ' 172 Q' + (cx+30) + ' 172 ' + (cx+38) + ' 178" fill="none" stroke="' + tcD + '" stroke-width="1.5"/>';
+            svg += '<path d="M' + (cx-50) + ' 300 Q' + cx + ' 310 ' + (cx+50) + ' 300" fill="none" stroke="#fff" stroke-width="2" opacity="0.3"/>';
+            svg += '<circle cx="' + cx + '" cy="250" r="3" fill="#fff" opacity="0.3"/>';
+        } else if (['casaco','moletom','jaqueta'].includes(estado.tronco)) {
+            svg += '<path d="M' + (cx-42) + ' 172 Q' + (cx-45) + ' 195 ' + (cx-43) + ' 210 L' + (cx-45) + ' 272 L' + (cx+45) + ' 272 L' + (cx+43) + ' 210 Q' + (cx+45) + ' 195 ' + (cx+42) + ' 172 Z" fill="' + tc + '" stroke="' + tcD + '" stroke-width="2"/>';
+            svg += '<path d="M' + (cx-30) + ' 172 Q' + (cx-25) + ' 165 ' + cx + ' 170 Q' + (cx+25) + ' 165 ' + (cx+30) + ' 172 L' + (cx+25) + ' 180 L' + cx + ' 175 L' + (cx-25) + ' 180 Z" fill="' + shadeColor(tc, 10) + '" stroke="' + tcD + '" stroke-width="1.5"/>';
+            svg += '<line x1="' + cx + '" y1="175" x2="' + cx + '" y2="270" stroke="' + tcD + '" stroke-width="1.5" opacity="0.6"/>';
+            if (estado.tronco === 'casaco') { svg += '<circle cx="' + cx + '" cy="200" r="2" fill="' + tcD + '"/><circle cx="' + cx + '" cy="220" r="2" fill="' + tcD + '"/><circle cx="' + cx + '" cy="240" r="2" fill="' + tcD + '"/>'; }
+            if (estado.tronco === 'jaqueta') { svg += '<rect x="' + (cx-8) + '" y="195" width="16" height="4" rx="2" fill="#ffd700"/>'; }
+            if (estado.tronco === 'moletom') {
+                svg += '<path d="M' + (cx-43) + ' 255 L' + (cx+43) + ' 255 L' + (cx+46) + ' 272 L' + (cx-46) + ' 272 Z" fill="' + shadeColor(tc, -10) + '" stroke="' + tcD + '" stroke-width="1.5"/>';
+                svg += '<path d="M' + (cx-43) + ' 258 L' + (cx+43) + ' 258" stroke="#fff" stroke-width="1" opacity="0.3"/>';
+            }
+        } else if (estado.tronco === 'regata') {
+            svg += '<path d="M' + (cx-30) + ' 175 L' + (cx-35) + ' 172 L' + (cx-25) + ' 168 L' + (cx-15) + ' 172 L' + (cx+15) + ' 172 L' + (cx+25) + ' 168 L' + (cx+35) + ' 172 L' + (cx+30) + ' 175 L' + (cx+40) + ' 210 L' + (cx+42) + ' 270 L' + (cx-42) + ' 270 L' + (cx-40) + ' 210 Z" fill="' + tc + '" stroke="' + tcD + '" stroke-width="2"/>';
         } else {
-            svg += '<path d="M' + (cx-55) + ' 205 Q' + (cx-50) + ' 195 ' + (cx-35) + ' 195 L' + (cx+35) + ' 195 Q' + (cx+50) + ' 195 ' + (cx+55) + ' 205 L' + (cx+60) + ' 270 L' + (cx-60) + ' 270 Z" fill="' + tc + '" stroke="#333" stroke-width="2" opacity="0.9"/>';
-            if (['casaco','moletom','jaqueta'].includes(estado.tronco)) {
-                svg += '<path d="M' + (cx-55) + ' 205 L' + (cx-60) + ' 270 L' + (cx-45) + ' 270 L' + (cx-40) + ' 205 Z" fill="' + tc + '" stroke="#333" stroke-width="1" opacity="0.7"/>';
-                svg += '<path d="M' + cx + ' 195 L' + cx + ' 270" stroke="#333" stroke-width="1.5" opacity="0.5"/>';
-            }
+            svg += '<path d="M' + (cx-40) + ' 175 Q' + (cx-43) + ' 195 ' + (cx-41) + ' 210 L' + (cx-43) + ' 270 L' + (cx+43) + ' 270 L' + (cx+41) + ' 210 Q' + (cx+43) + ' 195 ' + (cx+40) + ' 175 Z" fill="' + tc + '" stroke="' + tcD + '" stroke-width="2"/>';
+            svg += '<path d="M' + (cx-18) + ' 175 Q' + (cx-12) + ' 170 ' + cx + ' 172 Q' + (cx+12) + ' 170 ' + (cx+18) + ' 175" fill="none" stroke="' + tcD + '" stroke-width="1.5"/>';
+            svg += '<path d="M' + (cx-35) + ' 210 Q' + cx + ' 215 ' + (cx+35) + ' 210" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.25"/>';
         }
     }
 
+    // === PERNAS CLOTHING ===
     if (estado.pernas && estado.tronco !== 'vestido') {
-        const p = PERNAS_OPCOES.find(x => x.id === estado.pernas);
-        if (p) {
-            if (['short','bermuda'].includes(p.id)) {
-                svg += '<rect x="' + (cx-35) + '" y="265" width="34" height="65" rx="8" fill="' + p.cor + '" stroke="#333" stroke-width="2"/>';
-                svg += '<rect x="' + (cx+1) + '" y="265" width="34" height="65" rx="8" fill="' + p.cor + '" stroke="#333" stroke-width="2"/>';
-            } else if (p.id === 'saia_longa') {
-                svg += '<path d="M' + (cx-55) + ' 265 L' + (cx+55) + ' 265 L' + (cx+70) + ' 390 L' + (cx-70) + ' 390 Z" fill="' + p.cor + '" stroke="#333" stroke-width="2"/>';
-            } else if (p.id === 'legging') {
-                svg += '<rect x="' + (cx-30) + '" y="265" width="28" height="130" rx="6" fill="' + p.cor + '" stroke="#333" stroke-width="2"/>';
-                svg += '<rect x="' + (cx+2) + '" y="265" width="28" height="130" rx="6" fill="' + p.cor + '" stroke="#333" stroke-width="2"/>';
-            } else {
-                svg += '<rect x="' + (cx-35) + '" y="265" width="34" height="130" rx="8" fill="' + p.cor + '" stroke="#333" stroke-width="2"/>';
-                svg += '<rect x="' + (cx+1) + '" y="265" width="34" height="130" rx="8" fill="' + p.cor + '" stroke="#333" stroke-width="2"/>';
+        const pc = getPernasColor(estado.pernas);
+        const pcD = shadeColor(pc, -25);
+        if (['short','bermuda'].includes(estado.pernas)) {
+            const h = estado.pernas === 'short' ? 55 : 75;
+            svg += '<path d="M' + (cx-30) + ' 270 L' + (cx-32) + ' ' + (270+h) + ' L' + (cx-10) + ' ' + (270+h) + ' L' + (cx-8) + ' 285 L' + (cx+8) + ' 285 L' + (cx+10) + ' ' + (270+h) + ' L' + (cx+32) + ' ' + (270+h) + ' L' + (cx+30) + ' 270 Z" fill="' + pc + '" stroke="' + pcD + '" stroke-width="2"/>';
+        } else if (estado.pernas === 'saia_longa') {
+            svg += '<path d="M' + (cx-40) + ' 270 L' + (cx+40) + ' 270 L' + (cx+65) + ' 395 L' + (cx-65) + ' 395 Z" fill="' + pc + '" stroke="' + pcD + '" stroke-width="2"/>';
+            svg += '<path d="M' + (cx-35) + ' 290 Q' + cx + ' 295 ' + (cx+35) + ' 290" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.2"/>';
+            svg += '<path d="M' + (cx-45) + ' 330 Q' + cx + ' 335 ' + (cx+45) + ' 330" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.2"/>';
+            svg += '<path d="M' + (cx-55) + ' 370 Q' + cx + ' 375 ' + (cx+55) + ' 370" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.2"/>';
+        } else if (estado.pernas === 'legging') {
+            svg += '<path d="M' + (cx-25) + ' 270 L' + (cx-27) + ' 395 L' + (cx-16) + ' 395 L' + (cx-14) + ' 285 L' + (cx+14) + ' 285 L' + (cx+16) + ' 395 L' + (cx+27) + ' 395 L' + (cx+25) + ' 270 Z" fill="' + pc + '" stroke="' + pcD + '" stroke-width="2"/>';
+        } else if (estado.pernas === 'calca_grossa') {
+            svg += '<path d="M' + (cx-32) + ' 270 L' + (cx-34) + ' 395 L' + (cx-18) + ' 395 L' + (cx-14) + ' 285 L' + (cx+14) + ' 285 L' + (cx+18) + ' 395 L' + (cx+34) + ' 395 L' + (cx+32) + ' 270 Z" fill="' + pc + '" stroke="' + pcD + '" stroke-width="2"/>';
+            svg += '<rect x="' + (cx-32) + '" y="270" width="64" height="6" rx="3" fill="' + shadeColor(pc,-10) + '" stroke="' + pcD + '" stroke-width="1"/>';
+        } else {
+            svg += '<path d="M' + (cx-30) + ' 270 L' + (cx-32) + ' 395 L' + (cx-16) + ' 395 L' + (cx-12) + ' 285 L' + (cx+12) + ' 285 L' + (cx+16) + ' 395 L' + (cx+32) + ' 395 L' + (cx+30) + ' 270 Z" fill="' + pc + '" stroke="' + pcD + '" stroke-width="2"/>';
+            if (estado.pernas === 'jeans') {
+                svg += '<rect x="' + (cx-30) + '" y="270" width="60" height="5" rx="2" fill="' + shadeColor(pc,-15) + '"/>';
+                svg += '<line x1="' + cx + '" y1="270" x2="' + cx + '" y2="285" stroke="' + pcD + '" stroke-width="1" opacity="0.4"/>';
             }
         }
     }
 
-    svg += '<rect x="' + (cx-17) + '" y="180" width="34" height="30" rx="12" fill="url(#skinG)" stroke="' + skinDark + '" stroke-width="1.5"/>';
-    svg += '<rect x="' + (cx-30) + '" y="200" width="60" height="15" rx="7" fill="' + skin + '" opacity="0.4"/>';
-
+    // === PÉS CLOTHING ===
     if (estado.pes) {
-        const sp = PES_OPCOES.find(x => x.id === estado.pes);
-        if (sp) {
-            if (sp.id === 'salto') {
-                svg += '<ellipse cx="' + (cx-30) + '" cy="405" rx="18" ry="8" fill="' + sp.cor + '" stroke="#880e4f" stroke-width="2"/>';
-                svg += '<rect x="' + (cx-34) + '" y="393" width="8" height="18" fill="' + sp.cor + '"/>';
-                svg += '<ellipse cx="' + (cx+10) + '" cy="405" rx="18" ry="8" fill="' + sp.cor + '" stroke="#880e4f" stroke-width="2"/>';
-                svg += '<rect x="' + (cx+6) + '" y="393" width="8" height="18" fill="' + sp.cor + '"/>';
-            } else if (sp.id === 'galocha') {
-                svg += '<path d="M' + (cx-48) + ' 380 L' + (cx-12) + ' 380 L' + (cx-12) + ' 415 L' + (cx-48) + ' 415 Z" fill="' + sp.cor + '" stroke="#e64a19" stroke-width="2" rx="6"/>';
-                svg += '<path d="M' + (cx+8) + ' 380 L' + (cx+44) + ' 380 L' + (cx+44) + ' 415 L' + (cx+8) + ' 415 Z" fill="' + sp.cor + '" stroke="#e64a19" stroke-width="2" rx="6"/>';
-            } else {
-                svg += '<ellipse cx="' + (cx-30) + '" cy="405" rx="18" ry="10" fill="' + sp.cor + '" stroke="#333" stroke-width="2"/>';
-                svg += '<ellipse cx="' + (cx+10) + '" cy="405" rx="18" ry="10" fill="' + sp.cor + '" stroke="#333" stroke-width="2"/>';
+        const sc = getPesColor(estado.pes);
+        const scD = shadeColor(sc, -25);
+        if (estado.pes === 'salto') {
+            svg += '<ellipse cx="' + (cx-16) + '" cy="402" rx="16" ry="7" fill="' + sc + '" stroke="' + scD + '" stroke-width="1.5"/>';
+            svg += '<rect x="' + (cx-20) + '" y="392" width="8" height="14" fill="' + sc + '"/>';
+            svg += '<ellipse cx="' + (cx+16) + '" cy="402" rx="16" ry="7" fill="' + sc + '" stroke="' + scD + '" stroke-width="1.5"/>';
+            svg += '<rect x="' + (cx+12) + '" y="392" width="8" height="14" fill="' + sc + '"/>';
+        } else if (estado.pes === 'galocha') {
+            svg += '<path d="M' + (cx-30) + ' 375 L' + (cx-8) + ' 375 L' + (cx-8) + ' 408 L' + (cx-30) + ' 408 Z" fill="' + sc + '" stroke="' + scD + '" stroke-width="2" rx="4"/>';
+            svg += '<path d="M' + (cx+8) + ' 375 L' + (cx+30) + ' 375 L' + (cx+30) + ' 408 L' + (cx+8) + ' 408 Z" fill="' + sc + '" stroke="' + scD + '" stroke-width="2" rx="4"/>';
+        } else if (estado.pes === 'bota_marrom') {
+            svg += '<path d="M' + (cx-28) + ' 380 L' + (cx-10) + ' 380 L' + (cx-10) + ' 405 L' + (cx-32) + ' 405 L' + (cx-32) + ' 390 Z" fill="' + sc + '" stroke="' + scD + '" stroke-width="2"/>';
+            svg += '<path d="M' + (cx+10) + ' 380 L' + (cx+28) + ' 380 L' + (cx+32) + ' 390 L' + (cx+32) + ' 405 L' + (cx+10) + ' 405 Z" fill="' + sc + '" stroke="' + scD + '" stroke-width="2"/>';
+        } else if (estado.pes === 'chinelo') {
+            svg += '<ellipse cx="' + (cx-16) + '" cy="402" rx="16" ry="8" fill="' + sc + '" stroke="' + scD + '" stroke-width="1.5"/>';
+            svg += '<path d="M' + (cx-22) + ' 395 L' + (cx-20) + ' 385 L' + (cx-12) + ' 385 L' + (cx-10) + ' 395" fill="none" stroke="' + scD + '" stroke-width="2"/>';
+            svg += '<ellipse cx="' + (cx+16) + '" cy="402" rx="16" ry="8" fill="' + sc + '" stroke="' + scD + '" stroke-width="1.5"/>';
+            svg += '<path d="M' + (cx+10) + ' 395 L' + (cx+12) + ' 385 L' + (cx+20) + ' 385 L' + (cx+22) + ' 395" fill="none" stroke="' + scD + '" stroke-width="2"/>';
+        } else if (estado.pes === 'crocs') {
+            svg += '<ellipse cx="' + (cx-16) + '" cy="402" rx="16" ry="9" fill="' + sc + '" stroke="' + scD + '" stroke-width="1.5"/>';
+            svg += '<circle cx="' + (cx-20) + '" cy="398" r="1.5" fill="' + scD + '"/><circle cx="' + (cx-14) + '" cy="396" r="1.5" fill="' + scD + '"/><circle cx="' + (cx-8) + '" cy="398" r="1.5" fill="' + scD + '"/>';
+            svg += '<ellipse cx="' + (cx+16) + '" cy="402" rx="16" ry="9" fill="' + sc + '" stroke="' + scD + '" stroke-width="1.5"/>';
+            svg += '<circle cx="' + (cx+8) + '" cy="398" r="1.5" fill="' + scD + '"/><circle cx="' + (cx+14) + '" cy="396" r="1.5" fill="' + scD + '"/><circle cx="' + (cx+20) + '" cy="398" r="1.5" fill="' + scD + '"/>';
+        } else {
+            svg += '<ellipse cx="' + (cx-16) + '" cy="402" rx="17" ry="9" fill="' + sc + '" stroke="' + scD + '" stroke-width="1.5"/>';
+            svg += '<ellipse cx="' + (cx+16) + '" cy="402" rx="17" ry="9" fill="' + sc + '" stroke="' + scD + '" stroke-width="1.5"/>';
+            if (estado.pes.includes('tenis')) {
+                svg += '<path d="M' + (cx-30) + ' 402 L' + (cx-2) + ' 402" stroke="' + scD + '" stroke-width="1"/>';
+                svg += '<path d="M' + (cx+2) + ' 402 L' + (cx+30) + ' 402" stroke="' + scD + '" stroke-width="1"/>';
+            }
+            if (estado.pes === 'sandalia') {
+                svg += '<path d="M' + (cx-22) + ' 394 L' + (cx-22) + ' 402 M' + (cx-16) + ' 392 L' + (cx-16) + ' 402 M' + (cx-10) + ' 394 L' + (cx-10) + ' 402" stroke="' + scD + '" stroke-width="1.5"/>';
+                svg += '<path d="M' + (cx+10) + ' 394 L' + (cx+10) + ' 402 M' + (cx+16) + ' 392 L' + (cx+16) + ' 402 M' + (cx+22) + ' 394 L' + (cx+22) + ' 402" stroke="' + scD + '" stroke-width="1.5"/>';
             }
         }
     }
 
-    svg += '<circle cx="' + cx + '" cy="105" r="45" fill="url(#skinG)" stroke="' + skinDark + '" stroke-width="2"/>';
-    svg += '<ellipse cx="' + (cx-26) + '" cy="105" rx="7" ry="9" fill="#fff" stroke="#333" stroke-width="1.5"/>';
-    svg += '<ellipse cx="' + (cx+26) + '" cy="105" rx="7" ry="9" fill="#fff" stroke="#333" stroke-width="1.5"/>';
-    svg += '<circle cx="' + (cx-25) + '" cy="107" r="4" fill="#1a237e"/>';
-    svg += '<circle cx="' + (cx+27) + '" cy="107" r="4" fill="#1a237e"/>';
-    svg += '<circle cx="' + (cx-24) + '" cy="106" r="1.5" fill="#fff"/>';
-    svg += '<circle cx="' + (cx+28) + '" cy="106" r="1.5" fill="#fff"/>';
-    svg += '<path d="M' + (cx-20) + ' 125 Q' + cx + ' 134 ' + (cx+20) + ' 125" fill="none" stroke="#d84315" stroke-width="2.5" stroke-linecap="round"/>';
-    svg += '<circle cx="' + (cx-34) + '" cy="118" r="7" fill="#f48fb1" opacity="0.4"/>';
-    svg += '<circle cx="' + (cx+34) + '" cy="118" r="7" fill="#f48fb1" opacity="0.4"/>';
-    svg += '<path d="M' + (cx-15) + ' 88 Q' + (cx-12) + ' 85 ' + (cx-8) + ' 88" fill="none" stroke="' + cc + '" stroke-width="2" opacity="0.5"/>';
-    svg += '<path d="M' + (cx+8) + ' 88 Q' + (cx+12) + ' 85 ' + (cx+15) + ' 88" fill="none" stroke="' + cc + '" stroke-width="2" opacity="0.5"/>';
+    svg += '</g>'; // end doll-body
 
+    // ===== HEAD (sway) =====
+    svg += '<g class="doll-head">';
+
+    // Hair back layer
+    if (estilo !== 'careca' && ['longo_liso','longo_ondas','rabo_cavalo','tranca'].includes(estilo)) {
+        svg += '<path d="M' + (cx-48) + ' 95 Q' + (cx-55) + ' 60 ' + cx + ' 48 Q' + (cx+55) + ' 60 ' + (cx+48) + ' 95 L' + (cx+48) + ' 180 Q' + (cx+45) + ' 185 ' + (cx+38) + ' 182 L' + (cx+38) + ' 120 L' + (cx-38) + ' 120 L' + (cx-38) + ' 182 Q' + (cx-45) + ' 185 ' + (cx-48) + ' 180 Z" fill="url(#hairG)"/>';
+    }
+
+    // Face
+    svg += '<circle cx="' + cx + '" cy="100" r="48" fill="url(#skinG)" stroke="#e0a999" stroke-width="2"/>';
+    // Ears
+    svg += '<ellipse cx="' + (cx-47) + '" cy="105" rx="6" ry="9" fill="url(#skinG2)" stroke="#e0a999" stroke-width="1.5"/>';
+    svg += '<ellipse cx="' + (cx+47) + '" cy="105" rx="6" ry="9" fill="url(#skinG2)" stroke="#e0a999" stroke-width="1.5"/>';
+    // Cheeks
+    svg += '<circle cx="' + (cx-28) + '" cy="115" r="12" fill="url(#cheekG)"/>';
+    svg += '<circle cx="' + (cx+28) + '" cy="115" r="12" fill="url(#cheekG)"/>';
+
+    // Eyes
+    svg += '<ellipse cx="' + (cx-18) + '" cy="100" rx="10" ry="12" fill="#fff" stroke="#e0a999" stroke-width="1"/>';
+    svg += '<ellipse cx="' + (cx+18) + '" cy="100" rx="10" ry="12" fill="#fff" stroke="#e0a999" stroke-width="1"/>';
+    svg += '<circle cx="' + (cx-17) + '" cy="102" r="7" fill="#4a90d9"/>';
+    svg += '<circle cx="' + (cx+19) + '" cy="102" r="7" fill="#4a90d9"/>';
+    svg += '<circle cx="' + (cx-17) + '" cy="102" r="4" fill="#1a237e"/>';
+    svg += '<circle cx="' + (cx+19) + '" cy="102" r="4" fill="#1a237e"/>';
+    svg += '<circle cx="' + (cx-15) + '" cy="99" r="2.5" fill="#fff"/>';
+    svg += '<circle cx="' + (cx+21) + '" cy="99" r="2.5" fill="#fff"/>';
+    // Eyelashes (girl)
+    if (isGirl) {
+        svg += '<path d="M' + (cx-26) + ' 92 Q' + (cx-28) + ' 88 ' + (cx-29) + ' 85" stroke="#333" stroke-width="1.5" fill="none" stroke-linecap="round"/>';
+        svg += '<path d="M' + (cx-22) + ' 90 Q' + (cx-22) + ' 86 ' + (cx-22) + ' 83" stroke="#333" stroke-width="1.5" fill="none" stroke-linecap="round"/>';
+        svg += '<path d="M' + (cx+26) + ' 92 Q' + (cx+28) + ' 88 ' + (cx+29) + ' 85" stroke="#333" stroke-width="1.5" fill="none" stroke-linecap="round"/>';
+        svg += '<path d="M' + (cx+22) + ' 90 Q' + (cx+22) + ' 86 ' + (cx+22) + ' 83" stroke="#333" stroke-width="1.5" fill="none" stroke-linecap="round"/>';
+    }
+    // Eyelids (blink)
+    svg += '<rect class="eyelid" x="' + (cx-29) + '" y="88" width="22" height="24" fill="url(#skinG)" rx="11" opacity="0"/>';
+    svg += '<rect class="eyelid" x="' + (cx+7) + '" y="88" width="22" height="24" fill="url(#skinG)" rx="11" opacity="0"/>';
+
+    // Nose
+    svg += '<path d="M' + (cx-2) + ' 112 Q' + cx + ' 116 ' + (cx+2) + ' 112" fill="none" stroke="#e0a999" stroke-width="1.5" stroke-linecap="round"/>';
+
+    // Mouth
+    svg += '<path d="M' + (cx-12) + ' 128 Q' + cx + ' 138 ' + (cx+12) + ' 128" fill="#e91e63" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round"/>';
+    svg += '<path d="M' + (cx-10) + ' 129 Q' + cx + ' 135 ' + (cx+10) + ' 129" fill="#f48fb1" opacity="0.5"/>';
+    svg += '<path d="M' + (cx-13) + ' 128 Q' + (cx-8) + ' 126 ' + cx + ' 127 Q' + (cx+8) + ' 126 ' + (cx+13) + ' 128" fill="none" stroke="#c2185b" stroke-width="1" opacity="0.5"/>';
+
+    // === HAIR (front) ===
     if (estilo !== 'careca') {
-        if (estilo === 'longo_liso') {
-            svg += '<path d="M' + (cx-52) + ' 95 Q' + (cx-55) + ' 65 ' + cx + ' 55 Q' + (cx+55) + ' 65 ' + (cx+52) + ' 95 L' + (cx+52) + ' 190 Q' + (cx+50) + ' 195 ' + (cx+40) + ' 192 L' + (cx+40) + ' 125 L' + (cx-40) + ' 125 L' + (cx-40) + ' 192 Q' + (cx-50) + ' 195 ' + (cx-52) + ' 190 Z" fill="' + cc + '"/>';
-        } else if (estilo === 'longo_ondas') {
-            svg += '<path d="M' + (cx-52) + ' 95 Q' + (cx-60) + ' 65 ' + cx + ' 53 Q' + (cx+60) + ' 65 ' + (cx+52) + ' 95 Q' + (cx+58) + ' 115 ' + (cx+52) + ' 135 Q' + (cx+58) + ' 155 ' + (cx+52) + ' 175 Q' + (cx+50) + ' 185 ' + (cx+40) + ' 183 L' + (cx+40) + ' 125 L' + (cx-40) + ' 125 L' + (cx-40) + ' 183 Q' + (cx-50) + ' 185 ' + (cx-52) + ' 175 Q' + (cx-58) + ' 155 ' + (cx-52) + ' 135 Q' + (cx-58) + ' 115 ' + (cx-52) + ' 95 Z" fill="' + cc + '"/>';
+        if (estilo === 'longo_liso' || estilo === 'longo_ondas') {
+            svg += '<path d="M' + (cx-50) + ' 95 Q' + (cx-55) + ' 55 ' + cx + ' 45 Q' + (cx+55) + ' 55 ' + (cx+50) + ' 95 L' + (cx+50) + ' 105 Q' + (cx+40) + ' 100 ' + (cx+35) + ' 105 L' + (cx-35) + ' 105 Q' + (cx-40) + ' 100 ' + (cx-50) + ' 105 Z" fill="url(#hairG)"/>';
+            svg += '<path d="M' + (cx-35) + ' 80 Q' + (cx-25) + ' 68 ' + cx + ' 65 Q' + (cx+25) + ' 68 ' + (cx+35) + ' 80 L' + (cx+35) + ' 92 Q' + (cx+20) + ' 85 ' + cx + ' 88 Q' + (cx-20) + ' 85 ' + (cx-35) + ' 92 Z" fill="url(#hairG)"/>';
+            if (estilo === 'longo_ondas') {
+                svg += '<path d="M' + (cx-48) + ' 130 Q' + (cx-52) + ' 145 ' + (cx-46) + ' 160 Q' + (cx-52) + ' 170 ' + (cx-44) + ' 178" fill="none" stroke="url(#hairG)" stroke-width="8" stroke-linecap="round"/>';
+                svg += '<path d="M' + (cx+48) + ' 130 Q' + (cx+52) + ' 145 ' + (cx+46) + ' 160 Q' + (cx+52) + ' 170 ' + (cx+44) + ' 178" fill="none" stroke="url(#hairG)" stroke-width="8" stroke-linecap="round"/>';
+            }
         } else if (estilo === 'curto') {
             if (isGirl) {
-                svg += '<path d="M' + (cx-48) + ' 93 Q' + (cx-52) + ' 63 ' + cx + ' 55 Q' + (cx+52) + ' 63 ' + (cx+48) + ' 93 L' + (cx+48) + ' 110 Q' + (cx+40) + ' 105 ' + (cx+35) + ' 110 L' + (cx-35) + ' 110 Q' + (cx-40) + ' 105 ' + (cx-48) + ' 110 Z" fill="' + cc + '"/>';
+                svg += '<path d="M' + (cx-48) + ' 92 Q' + (cx-52) + ' 55 ' + cx + ' 45 Q' + (cx+52) + ' 55 ' + (cx+48) + ' 92 L' + (cx+48) + ' 105 Q' + (cx+40) + ' 100 ' + (cx+35) + ' 105 L' + (cx-35) + ' 105 Q' + (cx-40) + ' 100 ' + (cx-48) + ' 105 Z" fill="url(#hairG)"/>';
+                svg += '<path d="M' + (cx-35) + ' 78 Q' + (cx-20) + ' 65 ' + cx + ' 63 Q' + (cx+20) + ' 65 ' + (cx+35) + ' 78 L' + (cx+35) + ' 90 Q' + (cx+20) + ' 85 ' + cx + ' 88 Q' + (cx-20) + ' 85 ' + (cx-35) + ' 90 Z" fill="url(#hairG)"/>';
             } else {
-                svg += '<path d="M' + (cx-50) + ' 90 Q' + (cx-52) + ' 60 ' + cx + ' 53 Q' + (cx+52) + ' 60 ' + (cx+50) + ' 90 L' + (cx+50) + ' 100 Q' + (cx+40) + ' 95 ' + (cx+30) + ' 97 L' + (cx-30) + ' 97 Q' + (cx-40) + ' 95 ' + (cx-50) + ' 100 Z" fill="' + cc + '"/>';
+                svg += '<path d="M' + (cx-50) + ' 90 Q' + (cx-52) + ' 55 ' + cx + ' 48 Q' + (cx+52) + ' 55 ' + (cx+50) + ' 90 L' + (cx+50) + ' 100 Q' + (cx+40) + ' 95 ' + (cx+30) + ' 97 L' + (cx-30) + ' 97 Q' + (cx-40) + ' 95 ' + (cx-50) + ' 100 Z" fill="url(#hairG)"/>';
             }
         } else if (estilo === 'rabo_cavalo') {
-            svg += '<path d="M' + (cx-48) + ' 93 Q' + (cx-52) + ' 63 ' + cx + ' 55 Q' + (cx+52) + ' 63 ' + (cx+48) + ' 93 L' + (cx+48) + ' 105 Q' + (cx+40) + ' 101 ' + (cx+35) + ' 105 L' + (cx-35) + ' 105 Q' + (cx-40) + ' 101 ' + (cx-48) + ' 105 Z" fill="' + cc + '"/>';
-            svg += '<path d="M' + (cx+45) + ' 85 Q' + (cx+70) + ' 105 ' + (cx+65) + ' 165 Q' + (cx+60) + ' 175 ' + (cx+50) + ' 170 Q' + (cx+55) + ' 125 ' + (cx+40) + ' 100 Z" fill="' + cc + '"/>';
+            svg += '<path d="M' + (cx-48) + ' 93 Q' + (cx-52) + ' 58 ' + cx + ' 48 Q' + (cx+52) + ' 58 ' + (cx+48) + ' 93 L' + (cx+48) + ' 105 Q' + (cx+40) + ' 101 ' + (cx+35) + ' 105 L' + (cx-35) + ' 105 Q' + (cx-40) + ' 101 ' + (cx-48) + ' 105 Z" fill="url(#hairG)"/>';
+            svg += '<path d="M' + (cx+45) + ' 85 Q' + (cx+70) + ' 105 ' + (cx+65) + ' 165 Q' + (cx+60) + ' 175 ' + (cx+50) + ' 170 Q' + (cx+55) + ' 125 ' + (cx+40) + ' 100 Z" fill="url(#hairG)"/>';
         } else if (estilo === 'tranca') {
-            svg += '<path d="M' + (cx-48) + ' 93 Q' + (cx-52) + ' 63 ' + cx + ' 55 Q' + (cx+52) + ' 63 ' + (cx+48) + ' 93 L' + (cx+48) + ' 105 Q' + (cx+40) + ' 101 ' + (cx+35) + ' 105 L' + (cx-35) + ' 105 Q' + (cx-40) + ' 101 ' + (cx-48) + ' 105 Z" fill="' + cc + '"/>';
-            svg += '<path d="M' + (cx-20) + ' 105 L' + (cx+20) + ' 105 L' + (cx+18) + ' 135 L' + (cx+22) + ' 145 L' + (cx+18) + ' 155 L' + (cx+22) + ' 165 L' + (cx+18) + ' 175 L' + (cx+22) + ' 185" fill="none" stroke="' + cc + '" stroke-width="7" stroke-linecap="round"/>';
+            svg += '<path d="M' + (cx-48) + ' 93 Q' + (cx-52) + ' 58 ' + cx + ' 48 Q' + (cx+52) + ' 58 ' + (cx+48) + ' 93 L' + (cx+48) + ' 105 Q' + (cx+40) + ' 101 ' + (cx+35) + ' 105 L' + (cx-35) + ' 105 Q' + (cx-40) + ' 101 ' + (cx-48) + ' 105 Z" fill="url(#hairG)"/>';
+            svg += '<path d="M' + (cx-20) + ' 105 L' + (cx+20) + ' 105 L' + (cx+18) + ' 135 L' + (cx+22) + ' 145 L' + (cx+18) + ' 155 L' + (cx+22) + ' 165 L' + (cx+18) + ' 175 L' + (cx+22) + ' 185" fill="none" stroke="url(#hairG)" stroke-width="7" stroke-linecap="round"/>';
         } else if (estilo === 'cocar') {
-            svg += '<path d="M' + (cx-48) + ' 93 Q' + (cx-52) + ' 63 ' + cx + ' 55 Q' + (cx+52) + ' 63 ' + (cx+48) + ' 93 L' + (cx+48) + ' 105 Q' + (cx+40) + ' 101 ' + (cx+35) + ' 105 L' + (cx-35) + ' 105 Q' + (cx-40) + ' 101 ' + (cx-48) + ' 105 Z" fill="' + cc + '"/>';
-            svg += '<circle cx="' + cx + '" cy="65" r="22" fill="' + cc + '" opacity="0.85"/>';
+            svg += '<path d="M' + (cx-48) + ' 93 Q' + (cx-52) + ' 58 ' + cx + ' 48 Q' + (cx+52) + ' 58 ' + (cx+48) + ' 93 L' + (cx+48) + ' 105 Q' + (cx+40) + ' 101 ' + (cx+35) + ' 105 L' + (cx-35) + ' 105 Q' + (cx-40) + ' 101 ' + (cx-48) + ' 105 Z" fill="url(#hairG)"/>';
+            svg += '<circle cx="' + cx + '" cy="65" r="22" fill="url(#hairG)" opacity="0.85"/>';
         } else if (estilo === 'moicano') {
-            svg += '<path d="M' + (cx-50) + ' 90 Q' + (cx-52) + ' 60 ' + cx + ' 53 Q' + (cx+52) + ' 60 ' + (cx+50) + ' 90 L' + (cx+50) + ' 100 Q' + (cx+40) + ' 95 ' + (cx+30) + ' 97 L' + (cx-30) + ' 97 Q' + (cx-40) + ' 95 ' + (cx-50) + ' 100 Z" fill="' + cc + '"/>';
-            svg += '<path d="M' + (cx-25) + ' 55 L' + (cx+25) + ' 55 L' + (cx+20) + ' 38 L' + (cx-20) + ' 38 Z" fill="' + cc + '"/>';
+            svg += '<path d="M' + (cx-50) + ' 90 Q' + (cx-52) + ' 55 ' + cx + ' 48 Q' + (cx+52) + ' 55 ' + (cx+50) + ' 90 L' + (cx+50) + ' 100 Q' + (cx+40) + ' 95 ' + (cx+30) + ' 97 L' + (cx-30) + ' 97 Q' + (cx-40) + ' 95 ' + (cx-50) + ' 100 Z" fill="url(#hairG)"/>';
+            svg += '<path d="M' + (cx-25) + ' 55 L' + (cx+25) + ' 55 L' + (cx+20) + ' 38 L' + (cx-20) + ' 38 Z" fill="url(#hairG)"/>';
         } else if (estilo === 'lateral') {
-            svg += '<path d="M' + (cx-55) + ' 90 Q' + (cx-55) + ' 60 ' + cx + ' 53 Q' + (cx+55) + ' 60 ' + (cx+55) + ' 90 L' + (cx+55) + ' 100 Q' + (cx+45) + ' 95 ' + (cx+35) + ' 97 L' + (cx-35) + ' 97 Q' + (cx-45) + ' 95 ' + (cx-55) + ' 100 Z" fill="' + cc + '"/>';
+            svg += '<path d="M' + (cx-55) + ' 90 Q' + (cx-55) + ' 55 ' + cx + ' 48 Q' + (cx+55) + ' 55 ' + (cx+55) + ' 90 L' + (cx+55) + ' 100 Q' + (cx+45) + ' 95 ' + (cx+35) + ' 97 L' + (cx-35) + ' 97 Q' + (cx-45) + ' 95 ' + (cx-55) + ' 100 Z" fill="url(#hairG)"/>';
         } else if (estilo === 'cacheado') {
             for (let px = (cx-48); px <= (cx+48); px += 13) {
-                svg += '<circle cx="' + px + '" cy="75" r="13" fill="' + cc + '"/>';
-                svg += '<circle cx="' + px + '" cy="90" r="11" fill="' + cc + '"/>';
+                svg += '<circle cx="' + px + '" cy="75" r="13" fill="url(#hairG)"/>';
+                svg += '<circle cx="' + px + '" cy="90" r="11" fill="url(#hairG)"/>';
             }
-            svg += '<circle cx="' + cx + '" cy="60" r="15" fill="' + cc + '"/>';
+            svg += '<circle cx="' + cx + '" cy="60" r="15" fill="url(#hairG)"/>';
         }
     }
 
+    // === HEAD WEAR ===
     if (estado.cabeca && estado.cabeca !== 'nenhum') {
         if (estado.cabeca === 'coroa') {
             svg += '<path d="M' + (cx-35) + ' 60 L' + (cx-30) + ' 38 L' + (cx-22) + ' 55 L' + cx + ' 33 L' + (cx+22) + ' 55 L' + (cx+30) + ' 38 L' + (cx+35) + ' 60 Z" fill="#ffd700" stroke="#f57f17" stroke-width="2"/>';
             svg += '<rect x="' + (cx-35) + '" y="58" width="70" height="7" rx="3" fill="#ffd700" stroke="#f57f17" stroke-width="1.5"/>';
             svg += '<circle cx="' + cx + '" cy="42" r="3.5" fill="#e91e63"/>';
+            svg += '<circle cx="' + (cx-22) + '" cy="52" r="2.5" fill="#42a5f5"/>';
+            svg += '<circle cx="' + (cx+22) + '" cy="52" r="2.5" fill="#66bb6a"/>';
         } else if (estado.cabeca === 'laco') {
             svg += '<path d="M' + (cx-25) + ' 60 Q' + (cx-35) + ' 50 ' + (cx-30) + ' 43 Q' + (cx-20) + ' 40 ' + (cx-15) + ' 53 Z" fill="#ec407a" stroke="#c2185b" stroke-width="1.5"/>';
             svg += '<path d="M' + (cx+25) + ' 60 Q' + (cx+35) + ' 50 ' + (cx+30) + ' 43 Q' + (cx+20) + ' 40 ' + (cx+15) + ' 53 Z" fill="#ec407a" stroke="#c2185b" stroke-width="1.5"/>';
@@ -518,33 +463,44 @@ function renderizarBoneco() {
         } else if (estado.cabeca === 'bone') {
             svg += '<path d="M' + (cx-45) + ' 65 Q' + (cx-45) + ' 48 ' + cx + ' 45 Q' + (cx+45) + ' 48 ' + (cx+45) + ' 65 L' + (cx+45) + ' 70 L' + (cx-45) + ' 70 Z" fill="#42a5f5" stroke="#1565c0" stroke-width="2"/>';
             svg += '<path d="M' + (cx+45) + ' 65 Q' + (cx+60) + ' 67 ' + (cx+60) + ' 73 L' + (cx+45) + ' 73 Z" fill="#42a5f5" stroke="#1565c0" stroke-width="2"/>';
+            svg += '<path d="M' + (cx-40) + ' 52 L' + (cx+40) + ' 52" stroke="#1565c0" stroke-width="1" opacity="0.4"/>';
         } else if (estado.cabeca === 'cowboy') {
             svg += '<ellipse cx="' + cx + '" cy="63" rx="55" ry="9" fill="#8d6e63" stroke="#5d4037" stroke-width="2"/>';
             svg += '<path d="M' + (cx-25) + ' 63 Q' + (cx-25) + ' 38 ' + cx + ' 36 Q' + (cx+25) + ' 38 ' + (cx+25) + ' 63 Z" fill="#8d6e63" stroke="#5d4037" stroke-width="2"/>';
+            svg += '<rect x="' + (cx-25) + '" y="58" width="50" height="5" rx="2" fill="#6d4c41"/>';
         } else if (estado.cabeca === 'pirata') {
             svg += '<path d="M' + (cx-45) + ' 65 Q' + (cx-45) + ' 43 ' + cx + ' 41 Q' + (cx+45) + ' 43 ' + (cx+45) + ' 65 L' + (cx+45) + ' 70 L' + (cx-45) + ' 70 Z" fill="#212121" stroke="#000" stroke-width="2"/>';
             svg += '<circle cx="' + cx + '" cy="54" r="9" fill="#fff"/>';
+            svg += '<circle cx="' + cx + '" cy="54" r="5" fill="#212121"/>';
         } else if (estado.cabeca === 'gorro') {
             svg += '<path d="M' + (cx-40) + ' 65 Q' + (cx-40) + ' 35 ' + cx + ' 33 Q' + (cx+40) + ' 35 ' + (cx+40) + ' 65 Z" fill="#e53935" stroke="#c62828" stroke-width="2"/>';
             svg += '<circle cx="' + cx + '" cy="35" r="6" fill="#fff"/>';
             svg += '<rect x="' + (cx-42) + '" y="62" width="84" height="8" rx="4" fill="#fff" opacity="0.8"/>';
+            svg += '<path d="M' + (cx-30) + ' 45 L' + (cx-25) + ' 40 L' + (cx-20) + ' 45" stroke="#c62828" stroke-width="1" opacity="0.3"/>';
         } else if (estado.cabeca === 'orelhas') {
-            svg += '<path d="M' + (cx-40) + ' 70 L' + (cx-45) + ' 45 L' + (cx-30) + ' 55 Z" fill="' + cc + '"/>';
-            svg += '<path d="M' + (cx+40) + ' 70 L' + (cx+45) + ' 45 L' + (cx+30) + ' 55 Z" fill="' + cc + '"/>';
+            svg += '<path d="M' + (cx-40) + ' 70 L' + (cx-45) + ' 45 L' + (cx-30) + ' 55 Z" fill="url(#hairG)"/>';
+            svg += '<path d="M' + (cx+40) + ' 70 L' + (cx+45) + ' 45 L' + (cx+30) + ' 55 Z" fill="url(#hairG)"/>';
             svg += '<path d="M' + (cx-38) + ' 65 L' + (cx-40) + ' 52 L' + (cx-33) + ' 58 Z" fill="#f48fb1"/>';
             svg += '<path d="M' + (cx+38) + ' 65 L' + (cx+40) + ' 52 L' + (cx+33) + ' 58 Z" fill="#f48fb1"/>';
         }
     }
 
+    svg += '</g>'; // end doll-head
+
+    // === ACESSORIOS ===
     if (estado.acessorios && estado.acessorios !== 'nada') {
         if (estado.acessorios === 'relogio') {
             svg += '<circle cx="' + (cx-55) + '" cy="230" r="8" fill="#333" stroke="#ffd700" stroke-width="2"/>';
             svg += '<circle cx="' + (cx-55) + '" cy="230" r="4" fill="#fff"/>';
+            svg += '<line x1="' + (cx-55) + '" y1="230" x2="' + (cx-55) + '" y2="226" stroke="#333" stroke-width="1"/>';
+            svg += '<line x1="' + (cx-55) + '" y1="230" x2="' + (cx-52) + '" y2="230" stroke="#333" stroke-width="1"/>';
         } else if (estado.acessorios === 'pulseira') {
             svg += '<rect x="' + (cx+48) + '" y="225" width="14" height="6" rx="3" fill="#ffd700" stroke="#f57f17" stroke-width="1"/>';
+            svg += '<circle cx="' + (cx+55) + '" cy="228" r="2" fill="#e91e63"/>';
         } else if (estado.acessorios === 'cachecol') {
             svg += '<path d="M' + (cx-50) + ' 195 Q' + cx + ' 205 ' + (cx+50) + ' 195 L' + (cx+50) + ' 215 Q' + cx + ' 225 ' + (cx-50) + ' 215 Z" fill="#e53935" stroke="#c62828" stroke-width="2"/>';
             svg += '<path d="M' + (cx+40) + ' 210 L' + (cx+50) + ' 240 L' + (cx+35) + ' 235 Z" fill="#e53935" stroke="#c62828" stroke-width="1.5"/>';
+            svg += '<path d="M' + (cx-45) + ' 200 L' + (cx+45) + ' 200" stroke="#fff" stroke-width="1" opacity="0.3"/>';
         } else if (estado.acessorios === 'luvas') {
             svg += '<rect x="' + (cx-65) + '" y="240" width="18" height="25" rx="6" fill="#42a5f5" stroke="#1565c0" stroke-width="2"/>';
             svg += '<rect x="' + (cx+47) + '" y="240" width="18" height="25" rx="6" fill="#42a5f5" stroke="#1565c0" stroke-width="2"/>';
@@ -552,18 +508,20 @@ function renderizarBoneco() {
             svg += '<ellipse cx="' + cx + '" cy="58" rx="40" ry="18" fill="#66bb6a" stroke="#2e7d32" stroke-width="2"/>';
             svg += '<circle cx="' + cx + '" cy="48" r="6" fill="#fff"/>';
         } else if (estado.acessorios === 'oculos') {
-            svg += '<circle cx="' + (cx-18) + '" cy="105" r="12" fill="none" stroke="#333" stroke-width="3"/>';
-            svg += '<circle cx="' + (cx+18) + '" cy="105" r="12" fill="none" stroke="#333" stroke-width="3"/>';
+            svg += '<circle cx="' + (cx-18) + '" cy="105" r="12" fill="rgba(33,33,33,0.2)" stroke="#333" stroke-width="3"/>';
+            svg += '<circle cx="' + (cx+18) + '" cy="105" r="12" fill="rgba(33,33,33,0.2)" stroke="#333" stroke-width="3"/>';
             svg += '<path d="M' + (cx-6) + ' 105 L' + (cx+6) + ' 105" stroke="#333" stroke-width="3"/>';
         } else if (estado.acessorios === 'mochila') {
             svg += '<rect x="' + (cx-70) + '" y="210" width="25" height="40" rx="8" fill="#66bb6a" stroke="#2e7d32" stroke-width="2"/>';
             svg += '<rect x="' + (cx-68) + '" y="220" width="21" height="12" rx="4" fill="#fff" opacity="0.4"/>';
+            svg += '<path d="M' + (cx-65) + ' 210 Q' + (cx-60) + ' 200 ' + (cx-50) + ' 205" fill="none" stroke="#2e7d32" stroke-width="2"/>';
         } else if (estado.acessorios === 'cinto') {
             svg += '<rect x="' + (cx-40) + '" y="262" width="80" height="8" fill="#5d4037" stroke="#3e2723" stroke-width="1"/>';
             svg += '<rect x="' + (cx-6) + '" y="262" width="12" height="8" fill="#ffd700"/>';
         } else if (estado.acessorios === 'cola') {
-            svg += '<circle cx="' + (cx+55) + '" cy="230" r="5" fill="#4caf50"/>';
+            svg += '<circle cx="' + (cx+55) + '" cy="230" r="5" fill="#4caf50" stroke="#2e7d32" stroke-width="1.5"/>';
             svg += '<path d="M' + (cx+55) + ' 235 L' + (cx+55) + ' 255" stroke="#4caf50" stroke-width="2"/>';
+            svg += '<circle cx="' + (cx+53) + '" cy="228" r="1.5" fill="#fff"/>';
         }
     }
 
@@ -573,39 +531,34 @@ function renderizarBoneco() {
 function criarSparkle() {
     const s = document.createElement('div');
     s.className = 'sparkle';
-    s.textContent = ['✨', '⭐', '💫', '🌟'][Math.floor(Math.random() * 4)];
-    s.style.left = (30 + Math.random() * 40) + '%';
-    s.style.top = (20 + Math.random() * 60) + '%';
+    s.textContent = ['✨','⭐','💫','🌟'][Math.floor(Math.random()*4)];
+    s.style.left = (30 + Math.random()*40) + '%';
+    s.style.top = (20 + Math.random()*60) + '%';
     dollWrapper.appendChild(s);
     setTimeout(() => s.remove(), 800);
 }
 
 function finalizarFase() {
     const svgClone = dollSvg.cloneNode(true);
-    svgClone.setAttribute('viewBox', '0 0 220 440');
+    svgClone.setAttribute('viewBox', '0 0 220 460');
     finalDoll.innerHTML = '';
     finalDoll.appendChild(svgClone);
-
     celebTitle.textContent = 'Você vestiu para ' + ocasiaoAtual.nome + '! ' + ocasiaoAtual.emoji;
     celebration.style.display = 'flex';
-
     falar('Parabéns! Você vestiu a boneca para ' + ocasiaoAtual.nome + '!');
     if (typeof playSuccess === 'function') playSuccess();
     if (typeof adicionarEstrelas === 'function') adicionarEstrelas(3);
     atualizarEstrelas();
-
-    for (let i = 0; i < 40; i++) {
-        setTimeout(() => criarConfetti(), i * 50);
-    }
+    for (let i = 0; i < 40; i++) setTimeout(() => criarConfetti(), i*50);
 }
 
 function criarConfetti() {
     const c = document.createElement('div');
     c.className = 'confetti';
-    c.style.left = Math.random() * 100 + 'vw';
-    c.style.background = ['#e91e63', '#9c27b0', '#3f51b5', '#03a9f4', '#009688', '#ffeb3b', '#ff9800', '#f44336'][Math.floor(Math.random() * 8)];
+    c.style.left = Math.random()*100 + 'vw';
+    c.style.background = ['#e91e63','#9c27b0','#3f51b5','#03a9f4','#009688','#ffeb3b','#ff9800','#f44336'][Math.floor(Math.random()*8)];
     c.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
-    c.style.animationDuration = (2 + Math.random() * 2) + 's';
+    c.style.animationDuration = (2 + Math.random()*2) + 's';
     document.body.appendChild(c);
     setTimeout(() => c.remove(), 4000);
 }
@@ -614,21 +567,13 @@ function reiniciar() {
     celebration.style.display = 'none';
     dressScreen.style.display = 'none';
     occasionScreen.style.display = 'block';
-    genero = null;
-    ocasiaoAtual = null;
-    etapaAtual = 0;
-    estado = {};
-    leftOptions.innerHTML = '';
-    rightOptions.innerHTML = '';
+    genero = null; ocasiaoAtual = null; etapaAtual = 0; estado = {};
+    leftOptions.innerHTML = ''; rightOptions.innerHTML = '';
     dollWrapper.className = 'doll-wrapper';
 }
 
-document.querySelectorAll('.char-btn').forEach(btn => {
-    btn.onclick = () => selecionarPersonagem(btn.dataset.genero);
-});
-
+document.querySelectorAll('.char-btn').forEach(btn => { btn.onclick = () => selecionarPersonagem(btn.dataset.genero); });
 btnRestart.onclick = reiniciar;
-
 bgSelector.querySelectorAll('.bg-btn').forEach(btn => {
     btn.onclick = () => {
         dollWrapper.className = 'doll-wrapper ' + (BG_CLASSES[btn.dataset.bg] || '');
