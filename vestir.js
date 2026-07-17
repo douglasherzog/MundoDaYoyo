@@ -33,16 +33,16 @@ const CORES_CABELO = [
 
 const CABECA_OPCOES = [
     { id: 'bone', nome: 'boné' }, { id: 'boina', nome: 'boina' },
-    { id: 'flores', nome: 'flores' }, { id: 'coroa', nome: 'coroa' },
+    { id: 'flores', nome: 'flores', g: 'f' }, { id: 'coroa', nome: 'coroa' },
     { id: 'cowboy', nome: 'chapéu de cowboy' }, { id: 'pirata', nome: 'chapéu de pirata' },
-    { id: 'laco', nome: 'laço' }, { id: 'gorro', nome: 'gorro' },
-    { id: 'orelhas', nome: 'orelhas de gato' }, { id: 'nenhum', nome: 'sem chapéu' },
+    { id: 'laco', nome: 'laço', g: 'f' }, { id: 'gorro', nome: 'gorro' },
+    { id: 'orelhas', nome: 'orelhas de gato', g: 'f' }, { id: 'nenhum', nome: 'sem chapéu' },
 ];
 
 const TRONCO_OPCOES = [
     { id: 'rosa', nome: 'blusa rosa' }, { id: 'verde', nome: 'blusa verde' },
     { id: 'azul', nome: 'blusa azul' }, { id: 'amarela', nome: 'blusa amarela' },
-    { id: 'roxo', nome: 'blusa roxa' }, { id: 'vestido', nome: 'vestido vermelho' },
+    { id: 'roxo', nome: 'blusa roxa' }, { id: 'vestido', nome: 'vestido vermelho', g: 'f' },
     { id: 'casaco', nome: 'casaco' }, { id: 'moletom', nome: 'moletom' },
     { id: 'jaqueta', nome: 'jaqueta' }, { id: 'regata', nome: 'regata' },
 ];
@@ -51,24 +51,24 @@ const PERNAS_OPCOES = [
     { id: 'jeans', nome: 'calça jeans' }, { id: 'preto', nome: 'calça preta' },
     { id: 'bege', nome: 'calça bege' }, { id: 'verde', nome: 'calça verde' },
     { id: 'vermelha', nome: 'calça vermelha' }, { id: 'short', nome: 'short' },
-    { id: 'calca_grossa', nome: 'calça grossa' }, { id: 'legging', nome: 'legging' },
-    { id: 'saia_longa', nome: 'saia longa' }, { id: 'bermuda', nome: 'bermuda' },
+    { id: 'calca_grossa', nome: 'calça grossa' }, { id: 'legging', nome: 'legging', g: 'f' },
+    { id: 'saia_longa', nome: 'saia longa', g: 'f' }, { id: 'bermuda', nome: 'bermuda' },
 ];
 
 const PES_OPCOES = [
-    { id: 'sapatilha', nome: 'sapatilha' }, { id: 'tenis_branco', nome: 'tênis branco' },
+    { id: 'sapatilha', nome: 'sapatilha', g: 'f' }, { id: 'tenis_branco', nome: 'tênis branco' },
     { id: 'bota_marrom', nome: 'bota marrom' }, { id: 'sandalia', nome: 'sandália' },
-    { id: 'salto', nome: 'salto' }, { id: 'galocha', nome: 'galocha' },
+    { id: 'salto', nome: 'salto', g: 'f' }, { id: 'galocha', nome: 'galocha' },
     { id: 'chinelo', nome: 'chinelo' }, { id: 'tenis_fechado', nome: 'tênis fechado' },
     { id: 'papete', nome: 'papete' }, { id: 'crocs', nome: 'crocs' },
 ];
 
 const ACESSORIOS_OPCOES = [
-    { id: 'relogio', nome: 'relógio' }, { id: 'pulseira', nome: 'pulseira' },
+    { id: 'relogio', nome: 'relógio' }, { id: 'pulseira', nome: 'pulseira', g: 'f' },
     { id: 'cachecol', nome: 'cachecol' }, { id: 'luvas', nome: 'luvas' },
     { id: 'touca', nome: 'touca' }, { id: 'oculos', nome: 'óculos' },
     { id: 'mochila', nome: 'mochila' }, { id: 'cinto', nome: 'cinto' },
-    { id: 'cola', nome: 'cola' }, { id: 'nada', nome: 'sem acessório' },
+    { id: 'cola', nome: 'cola', g: 'f' }, { id: 'nada', nome: 'sem acessório' },
 ];
 
 const ETAPAS = [
@@ -81,21 +81,45 @@ const ETAPAS = [
 
 const OCASIOES = [
     { id: 'parque_inverno', nome: 'Parque no Inverno', emoji: '🧣', bg: 'quarto', descricao: 'Está frio! Vamos brincar no parque!',
-      corretas: { cabeca: ['gorro','boina','cowboy'], tronco: ['casaco','moletom','jaqueta'], pernas: ['jeans','calca_grossa','preto'], pes: ['bota_marrom','tenis_fechado','galocha'], acessorios: ['cachecol','luvas','touca'] } },
+      corretas: {
+        menina: { cabeca: ['gorro','boina','cowboy'], tronco: ['casaco','moletom','jaqueta'], pernas: ['jeans','calca_grossa','preto'], pes: ['bota_marrom','tenis_fechado','galocha'], acessorios: ['cachecol','luvas','touca'] },
+        menino: { cabeca: ['gorro','boina','cowboy'], tronco: ['casaco','moletom','jaqueta'], pernas: ['jeans','calca_grossa','preto'], pes: ['bota_marrom','tenis_fechado','galocha'], acessorios: ['cachecol','luvas','touca'] }
+      } },
     { id: 'escola', nome: 'Ir para a Escola', emoji: '🏫', bg: 'jardim', descricao: 'Vamos arrumar a roupa da escola!',
-      corretas: { cabeca: ['nenhum','bone','laco'], tronco: ['verde','azul','amarela'], pernas: ['jeans','preto','bege'], pes: ['tenis_branco','tenis_fechado','sapatilha'], acessorios: ['mochila','relogio','cinto'] } },
+      corretas: {
+        menina: { cabeca: ['nenhum','bone','laco'], tronco: ['verde','azul','amarela'], pernas: ['jeans','preto','bege'], pes: ['tenis_branco','tenis_fechado','sapatilha'], acessorios: ['mochila','relogio','cinto'] },
+        menino: { cabeca: ['nenhum','bone','boina'], tronco: ['verde','azul','amarela'], pernas: ['jeans','preto','bege'], pes: ['tenis_branco','tenis_fechado','papete'], acessorios: ['mochila','relogio','cinto'] }
+      } },
     { id: 'praia', nome: 'Praia de Mar', emoji: '🏖️', bg: 'praia', descricao: 'Vamos à praia! Sol e mar!',
-      corretas: { cabeca: ['coroa','flores','nenhum'], tronco: ['regata','vestido','amarela'], pernas: ['short','bermuda','saia_longa'], pes: ['chinelo','sandalia','crocs'], acessorios: ['oculos','nada','pulseira'] } },
+      corretas: {
+        menina: { cabeca: ['coroa','flores','nenhum'], tronco: ['regata','vestido','amarela'], pernas: ['short','bermuda','saia_longa'], pes: ['chinelo','sandalia','crocs'], acessorios: ['oculos','nada','pulseira'] },
+        menino: { cabeca: ['coroa','nenhum','bone'], tronco: ['regata','amarela','azul'], pernas: ['short','bermuda','jeans'], pes: ['chinelo','crocs','papete'], acessorios: ['oculos','nada','relogio'] }
+      } },
     { id: 'piscina', nome: 'Piscina no Clube', emoji: '🏊', bg: 'praia', descricao: 'Vamos nadar na piscina!',
-      corretas: { cabeca: ['nenhum','bone','laco'], tronco: ['regata','rosa','azul'], pernas: ['short','bermuda','legging'], pes: ['chinelo','crocs','sandalia'], acessorios: ['oculos','nada','pulseira'] } },
+      corretas: {
+        menina: { cabeca: ['nenhum','bone','laco'], tronco: ['regata','rosa','azul'], pernas: ['short','bermuda','legging'], pes: ['chinelo','crocs','sandalia'], acessorios: ['oculos','nada','pulseira'] },
+        menino: { cabeca: ['nenhum','bone','boina'], tronco: ['regata','rosa','azul'], pernas: ['short','bermuda','jeans'], pes: ['chinelo','crocs','sandalia'], acessorios: ['oculos','nada','relogio'] }
+      } },
     { id: 'academia', nome: 'Academia com a Mamãe', emoji: '💪', bg: 'palco', descricao: 'Vamos fazer exercício!',
-      corretas: { cabeca: ['nenhum','bone','laco'], tronco: ['regata','rosa','verde'], pernas: ['legging','short','bermuda'], pes: ['tenis_branco','tenis_fechado','papete'], acessorios: ['relogio','nada','pulseira'] } },
+      corretas: {
+        menina: { cabeca: ['nenhum','bone','laco'], tronco: ['regata','rosa','verde'], pernas: ['legging','short','bermuda'], pes: ['tenis_branco','tenis_fechado','papete'], acessorios: ['relogio','nada','pulseira'] },
+        menino: { cabeca: ['nenhum','bone','boina'], tronco: ['regata','rosa','verde'], pernas: ['short','bermuda','jeans'], pes: ['tenis_branco','tenis_fechado','papete'], acessorios: ['relogio','nada','cinto'] }
+      } },
     { id: 'shopping', nome: 'Passeio no Shopping', emoji: '🛍️', bg: 'quarto', descricao: 'Vamos passear no shopping!',
-      corretas: { cabeca: ['laco','flores','bone'], tronco: ['roxo','vestido','azul'], pernas: ['jeans','saia_longa','legging'], pes: ['sapatilha','tenis_branco','salto'], acessorios: ['pulseira','relogio','oculos'] } },
+      corretas: {
+        menina: { cabeca: ['laco','flores','bone'], tronco: ['roxo','vestido','azul'], pernas: ['jeans','saia_longa','legging'], pes: ['sapatilha','tenis_branco','salto'], acessorios: ['pulseira','relogio','oculos'] },
+        menino: { cabeca: ['bone','boina','nenhum'], tronco: ['roxo','azul','verde'], pernas: ['jeans','preto','bege'], pes: ['tenis_branco','papete','crocs'], acessorios: ['relogio','oculos','cinto'] }
+      } },
     { id: 'vovo', nome: 'Casa da Vovó', emoji: '👵', bg: 'jardim', descricao: 'Vamos visitar a vovó!',
-      corretas: { cabeca: ['flores','laco','nenhum'], tronco: ['verde','rosa','amarela'], pernas: ['jeans','saia_longa','bege'], pes: ['sapatilha','tenis_branco','sandalia'], acessorios: ['pulseira','relogio','nada'] } },
+      corretas: {
+        menina: { cabeca: ['flores','laco','nenhum'], tronco: ['verde','rosa','amarela'], pernas: ['jeans','saia_longa','bege'], pes: ['sapatilha','tenis_branco','sandalia'], acessorios: ['pulseira','relogio','nada'] },
+        menino: { cabeca: ['nenhum','bone','boina'], tronco: ['verde','azul','amarela'], pernas: ['jeans','bege','preto'], pes: ['tenis_branco','papete','sandalia'], acessorios: ['relogio','cinto','nada'] }
+      } },
     { id: 'festa', nome: 'Festa de Aniversário', emoji: '🎂', bg: 'palco', descricao: 'Vamos caprichar para a festa!',
-      corretas: { cabeca: ['coroa','laco','flores'], tronco: ['vestido','roxo','rosa'], pernas: ['saia_longa','legging','jeans'], pes: ['salto','sapatilha','sandalia'], acessorios: ['pulseira','relogio','cola'] } },
+      corretas: {
+        menina: { cabeca: ['coroa','laco','flores'], tronco: ['vestido','roxo','rosa'], pernas: ['saia_longa','legging','jeans'], pes: ['salto','sapatilha','sandalia'], acessorios: ['pulseira','relogio','cola'] },
+        menino: { cabeca: ['coroa','boina','cowboy'], tronco: ['roxo','azul','casaco'], pernas: ['jeans','preto','bege'], pes: ['tenis_branco','papete','sandalia'], acessorios: ['relogio','cinto','oculos'] }
+      } },
 ];
 
 const BG_CLASSES = { quarto: 'bg-quarto', jardim: 'bg-jardim', praia: 'bg-praia', palco: 'bg-palco' };
@@ -112,12 +136,14 @@ function getIconForOption(etapaId, optId) {
 }
 
 function getOpcoes(etapaId) {
-    if (etapaId === 'cabeca') return CABECA_OPCOES;
-    if (etapaId === 'tronco') return TRONCO_OPCOES;
-    if (etapaId === 'pernas') return PERNAS_OPCOES;
-    if (etapaId === 'pes') return PES_OPCOES;
-    if (etapaId === 'acessorios') return ACESSORIOS_OPCOES;
-    return [];
+    let lista;
+    if (etapaId === 'cabeca') lista = CABECA_OPCOES;
+    else if (etapaId === 'tronco') lista = TRONCO_OPCOES;
+    else if (etapaId === 'pernas') lista = PERNAS_OPCOES;
+    else if (etapaId === 'pes') lista = PES_OPCOES;
+    else if (etapaId === 'acessorios') lista = ACESSORIOS_OPCOES;
+    else return [];
+    return lista.filter(o => !o.g || o.g === genero);
 }
 
 function selecionarPersonagem(g) {
@@ -168,7 +194,7 @@ function renderizarEtapa() {
     });
 
     const opcoes = getOpcoes(etapa.id);
-    const corretas = ocasiaoAtual.corretas[etapa.id] || [];
+    const corretas = (ocasiaoAtual.corretas[genero] && ocasiaoAtual.corretas[genero][etapa.id]) || [];
     const metade = Math.ceil(opcoes.length / 2);
 
     function buildOptions(list, container) {
@@ -204,7 +230,7 @@ function escolherOpcao(etapaId, opcao, isCorrect, btnEl) {
         setTimeout(() => {
             document.querySelectorAll('.opt-btn').forEach(b => { b.classList.remove('active'); b.style.pointerEvents = ''; });
             const opcoes = getOpcoes(etapaId);
-            const corretas = ocasiaoAtual.corretas[etapaId] || [];
+            const corretas = (ocasiaoAtual.corretas[genero] && ocasiaoAtual.corretas[genero][etapaId]) || [];
             opcoes.forEach(o => {
                 if (corretas.includes(o.id)) {
                     document.querySelectorAll('.opt-btn').forEach(b => { if (b.title === o.nome) b.classList.add('hint-pulse'); });
