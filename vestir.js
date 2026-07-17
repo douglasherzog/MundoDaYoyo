@@ -19,6 +19,9 @@ let genero = null;
 let ocasiaoAtual = null;
 let etapaAtual = 0;
 let estado = {};
+let bloquearClick = false;
+let timeoutPendente = null;
+let expressao = 'neutral';
 
 const CORES_CABELO = [
     { id: 'preto', cor: '#3e2723', nome: 'preto' },
@@ -171,6 +174,9 @@ function selecionarOcasiao(oc) {
     occasionScreen.style.display = 'none';
     dressScreen.style.display = 'flex';
     etapaAtual = 0;
+    bloquearClick = false;
+    expressao = 'neutral';
+    if (timeoutPendente) { clearTimeout(timeoutPendente); timeoutPendente = null; }
     estado = { cabeca: null, tronco: null, pernas: null, pes: null, acessorios: null,
                cabelo_cor: 'castanho', cabelo_estilo: genero === 'menina' ? 'longo_liso' : 'curto' };
     dollWrapper.className = 'doll-wrapper ' + (BG_CLASSES[oc.bg] || '');
@@ -214,21 +220,47 @@ function renderizarEtapa() {
 }
 
 function escolherOpcao(etapaId, opcao, isCorrect, btnEl) {
+    if (bloquearClick) return;
+    bloquearClick = true;
+    if (timeoutPendente) { clearTimeout(timeoutPendente); timeoutPendente = null; }
+
     estado[etapaId] = opcao.id;
     renderizarBoneco();
-    document.querySelectorAll('.opt-btn').forEach(b => { b.classList.remove('active'); b.style.pointerEvents = 'none'; });
+    document.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('active'));
     if (btnEl) btnEl.classList.add('active');
     document.querySelectorAll('.hint-pulse').forEach(b => b.classList.remove('hint-pulse'));
 
     if (isCorrect) {
+        expressao = 'happy';
+        renderizarBoneco();
         criarSparkle();
         falar('Muito bem! ' + opcao.nome + '!');
         if (typeof playSuccess === 'function') playSuccess();
+
+        timeoutPendente = setTimeout(() => {
+            expressao = 'neutral';
+            etapaAtual++;
+            bloquearClick = false;
+            timeoutPendente = null;
+            if (etapaAtual >= ETAPAS.length) {
+                finalizarFase();
+            } else {
+                renderizarEtapa();
+                renderizarBoneco();
+                setTimeout(() => falar(ETAPAS[etapaAtual].hint), 300);
+            }
+        }, 1500);
     } else {
+        expressao = 'sad';
+        renderizarBoneco();
         falar('Hmm, ' + opcao.nome + ' não é o melhor para ' + ocasiaoAtual.nome + '. Tente os que estão piscando!');
         if (typeof playError === 'function') playError();
-        setTimeout(() => {
-            document.querySelectorAll('.opt-btn').forEach(b => { b.classList.remove('active'); b.style.pointerEvents = ''; });
+
+        timeoutPendente = setTimeout(() => {
+            expressao = 'neutral';
+            bloquearClick = false;
+            timeoutPendente = null;
+            document.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('active'));
             const opcoes = getOpcoes(etapaId);
             const corretas = (ocasiaoAtual.corretas[genero] && ocasiaoAtual.corretas[genero][etapaId]) || [];
             opcoes.forEach(o => {
@@ -239,14 +271,7 @@ function escolherOpcao(etapaId, opcao, isCorrect, btnEl) {
             estado[etapaId] = null;
             renderizarBoneco();
         }, 2000);
-        return;
     }
-
-    setTimeout(() => {
-        etapaAtual++;
-        if (etapaAtual >= ETAPAS.length) finalizarFase();
-        else { renderizarEtapa(); setTimeout(() => falar(ETAPAS[etapaAtual].hint), 300); }
-    }, 1500);
 }
 
 function corCabelo() { const c = CORES_CABELO.find(x => x.id === estado.cabelo_cor); return c ? c.cor : '#6d4c41'; }
@@ -410,18 +435,41 @@ function renderizarBoneco() {
     svg += '<circle cx="' + (cx-28) + '" cy="115" r="12" fill="url(#cheekG)"/>';
     svg += '<circle cx="' + (cx+28) + '" cy="115" r="12" fill="url(#cheekG)"/>';
 
-    // Eyes
-    svg += '<ellipse cx="' + (cx-18) + '" cy="100" rx="10" ry="12" fill="#fff" stroke="#e0a999" stroke-width="1"/>';
-    svg += '<ellipse cx="' + (cx+18) + '" cy="100" rx="10" ry="12" fill="#fff" stroke="#e0a999" stroke-width="1"/>';
-    svg += '<circle cx="' + (cx-17) + '" cy="102" r="7" fill="#4a90d9"/>';
-    svg += '<circle cx="' + (cx+19) + '" cy="102" r="7" fill="#4a90d9"/>';
-    svg += '<circle cx="' + (cx-17) + '" cy="102" r="4" fill="#1a237e"/>';
-    svg += '<circle cx="' + (cx+19) + '" cy="102" r="4" fill="#1a237e"/>';
-    svg += '<circle cx="' + (cx-15) + '" cy="99" r="2.5" fill="#fff"/>';
-    svg += '<circle cx="' + (cx+21) + '" cy="99" r="2.5" fill="#fff"/>';
-    // Eyebrows
-    svg += '<path d="M' + (cx-26) + ' 84 Q' + (cx-18) + ' 81 ' + (cx-10) + ' 84" stroke="' + cc + '" stroke-width="2.5" fill="none" stroke-linecap="round"/>';
-    svg += '<path d="M' + (cx+10) + ' 84 Q' + (cx+18) + ' 81 ' + (cx+26) + ' 84" stroke="' + cc + '" stroke-width="2.5" fill="none" stroke-linecap="round"/>';
+    // Eyes - expression based
+    if (expressao === 'happy') {
+        svg += '<path d="M' + (cx-27) + ' 103 Q' + (cx-18) + ' 92 ' + (cx-9) + ' 103" stroke="#4a90d9" stroke-width="3.5" fill="none" stroke-linecap="round"/>';
+        svg += '<path d="M' + (cx+9) + ' 103 Q' + (cx+18) + ' 92 ' + (cx+27) + ' 103" stroke="#4a90d9" stroke-width="3.5" fill="none" stroke-linecap="round"/>';
+        svg += '<circle cx="' + (cx-12) + '" cy="100" r="2" fill="#fff" opacity="0.8"/>';
+        svg += '<circle cx="' + (cx+24) + '" cy="100" r="2" fill="#fff" opacity="0.8"/>';
+    } else if (expressao === 'sad') {
+        svg += '<ellipse cx="' + (cx-18) + '" cy="104" rx="10" ry="9" fill="#fff" stroke="#e0a999" stroke-width="1"/>';
+        svg += '<ellipse cx="' + (cx+18) + '" cy="104" rx="10" ry="9" fill="#fff" stroke="#e0a999" stroke-width="1"/>';
+        svg += '<circle cx="' + (cx-17) + '" cy="106" r="6" fill="#4a90d9"/>';
+        svg += '<circle cx="' + (cx+19) + '" cy="106" r="6" fill="#4a90d9"/>';
+        svg += '<circle cx="' + (cx-17) + '" cy="106" r="3.5" fill="#1a237e"/>';
+        svg += '<circle cx="' + (cx+19) + '" cy="106" r="3.5" fill="#1a237e"/>';
+        svg += '<path d="M' + (cx-24) + ' 112 Q' + (cx-24) + ' 120 ' + (cx-21) + ' 122 Q' + (cx-18) + ' 120 ' + (cx-18) + ' 112 Z" fill="#42a5f5" opacity="0.6"/>';
+    } else {
+        svg += '<ellipse cx="' + (cx-18) + '" cy="100" rx="10" ry="12" fill="#fff" stroke="#e0a999" stroke-width="1"/>';
+        svg += '<ellipse cx="' + (cx+18) + '" cy="100" rx="10" ry="12" fill="#fff" stroke="#e0a999" stroke-width="1"/>';
+        svg += '<circle cx="' + (cx-17) + '" cy="102" r="7" fill="#4a90d9"/>';
+        svg += '<circle cx="' + (cx+19) + '" cy="102" r="7" fill="#4a90d9"/>';
+        svg += '<circle cx="' + (cx-17) + '" cy="102" r="4" fill="#1a237e"/>';
+        svg += '<circle cx="' + (cx+19) + '" cy="102" r="4" fill="#1a237e"/>';
+        svg += '<circle cx="' + (cx-15) + '" cy="99" r="2.5" fill="#fff"/>';
+        svg += '<circle cx="' + (cx+21) + '" cy="99" r="2.5" fill="#fff"/>';
+    }
+    // Eyebrows - expression based
+    if (expressao === 'happy') {
+        svg += '<path d="M' + (cx-27) + ' 79 Q' + (cx-18) + ' 74 ' + (cx-9) + ' 79" stroke="' + cc + '" stroke-width="2.5" fill="none" stroke-linecap="round"/>';
+        svg += '<path d="M' + (cx+9) + ' 79 Q' + (cx+18) + ' 74 ' + (cx+27) + ' 79" stroke="' + cc + '" stroke-width="2.5" fill="none" stroke-linecap="round"/>';
+    } else if (expressao === 'sad') {
+        svg += '<path d="M' + (cx-27) + ' 87 L' + (cx-12) + ' 82" stroke="' + cc + '" stroke-width="2.5" fill="none" stroke-linecap="round"/>';
+        svg += '<path d="M' + (cx+12) + ' 82 L' + (cx+27) + ' 87" stroke="' + cc + '" stroke-width="2.5" fill="none" stroke-linecap="round"/>';
+    } else {
+        svg += '<path d="M' + (cx-26) + ' 84 Q' + (cx-18) + ' 81 ' + (cx-10) + ' 84" stroke="' + cc + '" stroke-width="2.5" fill="none" stroke-linecap="round"/>';
+        svg += '<path d="M' + (cx+10) + ' 84 Q' + (cx+18) + ' 81 ' + (cx+26) + ' 84" stroke="' + cc + '" stroke-width="2.5" fill="none" stroke-linecap="round"/>';
+    }
     // Eyelashes (girl)
     if (isGirl) {
         svg += '<path d="M' + (cx-26) + ' 92 Q' + (cx-28) + ' 88 ' + (cx-29) + ' 85" stroke="#333" stroke-width="1.5" fill="none" stroke-linecap="round"/>';
@@ -437,11 +485,21 @@ function renderizarBoneco() {
     svg += '<path d="M' + (cx-3) + ' 110 Q' + cx + ' 118 ' + (cx+3) + ' 110" fill="none" stroke="#e0a999" stroke-width="1.5" stroke-linecap="round"/>';
     svg += '<circle cx="' + cx + '" cy="116" r="1.5" fill="' + shadeColor('#ffccbc', -8) + '" opacity="0.4"/>';
 
-    // Mouth
-    svg += '<path d="M' + (cx-12) + ' 128 Q' + cx + ' 138 ' + (cx+12) + ' 128" fill="#e91e63" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round"/>';
-    svg += '<path d="M' + (cx-10) + ' 129 Q' + cx + ' 135 ' + (cx+10) + ' 129" fill="#f48fb1" opacity="0.5"/>';
-    svg += '<path d="M' + (cx-13) + ' 128 Q' + (cx-8) + ' 126 ' + cx + ' 127 Q' + (cx+8) + ' 126 ' + (cx+13) + ' 128" fill="none" stroke="#c2185b" stroke-width="1" opacity="0.5"/>';
-    svg += '<path d="M' + (cx-10) + ' 137 Q' + cx + ' 140 ' + (cx+10) + ' 137" fill="none" stroke="' + shadeColor('#e91e63', -15) + '" stroke-width="0.8" opacity="0.3"/>';
+    // Mouth - expression based
+    if (expressao === 'happy') {
+        svg += '<path d="M' + (cx-20) + ' 125 Q' + cx + ' 148 ' + (cx+20) + ' 125" fill="#e91e63" stroke="#c2185b" stroke-width="2" stroke-linecap="round"/>';
+        svg += '<path d="M' + (cx-16) + ' 128 Q' + cx + ' 144 ' + (cx+16) + ' 128" fill="#f48fb1" opacity="0.5"/>';
+        svg += '<path d="M' + (cx-24) + ' 123 Q' + (cx-21) + ' 120 ' + (cx-18) + ' 124" fill="none" stroke="#c2185b" stroke-width="1" opacity="0.4"/>';
+        svg += '<path d="M' + (cx+18) + ' 124 Q' + (cx+21) + ' 120 ' + (cx+24) + ' 123" fill="none" stroke="#c2185b" stroke-width="1" opacity="0.4"/>';
+        svg += '<path d="M' + (cx-14) + ' 138 Q' + cx + ' 142 ' + (cx+14) + ' 138" fill="none" stroke="' + shadeColor('#e91e63', -15) + '" stroke-width="0.8" opacity="0.3"/>';
+    } else if (expressao === 'sad') {
+        svg += '<path d="M' + (cx-14) + ' 136 Q' + cx + ' 126 ' + (cx+14) + ' 136" fill="none" stroke="#c2185b" stroke-width="2.5" stroke-linecap="round"/>';
+    } else {
+        svg += '<path d="M' + (cx-12) + ' 128 Q' + cx + ' 138 ' + (cx+12) + ' 128" fill="#e91e63" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round"/>';
+        svg += '<path d="M' + (cx-10) + ' 129 Q' + cx + ' 135 ' + (cx+10) + ' 129" fill="#f48fb1" opacity="0.5"/>';
+        svg += '<path d="M' + (cx-13) + ' 128 Q' + (cx-8) + ' 126 ' + cx + ' 127 Q' + (cx+8) + ' 126 ' + (cx+13) + ' 128" fill="none" stroke="#c2185b" stroke-width="1" opacity="0.5"/>';
+        svg += '<path d="M' + (cx-10) + ' 137 Q' + cx + ' 140 ' + (cx+10) + ' 137" fill="none" stroke="' + shadeColor('#e91e63', -15) + '" stroke-width="0.8" opacity="0.3"/>';
+    }
 
     // === HAIR (front) ===
     if (estilo !== 'careca') {
@@ -571,6 +629,8 @@ function renderizarBoneco() {
     }
 
     dollSvg.innerHTML = svg;
+    dollWrapper.classList.remove('expr-happy', 'expr-sad', 'expr-neutral');
+    dollWrapper.classList.add('expr-' + expressao);
 }
 
 function criarSparkle() {
@@ -584,6 +644,10 @@ function criarSparkle() {
 }
 
 function finalizarFase() {
+    bloquearClick = false;
+    if (timeoutPendente) { clearTimeout(timeoutPendente); timeoutPendente = null; }
+    expressao = 'happy';
+    renderizarBoneco();
     const svgClone = dollSvg.cloneNode(true);
     svgClone.setAttribute('viewBox', '0 0 220 460');
     finalDoll.innerHTML = '';
@@ -609,6 +673,9 @@ function criarConfetti() {
 }
 
 function reiniciar() {
+    if (timeoutPendente) { clearTimeout(timeoutPendente); timeoutPendente = null; }
+    bloquearClick = false;
+    expressao = 'neutral';
     celebration.style.display = 'none';
     dressScreen.style.display = 'none';
     occasionScreen.style.display = 'block';

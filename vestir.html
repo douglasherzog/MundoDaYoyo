@@ -103,6 +103,33 @@
         @keyframes armWave { 0%,100% { transform: rotate(0deg); } 50% { transform: rotate(-5deg); } }
         @keyframes armWave2 { 0%,100% { transform: rotate(0deg); } 50% { transform: rotate(5deg); } }
 
+        /* Expression reaction animations */
+        .doll-wrapper.expr-happy #doll { animation: happyBounce 0.6s ease-out; }
+        .doll-wrapper.expr-sad #doll { animation: sadShake 0.5s ease-in-out; }
+        .doll-wrapper.expr-happy .arm-left { animation: celebrateLeft 0.5s ease-out 2; }
+        .doll-wrapper.expr-happy .arm-right { animation: celebrateRight 0.5s ease-out 2; }
+        @keyframes happyBounce {
+            0% { transform: translateY(0) scale(1); }
+            30% { transform: translateY(-12px) scale(1.03); }
+            60% { transform: translateY(0) scale(1.01); }
+            100% { transform: translateY(0) scale(1); }
+        }
+        @keyframes sadShake {
+            0%,100% { transform: translateX(0); }
+            20% { transform: translateX(-6px) rotate(-1deg); }
+            40% { transform: translateX(6px) rotate(1deg); }
+            60% { transform: translateX(-4px) rotate(-0.5deg); }
+            80% { transform: translateX(4px) rotate(0.5deg); }
+        }
+        @keyframes celebrateLeft {
+            0%,100% { transform: rotate(0deg); }
+            50% { transform: rotate(-25deg); }
+        }
+        @keyframes celebrateRight {
+            0%,100% { transform: rotate(0deg); }
+            50% { transform: rotate(25deg); }
+        }
+
         .sparkle {
             position: absolute; font-size: 1.8rem; pointer-events: none;
             animation: sparkleAnim 0.8s ease-out forwards; z-index: 5;
