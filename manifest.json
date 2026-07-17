@@ -1,0 +1,20 @@
+{
+    "name": "Mundo da Yoyo",
+    "short_name": "Yoyo",
+    "description": "Jogos educativos mágicos para crianças",
+    "start_url": "./index.html",
+    "scope": "./",
+    "display": "fullscreen",
+    "display_override": ["fullscreen", "standalone", "minimal-ui"],
+    "orientation": "landscape",
+    "background_color": "#1a1a2e",
+    "theme_color": "#6c5ce7",
+    "icons": [
+        {
+            "src": "icon.svg",
+            "sizes": "any",
+            "type": "image/svg+xml",
+            "purpose": "any maskable"
+        }
+    ]
+}

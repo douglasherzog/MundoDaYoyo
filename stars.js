@@ -173,4 +173,21 @@ inicializarEstrelas();
             e.preventDefault(); return false;
         }
     });
+
+    var autoFsDone = false;
+    function autoFullscreen() {
+        if (autoFsDone) return;
+        autoFsDone = true;
+        entrarFullscreen();
+    }
+    document.addEventListener('click', autoFullscreen);
+    document.addEventListener('touchstart', autoFullscreen);
+    document.addEventListener('keydown', autoFullscreen);
+    window.addEventListener('load', function () {
+        setTimeout(function () {
+            if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+                mostrarOverlayLock();
+            }
+        }, 1000);
+    });
 })();
