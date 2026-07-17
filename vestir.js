@@ -81,13 +81,13 @@ const ETAPAS = [
 
 const OCASIOES = [
     { id: 'parque_inverno', nome: 'Parque no Inverno', emoji: '🧣', bg: 'quarto', descricao: 'Está frio! Vamos brincar no parque!',
-      corretas: { cabeca: ['gorro','boina','flores'], tronco: ['casaco','moletom','jaqueta'], pernas: ['jeans','calca_grossa','preto'], pes: ['bota_marrom','tenis_fechado','galocha'], acessorios: ['cachecol','luvas','touca'] } },
+      corretas: { cabeca: ['gorro','boina','cowboy'], tronco: ['casaco','moletom','jaqueta'], pernas: ['jeans','calca_grossa','preto'], pes: ['bota_marrom','tenis_fechado','galocha'], acessorios: ['cachecol','luvas','touca'] } },
     { id: 'escola', nome: 'Ir para a Escola', emoji: '🏫', bg: 'jardim', descricao: 'Vamos arrumar a roupa da escola!',
       corretas: { cabeca: ['nenhum','bone','laco'], tronco: ['verde','azul','amarela'], pernas: ['jeans','preto','bege'], pes: ['tenis_branco','tenis_fechado','sapatilha'], acessorios: ['mochila','relogio','cinto'] } },
     { id: 'praia', nome: 'Praia de Mar', emoji: '🏖️', bg: 'praia', descricao: 'Vamos à praia! Sol e mar!',
       corretas: { cabeca: ['coroa','flores','nenhum'], tronco: ['regata','vestido','amarela'], pernas: ['short','bermuda','saia_longa'], pes: ['chinelo','sandalia','crocs'], acessorios: ['oculos','nada','pulseira'] } },
     { id: 'piscina', nome: 'Piscina no Clube', emoji: '🏊', bg: 'praia', descricao: 'Vamos nadar na piscina!',
-      corretas: { cabeca: ['gorro','nenhum','coroa'], tronco: ['regata','rosa','azul'], pernas: ['short','bermuda','legging'], pes: ['chinelo','crocs','sandalia'], acessorios: ['oculos','nada','pulseira'] } },
+      corretas: { cabeca: ['nenhum','bone','laco'], tronco: ['regata','rosa','azul'], pernas: ['short','bermuda','legging'], pes: ['chinelo','crocs','sandalia'], acessorios: ['oculos','nada','pulseira'] } },
     { id: 'academia', nome: 'Academia com a Mamãe', emoji: '💪', bg: 'palco', descricao: 'Vamos fazer exercício!',
       corretas: { cabeca: ['nenhum','bone','laco'], tronco: ['regata','rosa','verde'], pernas: ['legging','short','bermuda'], pes: ['tenis_branco','tenis_fechado','papete'], acessorios: ['relogio','nada','pulseira'] } },
     { id: 'shopping', nome: 'Passeio no Shopping', emoji: '🛍️', bg: 'quarto', descricao: 'Vamos passear no shopping!',
@@ -257,10 +257,13 @@ function renderizarBoneco() {
     svg += '<circle cx="' + (cx+48) + '" cy="278" r="8" fill="url(#skinG)" stroke="#e0a999" stroke-width="1.5"/>';
 
     // Torso base
-    svg += '<path d="M' + (cx-38) + ' 175 Q' + (cx-42) + ' 195 ' + (cx-40) + ' 210 L' + (cx-42) + ' 270 L' + (cx+42) + ' 270 L' + (cx+40) + ' 210 Q' + (cx+42) + ' 195 ' + (cx+38) + ' 175 Z" fill="url(#skinG2)" stroke="#e0a999" stroke-width="1.5"/>';
+    svg += '<path d="M' + (cx-44) + ' 175 Q' + (cx-46) + ' 182 ' + (cx-42) + ' 195 Q' + (cx-40) + ' 210 ' + (cx-40) + ' 230 L' + (cx-42) + ' 270 L' + (cx+42) + ' 270 L' + (cx+40) + ' 230 Q' + (cx+40) + ' 210 ' + (cx+42) + ' 195 Q' + (cx+46) + ' 182 ' + (cx+44) + ' 175 Z" fill="url(#skinG2)" stroke="#e0a999" stroke-width="1.5"/>';
+    svg += '<path d="M' + (cx-35) + ' 185 Q' + cx + ' 192 ' + (cx+35) + ' 185" fill="none" stroke="' + shadeColor('#ffccbc', -10) + '" stroke-width="1.5" opacity="0.3"/>';
+    svg += '<path d="M' + (cx-28) + ' 225 Q' + cx + ' 230 ' + (cx+28) + ' 225" fill="none" stroke="' + shadeColor('#ffccbc', -8) + '" stroke-width="1" opacity="0.15"/>';
 
     // Neck
     svg += '<rect x="' + (cx-14) + '" y="155" width="28" height="28" rx="10" fill="url(#skinG)" stroke="#e0a999" stroke-width="1.5"/>';
+    svg += '<ellipse cx="' + cx + '" cy="160" rx="16" ry="4" fill="' + shadeColor('#ffccbc', -15) + '" opacity="0.35"/>';
 
     // === TRONCO CLOTHING ===
     if (estado.tronco) {
@@ -271,6 +274,8 @@ function renderizarBoneco() {
             svg += '<path d="M' + (cx-38) + ' 178 Q' + (cx-30) + ' 172 ' + (cx-20) + ' 172 L' + (cx+20) + ' 172 Q' + (cx+30) + ' 172 ' + (cx+38) + ' 178" fill="none" stroke="' + tcD + '" stroke-width="1.5"/>';
             svg += '<path d="M' + (cx-50) + ' 300 Q' + cx + ' 310 ' + (cx+50) + ' 300" fill="none" stroke="#fff" stroke-width="2" opacity="0.3"/>';
             svg += '<circle cx="' + cx + '" cy="250" r="3" fill="#fff" opacity="0.3"/>';
+            svg += '<path d="M' + (cx-30) + ' 320 Q' + cx + ' 325 ' + (cx+30) + ' 320" fill="none" stroke="' + tcD + '" stroke-width="1" opacity="0.15"/>';
+            svg += '<path d="M' + (cx-50) + ' 360 Q' + cx + ' 365 ' + (cx+50) + ' 360" fill="none" stroke="' + tcD + '" stroke-width="1" opacity="0.15"/>';
         } else if (['casaco','moletom','jaqueta'].includes(estado.tronco)) {
             svg += '<path d="M' + (cx-42) + ' 172 Q' + (cx-45) + ' 195 ' + (cx-43) + ' 210 L' + (cx-45) + ' 272 L' + (cx+45) + ' 272 L' + (cx+43) + ' 210 Q' + (cx+45) + ' 195 ' + (cx+42) + ' 172 Z" fill="' + tc + '" stroke="' + tcD + '" stroke-width="2"/>';
             svg += '<path d="M' + (cx-30) + ' 172 Q' + (cx-25) + ' 165 ' + cx + ' 170 Q' + (cx+25) + ' 165 ' + (cx+30) + ' 172 L' + (cx+25) + ' 180 L' + cx + ' 175 L' + (cx-25) + ' 180 Z" fill="' + shadeColor(tc, 10) + '" stroke="' + tcD + '" stroke-width="1.5"/>';
@@ -281,12 +286,14 @@ function renderizarBoneco() {
                 svg += '<path d="M' + (cx-43) + ' 255 L' + (cx+43) + ' 255 L' + (cx+46) + ' 272 L' + (cx-46) + ' 272 Z" fill="' + shadeColor(tc, -10) + '" stroke="' + tcD + '" stroke-width="1.5"/>';
                 svg += '<path d="M' + (cx-43) + ' 258 L' + (cx+43) + ' 258" stroke="#fff" stroke-width="1" opacity="0.3"/>';
             }
+            svg += '<path d="M' + (cx-30) + ' 220 Q' + cx + ' 225 ' + (cx+30) + ' 220" fill="none" stroke="' + tcD + '" stroke-width="1" opacity="0.15"/>';
         } else if (estado.tronco === 'regata') {
             svg += '<path d="M' + (cx-30) + ' 175 L' + (cx-35) + ' 172 L' + (cx-25) + ' 168 L' + (cx-15) + ' 172 L' + (cx+15) + ' 172 L' + (cx+25) + ' 168 L' + (cx+35) + ' 172 L' + (cx+30) + ' 175 L' + (cx+40) + ' 210 L' + (cx+42) + ' 270 L' + (cx-42) + ' 270 L' + (cx-40) + ' 210 Z" fill="' + tc + '" stroke="' + tcD + '" stroke-width="2"/>';
         } else {
             svg += '<path d="M' + (cx-40) + ' 175 Q' + (cx-43) + ' 195 ' + (cx-41) + ' 210 L' + (cx-43) + ' 270 L' + (cx+43) + ' 270 L' + (cx+41) + ' 210 Q' + (cx+43) + ' 195 ' + (cx+40) + ' 175 Z" fill="' + tc + '" stroke="' + tcD + '" stroke-width="2"/>';
             svg += '<path d="M' + (cx-18) + ' 175 Q' + (cx-12) + ' 170 ' + cx + ' 172 Q' + (cx+12) + ' 170 ' + (cx+18) + ' 175" fill="none" stroke="' + tcD + '" stroke-width="1.5"/>';
             svg += '<path d="M' + (cx-35) + ' 210 Q' + cx + ' 215 ' + (cx+35) + ' 210" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.25"/>';
+            svg += '<path d="M' + (cx-25) + ' 240 Q' + cx + ' 245 ' + (cx+25) + ' 240" fill="none" stroke="' + tcD + '" stroke-width="1" opacity="0.2"/>';
         }
     }
 
@@ -366,10 +373,13 @@ function renderizarBoneco() {
     }
 
     // Face
-    svg += '<circle cx="' + cx + '" cy="100" r="48" fill="url(#skinG)" stroke="#e0a999" stroke-width="2"/>';
+    svg += '<path d="M' + (cx-46) + ' 95 Q' + (cx-48) + ' 58 ' + cx + ' 54 Q' + (cx+48) + ' 58 ' + (cx+46) + ' 95 Q' + (cx+44) + ' 132 ' + cx + ' 146 Q' + (cx-44) + ' 132 ' + (cx-46) + ' 95 Z" fill="url(#skinG)" stroke="#e0a999" stroke-width="2"/>';
+    svg += '<path d="M' + (cx-25) + ' 135 Q' + cx + ' 148 ' + (cx+25) + ' 135" fill="none" stroke="' + shadeColor('#ffccbc', -12) + '" stroke-width="2" opacity="0.3"/>';
     // Ears
     svg += '<ellipse cx="' + (cx-47) + '" cy="105" rx="6" ry="9" fill="url(#skinG2)" stroke="#e0a999" stroke-width="1.5"/>';
+    svg += '<ellipse cx="' + (cx-47) + '" cy="106" rx="3" ry="5" fill="none" stroke="#e0a999" stroke-width="1" opacity="0.5"/>';
     svg += '<ellipse cx="' + (cx+47) + '" cy="105" rx="6" ry="9" fill="url(#skinG2)" stroke="#e0a999" stroke-width="1.5"/>';
+    svg += '<ellipse cx="' + (cx+47) + '" cy="106" rx="3" ry="5" fill="none" stroke="#e0a999" stroke-width="1" opacity="0.5"/>';
     // Cheeks
     svg += '<circle cx="' + (cx-28) + '" cy="115" r="12" fill="url(#cheekG)"/>';
     svg += '<circle cx="' + (cx+28) + '" cy="115" r="12" fill="url(#cheekG)"/>';
@@ -383,6 +393,9 @@ function renderizarBoneco() {
     svg += '<circle cx="' + (cx+19) + '" cy="102" r="4" fill="#1a237e"/>';
     svg += '<circle cx="' + (cx-15) + '" cy="99" r="2.5" fill="#fff"/>';
     svg += '<circle cx="' + (cx+21) + '" cy="99" r="2.5" fill="#fff"/>';
+    // Eyebrows
+    svg += '<path d="M' + (cx-26) + ' 84 Q' + (cx-18) + ' 81 ' + (cx-10) + ' 84" stroke="' + cc + '" stroke-width="2.5" fill="none" stroke-linecap="round"/>';
+    svg += '<path d="M' + (cx+10) + ' 84 Q' + (cx+18) + ' 81 ' + (cx+26) + ' 84" stroke="' + cc + '" stroke-width="2.5" fill="none" stroke-linecap="round"/>';
     // Eyelashes (girl)
     if (isGirl) {
         svg += '<path d="M' + (cx-26) + ' 92 Q' + (cx-28) + ' 88 ' + (cx-29) + ' 85" stroke="#333" stroke-width="1.5" fill="none" stroke-linecap="round"/>';
@@ -395,12 +408,14 @@ function renderizarBoneco() {
     svg += '<rect class="eyelid" x="' + (cx+7) + '" y="88" width="22" height="24" fill="url(#skinG)" rx="11" opacity="0"/>';
 
     // Nose
-    svg += '<path d="M' + (cx-2) + ' 112 Q' + cx + ' 116 ' + (cx+2) + ' 112" fill="none" stroke="#e0a999" stroke-width="1.5" stroke-linecap="round"/>';
+    svg += '<path d="M' + (cx-3) + ' 110 Q' + cx + ' 118 ' + (cx+3) + ' 110" fill="none" stroke="#e0a999" stroke-width="1.5" stroke-linecap="round"/>';
+    svg += '<circle cx="' + cx + '" cy="116" r="1.5" fill="' + shadeColor('#ffccbc', -8) + '" opacity="0.4"/>';
 
     // Mouth
     svg += '<path d="M' + (cx-12) + ' 128 Q' + cx + ' 138 ' + (cx+12) + ' 128" fill="#e91e63" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round"/>';
     svg += '<path d="M' + (cx-10) + ' 129 Q' + cx + ' 135 ' + (cx+10) + ' 129" fill="#f48fb1" opacity="0.5"/>';
     svg += '<path d="M' + (cx-13) + ' 128 Q' + (cx-8) + ' 126 ' + cx + ' 127 Q' + (cx+8) + ' 126 ' + (cx+13) + ' 128" fill="none" stroke="#c2185b" stroke-width="1" opacity="0.5"/>';
+    svg += '<path d="M' + (cx-10) + ' 137 Q' + cx + ' 140 ' + (cx+10) + ' 137" fill="none" stroke="' + shadeColor('#e91e63', -15) + '" stroke-width="0.8" opacity="0.3"/>';
 
     // === HAIR (front) ===
     if (estilo !== 'careca') {
@@ -439,6 +454,10 @@ function renderizarBoneco() {
             }
             svg += '<circle cx="' + cx + '" cy="60" r="15" fill="url(#hairG)"/>';
         }
+    }
+    // Hair shine
+    if (estilo !== 'careca') {
+        svg += '<path d="M' + (cx-30) + ' 62 Q' + (cx-15) + ' 54 ' + cx + ' 52" fill="none" stroke="#fff" stroke-width="3" opacity="0.2" stroke-linecap="round"/>';
     }
 
     // === HEAD WEAR ===
