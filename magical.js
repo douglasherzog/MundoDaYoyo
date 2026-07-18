@@ -1,20 +1,13 @@
 const palavrasMagicas = [
-    { palavra: 'unicórnio', silabas: ['u', 'ni', 'cór', 'nio'], emoji: '🦄' },
-    { palavra: 'arco-íris', silabas: ['ar', 'co', 'í', 'ris'], emoji: '🌈' },
-    { palavra: 'marshmallow', silabas: ['marsh', 'mal', 'low'], emoji: '🍬' },
-    { palavra: 'nuvem', silabas: ['nu', 'vem'], emoji: '☁️' },
-    { palavra: 'estrela', silabas: ['es', 'tre', 'la'], emoji: '⭐' },
-    { palavra: 'fada', silabas: ['fa', 'da'], emoji: '🧚' },
-    { palavra: 'coroa', silabas: ['co', 'ro', 'a'], emoji: '👑' },
-    { palavra: 'brilho', silabas: ['bri', 'lho'], emoji: '✨' },
-    { palavra: 'rainbow', silabas: ['rain', 'bow'], emoji: '🌈' },
-    { palavra: 'coração', silabas: ['co', 'ra', 'ção'], emoji: '💖' }
+    { palavra: 'unicórnio', silabas: ['u', 'ni', 'cór', 'nio'], emoji: '' },
+    { palavra: 'arco-íris', silabas: ['ar', 'co', 'í', 'ris'], emoji: '' },
+    { palavra: 'nuvem', silabas: ['nu', 'vem'], emoji: '' },
+    { palavra: 'estrela', silabas: ['es', 'tre', 'la'], emoji: '' },
+    { palavra: 'fada', silabas: ['fa', 'da'], emoji: '' },
+    { palavra: 'coroa', silabas: ['co', 'ro', 'a'], emoji: '' },
+    { palavra: 'brilho', silabas: ['bri', 'lho'], emoji: '' },
+    { palavra: 'coração', silabas: ['co', 'ra', 'ção'], emoji: '' }
 ];
-
-let palavraAtual = null;
-let silabasSelecionadas = [];
-let pontos = 0;
-let concluido = false;
 
 const elementos = {
     emoji: document.getElementById('emoji'),
@@ -22,87 +15,103 @@ const elementos = {
     syllables: document.getElementById('syllables'),
     feedback: document.getElementById('feedback'),
     pontos: document.getElementById('pontos'),
-    btnSpeak: document.getElementById('btn-speak'),
-    btnNext: document.getElementById('btn-next')
+    btnSpeak: document.getElementById('btn-speak')
 };
-function escolherPalavra() {
-    const indice = Math.floor(Math.random() * palavrasMagicas.length);
-    return palavrasMagicas[indice];
-}\nfunction carregarPalavra() {
-    palavraAtual = escolherPalavra();
+
+let round = 0, pontos = 0, palavraAtual = null, silabasSelecionadas = [], concluido = false, wrongCount = 0;
+
+function carregarPalavra() {
+    if (round >= 10) { vitoria(); return; }
+    round++;
+    palavraAtual = palavrasMagicas[Math.floor(Math.random() * palavrasMagicas.length)];
     silabasSelecionadas = [];
     concluido = false;
+    wrongCount = 0;
 
     elementos.emoji.textContent = palavraAtual.emoji;
-    elementos.emoji.classList.remove('celebration');
     elementos.feedback.textContent = '';
     elementos.feedback.className = 'feedback';
-    elementos.btnNext.disabled = true;
+
+    var bar = document.getElementById('progress-bar');
+    if (bar) { bar.style.width = (round / 10 * 100) + '%'; bar.textContent = round + ' / 10'; }
 
     elementos.targetSlots.innerHTML = '';
-    for (let i = 0; i < palavraAtual.silabas.length; i++) {
-        const slot = document.createElement('div');
+    for (var i = 0; i < palavraAtual.silabas.length; i++) {
+        var slot = document.createElement('div');
         slot.className = 'slot';
         slot.dataset.indice = i;
         slot.textContent = '?';
         elementos.targetSlots.appendChild(slot);
     }
 
+    var silabas = embaralhar(palavraAtual.silabas.slice());
     elementos.syllables.innerHTML = '';
-    const silabasEmbaralhadas = embaralhar(palavraAtual.silabas);
-    silabasEmbaralhadas.forEach((silaba, indice) => {
-        const botao = document.createElement('button');
-        botao.className = `syllable color-${(indice % 6) + 1}`;
-        botao.textContent = silaba;
-        botao.dataset.silaba = silaba;
-        botao.addEventListener('click', () => selecionarSyllable(botao));
-        elementos.syllables.appendChild(botao);
+    silabas.forEach(function(silaba, indice) {
+        var btn = document.createElement('button');
+        btn.className = 'game-option syllable color-' + ((indice % 6) + 1);
+        btn.textContent = silaba;
+        btn.dataset.silaba = silaba;
+        btn.addEventListener('click', function() { selecionar(btn); });
+        elementos.syllables.appendChild(btn);
     });
+
+    setTimeout(function() { falar(palavraAtual.palavra); }, 300);
 }
 
-function selecionarSyllable(botao) {
+function selecionar(btn) {
     if (concluido) return;
-
-    const silaba = botao.dataset.silaba;
-    const indiceEsperado = silabasSelecionadas.length;
+    var silaba = btn.dataset.silaba;
+    var indiceEsperado = silabasSelecionadas.length;
 
     if (silaba === palavraAtual.silabas[indiceEsperado]) {
         silabasSelecionadas.push(silaba);
-        botao.classList.add('used');
-
-        const slots = elementos.targetSlots.querySelectorAll('.slot');
+        btn.classList.add('used');
+        btn.disabled = true;
+        var slots = elementos.targetSlots.querySelectorAll('.slot');
         slots[indiceEsperado].textContent = silaba;
         slots[indiceEsperado].classList.add('filled');
 
         if (silabasSelecionadas.length === palavraAtual.silabas.length) {
             concluido = true;
-            pontos += 10;
+            pontos += Math.max(10 - wrongCount * 2, 3);
             elementos.pontos.textContent = pontos;
-            elementos.feedback.textContent = `🦄✨ Mágico! A palavra é ${palavraAtual.palavra}!`;
+            elementos.feedback.textContent = ' Mágico! A palavra é ' + palavraAtual.palavra + '!';
             elementos.feedback.className = 'feedback success';
-            elementos.emoji.classList.add('celebration');
-            elementos.btnNext.disabled = false;
             playSuccess();
-            falar(`Mágico! A palavra é ${palavraAtual.palavra}`);
+            falar('Mágico! A palavra é ' + palavraAtual.palavra);
+            setTimeout(carregarPalavra, 2000);
         } else {
             playClick();
             falar(silaba);
         }
     } else {
-        botao.classList.add('celebration');
-        setTimeout(() => botao.classList.remove('celebration'), 500);
-        elementos.feedback.textContent = 'Tente outra sílaba mágica! 💪';
+        wrongCount++;
+        btn.classList.add('shake');
+        setTimeout(function() { btn.classList.remove('shake'); }, 500);
+        elementos.feedback.textContent = 'Tente outra sílaba mágica! ';
         elementos.feedback.className = 'feedback error';
         playError();
         falar('Tente outra sílaba');
-}\nelementos.btnSpeak.addEventListener('click', () => {
-    if (palavraAtual) {
-        falar(palavraAtual.palavra);
     }
-});
+}
 
-elementos.btnNext.addEventListener('click', () => {
-    carregarPalavra();
-});
+function vitoria() {
+    if (typeof YoyoMascot !== 'undefined') YoyoMascot.celebrate();
+    elementos.syllables.innerHTML = '';
+    elementos.feedback.innerHTML = '<div style="font-size:2rem"> Parabéns! Você completou o jogo mágico!</div>';
+    elementos.feedback.className = 'feedback success';
+    var bar = document.getElementById('progress-bar');
+    if (bar) { bar.style.width = '100%'; bar.textContent = '10 / 10 '; }
+    if (typeof adicionarEstrelas === 'function') adicionarEstrelas(3);
+    falar('Parabéns! Você completou o jogo mágico!');
+    var btn = document.createElement('button');
+    btn.className = 'game-option play-again-btn';
+    btn.textContent = ' Brincar de novo!';
+    btn.addEventListener('click', function() { round = 0; pontos = 0; elementos.pontos.textContent = 0; carregarPalavra(); });
+    elementos.syllables.appendChild(btn);
+}
 
+elementos.btnSpeak.addEventListener('click', function() {
+    if (palavraAtual) falar(palavraAtual.palavra);
+});
 carregarPalavra();
