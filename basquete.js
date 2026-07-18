@@ -27,13 +27,14 @@
     const GRAV = 0.45;
     const AR = 0.995;
 
-    const cesta = { x: 0, y: 0, w: 80, h: 10, aroY: 0, redeH: 65 };
+    const cesta = { x: 0, y: 0, w: 80, h: 10, aroY: 0, redeH: 65, tabelaX: 0, tabelaTop: 0, tabelaBottom: 0, redeBalanco: 0, redeBalancoVel: 0 };
     const bola = { x: 0, y: 0, r: 18, vx: 0, vy: 0, gira: 0, lancada: false, noChao: true };
     const yoyo = { x: 0, baseY: 0, pulo: 0, puloOffset: 0 };
 
     const estrelas = [];
     const confetes = [];
     const nuvens = [];
+    const impactos = [];
 
     let estado = { arrastando: false, startX: 0, startY: 0, mx: 0, my: 0 };
     let marcouCesta = false;
@@ -59,6 +60,9 @@
         cesta.y = H * 0.36;
         cesta.aroY = cesta.y;
         cesta.redeH = Math.min(90, H * 0.18);
+        cesta.tabelaX = cesta.x + cesta.w / 2 + 6;
+        cesta.tabelaTop = cesta.aroY - cesta.redeH - 20;
+        cesta.tabelaBottom = cesta.aroY;
 
         yoyo.x = W * 0.14;
         yoyo.baseY = H * 0.73;
@@ -263,16 +267,26 @@
     }
 
     function desenharCesta() {
-        const { x, y, w, h, aroY, redeH } = cesta;
+        const { x, y, w, h, aroY, redeH, tabelaX, tabelaTop, tabelaBottom, redeBalanco } = cesta;
 
         ctx.save();
-        ctx.strokeStyle = '#9d4edd';
-        ctx.lineWidth = 5;
-        ctx.beginPath();
-        ctx.moveTo(x + w / 2 + 4, aroY - redeH - 20);
-        ctx.lineTo(x + w / 2 + 4, aroY);
-        ctx.stroke();
 
+        // Tabela (suporte)
+        const grad = ctx.createLinearGradient(tabelaX - 6, 0, tabelaX + 6, 0);
+        grad.addColorStop(0, '#6d597a');
+        grad.addColorStop(0.5, '#9d4edd');
+        grad.addColorStop(1, '#6d597a');
+        ctx.fillStyle = grad;
+        ctx.fillRect(tabelaX - 5, tabelaTop, 10, tabelaBottom - tabelaTop);
+
+        // Placa de encosto da tabela
+        ctx.fillStyle = '#b185db';
+        ctx.fillRect(tabelaX - 5, tabelaTop, 10, 18);
+        ctx.strokeStyle = '#fff';
+        ctx.lineWidth = 1.5;
+        ctx.strokeRect(tabelaX - 5, tabelaTop, 10, 18);
+
+        // Aro vermelho (frente e fundo)
         ctx.lineWidth = h;
         ctx.strokeStyle = '#ef476f';
         ctx.lineCap = 'round';
@@ -281,29 +295,42 @@
         ctx.lineTo(x + w / 2, aroY);
         ctx.stroke();
 
+        // Brilho no aro
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = 'rgba(255,255,255,0.45)';
+        ctx.beginPath();
+        ctx.moveTo(x - w / 2 + 3, aroY - 2);
+        ctx.lineTo(x + w / 2 - 3, aroY - 2);
+        ctx.stroke();
+
+        // Rede com balanço
         ctx.strokeStyle = 'rgba(255,255,255,0.75)';
         ctx.lineWidth = 1.5;
-        for (let i = 1; i < 7; i++) {
-            const px = x - w / 2 + (w / 7) * i;
+        const passos = 8;
+        for (let i = 1; i < passos; i++) {
+            const px = x - w / 2 + (w / passos) * i;
+            const balanco = Math.sin(redeBalanco + i * 0.5) * 4;
             ctx.beginPath();
             ctx.moveTo(px, aroY);
-            ctx.lineTo(px + 8, aroY + redeH);
+            ctx.quadraticCurveTo(px + balanco, aroY + redeH * 0.4, px + balanco * 0.6 + 6, aroY + redeH);
             ctx.stroke();
         }
         for (let i = 1; i < 5; i++) {
             const py = aroY + (redeH / 5) * i;
+            const balanco = Math.sin(redeBalanco + i * 0.6) * 4;
             ctx.beginPath();
             ctx.moveTo(x - w / 2 + 2, py);
-            ctx.quadraticCurveTo(x, py + 8, x + w / 2 - 2, py);
+            ctx.quadraticCurveTo(x + balanco, py + 6, x + w / 2 - 2, py);
             ctx.stroke();
         }
 
-        ctx.fillStyle = 'rgba(255,255,255,0.15)';
+        // Branco interior da rede
+        ctx.fillStyle = 'rgba(255,255,255,0.12)';
         ctx.beginPath();
         ctx.moveTo(x - w / 2, aroY);
         ctx.lineTo(x + w / 2, aroY);
-        ctx.lineTo(x + w / 2 - 8, aroY + redeH);
-        ctx.lineTo(x - w / 2 + 8, aroY + redeH);
+        ctx.lineTo(x + w / 2 - 6, aroY + redeH);
+        ctx.lineTo(x - w / 2 + 6, aroY + redeH);
         ctx.closePath();
         ctx.fill();
 
@@ -502,15 +529,145 @@
         }
     }
 
+    function colidirBolaPonto(px, py, amortecer = 0.65) {
+        const dx = bola.x - px;
+        const dy = bola.y - py;
+        const dist = Math.hypot(dx, dy);
+        if (dist < bola.r) {
+            const nx = dx / dist;
+            const ny = dy / dist;
+            const dot = bola.vx * nx + bola.vy * ny;
+            bola.vx = (bola.vx - 2 * dot * nx) * amortecer;
+            bola.vy = (bola.vy - 2 * dot * ny) * amortecer;
+            const overlap = bola.r - dist;
+            bola.x += nx * overlap;
+            bola.y += ny * overlap;
+            return true;
+        }
+        return false;
+    }
+
+    function colidirBolaSegmento(x1, y1, x2, y2, amortecer = 0.65) {
+        const dx = x2 - x1;
+        const dy = y2 - y1;
+        const len2 = dx * dx + dy * dy;
+        let t = ((bola.x - x1) * dx + (bola.y - y1) * dy) / len2;
+        t = Math.max(0, Math.min(1, t));
+        const px = x1 + t * dx;
+        const py = y1 + t * dy;
+        return colidirBolaPonto(px, py, amortecer);
+    }
+
+    function colidirTabela() {
+        const tx = cesta.tabelaX;
+        const top = cesta.tabelaTop;
+        const bot = cesta.tabelaBottom;
+        if (colidirBolaSegmento(tx, top, tx, bot, 0.5)) {
+            criarImpacto(bola.x, bola.y, '#9d4edd');
+            playClick();
+            return true;
+        }
+        return false;
+    }
+
+    function colidirAro() {
+        const { x, aroY, w } = cesta;
+        const frontRim = { x: x - w / 2, y: aroY };
+        const backRim = { x: x + w / 2, y: aroY };
+        const rimRadius = 6;
+
+        // Verifica colisao com o aro (segmento horizontal) com raio
+        const dx = backRim.x - frontRim.x;
+        const dy = backRim.y - frontRim.y;
+        const len2 = dx * dx + dy * dy;
+        let t = ((bola.x - frontRim.x) * dx + (bola.y - frontRim.y) * dy) / len2;
+        t = Math.max(0, Math.min(1, t));
+        const px = frontRim.x + t * dx;
+        const py = frontRim.y + t * dy;
+        const dist = Math.hypot(bola.x - px, bola.y - py);
+
+        if (dist < bola.r + rimRadius) {
+            // Reflete no aro
+            const nx = (bola.x - px) / dist;
+            const ny = (bola.y - py) / dist;
+            const dot = bola.vx * nx + bola.vy * ny;
+            bola.vx = (bola.vx - 2 * dot * nx) * 0.75;
+            bola.vy = (bola.vy - 2 * dot * ny) * 0.75;
+            const overlap = bola.r + rimRadius - dist;
+            bola.x += nx * overlap;
+            bola.y += ny * overlap;
+            criarImpacto(bola.x, bola.y, '#ef476f');
+            playClick();
+            return true;
+        }
+
+        // Colisao direta com as bordas redondas do aro
+        if (colidirBolaPonto(frontRim.x, frontRim.y, 0.7)) {
+            criarImpacto(frontRim.x, frontRim.y, '#ef476f');
+            playClick();
+            return true;
+        }
+        if (colidirBolaPonto(backRim.x, backRim.y, 0.7)) {
+            criarImpacto(backRim.x, backRim.y, '#ef476f');
+            playClick();
+            return true;
+        }
+
+        return false;
+    }
+
+    function criarImpacto(x, y, cor) {
+        for (let i = 0; i < 8; i++) {
+            impactos.push({
+                x, y,
+                vx: (Math.random() - 0.5) * 8,
+                vy: (Math.random() - 1) * 8,
+                cor,
+                tam: Math.random() * 4 + 2,
+                vida: 1
+            });
+        }
+    }
+
+    function atualizarImpactos() {
+        for (let i = impactos.length - 1; i >= 0; i--) {
+            const p = impactos[i];
+            p.x += p.vx;
+            p.y += p.vy;
+            p.vy += 0.4;
+            p.vida -= 0.04;
+
+            ctx.save();
+            ctx.globalAlpha = Math.max(0, p.vida);
+            ctx.fillStyle = p.cor;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.tam, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+
+            if (p.vida <= 0 || p.y > H) impactos.splice(i, 1);
+        }
+    }
+
+    function atualizarRede() {
+        cesta.redeBalanco += cesta.redeBalancoVel;
+        cesta.redeBalancoVel *= 0.92;
+    }
+
     function verificarCesta() {
-        if (bola.vy < 0) marcouCesta = false;
+        const { x, w, aroY, redeH } = cesta;
 
-        const { x, y, w, aroY } = cesta;
-        const dentroX = bola.x > x - w / 2 + 8 && bola.x < x + w / 2 - 8;
-        const passouAro = bola.y >= aroY - bola.r && bola.y <= aroY + 18;
-        const vindoDeCima = bola.vy > 0;
+        if (bola.vy < 0) {
+            marcouCesta = false;
+            return;
+        }
 
-        if (dentroX && passouAro && vindoDeCima && !marcouCesta) {
+        const limFront = x - w / 2 + 10;
+        const limBack = x + w / 2 - 10;
+        const limAroTop = aroY - bola.r;
+        const limAroBot = aroY + 18;
+
+        if (bola.x > limFront && bola.x < limBack && bola.y >= limAroTop && bola.y <= limAroBot && !marcouCesta) {
             marcouCesta = true;
             acertos++;
             const bonus = Math.min(30, Math.floor((Math.abs(bola.vx) + Math.abs(bola.vy)) * 0.7));
@@ -521,10 +678,20 @@
             playSuccess();
             falar('Cesta!');
 
+            // Efeito de rede balançando
+            cesta.redeBalancoVel += 1.2;
+
+            // Efeitos visuais
             for (let i = 0; i < 22; i++) confetes.push(criarConfete(x, aroY));
             for (let i = 0; i < 5; i++) estrelas.push(criarEstrela(x, aroY));
 
             yoyo.pulo = 1;
+        }
+
+        // Quando a bola passar pela rede, adiciona fricção e balanço
+        if (bola.y > aroY && bola.y < aroY + redeH && bola.x > limFront && bola.x < limBack && !marcouCesta) {
+            cesta.redeBalancoVel += 0.08;
+            bola.vx *= 0.92;
         }
     }
 
@@ -564,11 +731,15 @@
             bola.vy = Math.abs(bola.vy) * 0.45;
         }
 
-        if (bola.x > cesta.x - cesta.w / 2 - 20 &&
-            bola.x < cesta.x + cesta.w / 2 + 20 &&
-            bola.y > cesta.aroY - 20 && bola.y < cesta.aroY + 60) {
-            verificarCesta();
+        // Colisoes com tabela e aro (antes de verificar cesta)
+        if (bola.x > cesta.x - cesta.w / 2 - 40 && bola.x < cesta.tabelaX + 20 &&
+            bola.y > cesta.aroY - cesta.redeH - 40 && bola.y < cesta.aroY + cesta.redeH + 20) {
+            colidirTabela();
+            colidirAro();
         }
+
+        // Verifica se fez a cesta
+        verificarCesta();
     }
 
     function desenharEfeitos() {
@@ -595,8 +766,10 @@
         desenharYoyo();
         desenharMira();
         desenharBola();
+        atualizarImpactos();
         desenharEfeitos();
         atualizarFisica();
+        atualizarRede();
         atualizarConfetes();
         atualizarEstrelas();
 
