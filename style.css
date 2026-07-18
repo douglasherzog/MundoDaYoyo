@@ -35,6 +35,12 @@ header h1 {
     color: #FF6B9D;
     text-shadow: 3px 3px 0 #FFF;
     margin-bottom: 10px;
+    animation: titleGlow 3s ease-in-out infinite;
+}
+
+@keyframes titleGlow {
+    0%, 100% { text-shadow: 3px 3px 0 #FFF, 0 0 20px rgba(255, 107, 157, 0.3); }
+    50% { text-shadow: 3px 3px 0 #FFF, 0 0 40px rgba(255, 107, 157, 0.6); }
 }
 
 header p {
@@ -1601,14 +1607,64 @@ main > .spelling-buttons .btn-next {
     text-decoration: none;
     color: #444;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, border-color 0.3s ease;
     border: 3px solid transparent;
+    position: relative;
+    overflow: hidden;
+    animation: cardEntrance 0.5s ease-out backwards;
+}
+
+.menu-card:nth-child(1) { animation-delay: 0.02s; }
+.menu-card:nth-child(2) { animation-delay: 0.04s; }
+.menu-card:nth-child(3) { animation-delay: 0.06s; }
+.menu-card:nth-child(4) { animation-delay: 0.08s; }
+.menu-card:nth-child(5) { animation-delay: 0.10s; }
+.menu-card:nth-child(6) { animation-delay: 0.12s; }
+.menu-card:nth-child(7) { animation-delay: 0.14s; }
+.menu-card:nth-child(8) { animation-delay: 0.16s; }
+.menu-card:nth-child(9) { animation-delay: 0.18s; }
+.menu-card:nth-child(10) { animation-delay: 0.20s; }
+.menu-card:nth-child(11) { animation-delay: 0.22s; }
+.menu-card:nth-child(12) { animation-delay: 0.24s; }
+.menu-card:nth-child(13) { animation-delay: 0.26s; }
+.menu-card:nth-child(14) { animation-delay: 0.28s; }
+.menu-card:nth-child(15) { animation-delay: 0.30s; }
+.menu-card:nth-child(16) { animation-delay: 0.32s; }
+.menu-card:nth-child(17) { animation-delay: 0.34s; }
+.menu-card:nth-child(18) { animation-delay: 0.36s; }
+.menu-card:nth-child(19) { animation-delay: 0.38s; }
+.menu-card:nth-child(20) { animation-delay: 0.40s; }
+
+@keyframes cardEntrance {
+    from { opacity: 0; transform: translateY(30px) scale(0.9); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.menu-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
 }
 
 .menu-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
     border-color: #FF6B9D;
+}
+
+.menu-card:hover::before {
+    opacity: 1;
+}
+
+.menu-card:active {
+    transform: translateY(-2px) scale(0.98);
 }
 
 .magical-card {
@@ -1755,6 +1811,17 @@ main > .spelling-buttons .btn-next {
     font-size: 4rem;
     display: block;
     margin-bottom: 15px;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.menu-card:hover .menu-icon {
+    animation: iconBounce 0.6s ease;
+}
+
+@keyframes iconBounce {
+    0%, 100% { transform: translateY(0) scale(1) rotate(0deg); }
+    30% { transform: translateY(-12px) scale(1.2) rotate(-8deg); }
+    60% { transform: translateY(-4px) scale(1.1) rotate(5deg); }
 }
 
 .menu-card h2 {

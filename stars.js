@@ -28,6 +28,7 @@ function adicionarEstrelas(quantidade = 1) {
     salvarEstrelas(estrelasAtuais);
     atualizarContador();
     animarEstrela(quantidade);
+    if (typeof YoyoAchievements !== 'undefined') YoyoAchievements.trackStars(estrelasAtuais);
 }
 
 function criarContador() {

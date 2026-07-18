@@ -211,6 +211,8 @@
         errorStreakCount = 0;
         lastInteraction = Date.now();
 
+        if (typeof YoyoAchievements !== 'undefined') YoyoAchievements.trackStreak(streakCount);
+
         if (streakCount >= 5) {
             setMood('celebrate');
             say(pick(PHRASES.streak5));
@@ -252,6 +254,47 @@
         if (wrapper) wrapper.style.display = '';
     }
 
+    /* ===== VICTORY CELEBRATION ===== */
+    function celebrate() {
+        onVictory();
+        if (typeof playVictory === 'function') playVictory();
+
+        for (var i = 0; i < 50; i++) {
+            setTimeout(createConfetti, i * 40);
+        }
+        for (var i = 0; i < 12; i++) {
+            setTimeout(createFlyingStar, i * 100);
+        }
+    }
+
+    function createConfetti() {
+        var c = document.createElement('div');
+        c.className = 'yoyo-confetti';
+        c.style.cssText = 'position:fixed;width:10px;height:10px;z-index:99997;pointer-events:none;' +
+            'left:' + Math.random() * 100 + 'vw;top:-20px;' +
+            'background:' + ['#e91e63','#9c27b0','#3f51b5','#03a9f4','#009688','#ffeb3b','#ff9800','#f44336','#6c5ce7'][Math.floor(Math.random()*9)] + ';' +
+            'border-radius:' + (Math.random() > 0.5 ? '50%' : '2px') + ';' +
+            'animation:yoyoConfettiFall ' + (2 + Math.random() * 2) + 's linear forwards;';
+        document.body.appendChild(c);
+        setTimeout(function () { c.remove(); }, 4500);
+    }
+
+    function createFlyingStar() {
+        var s = document.createElement('div');
+        s.textContent = ['⭐','✨','💫','🌟'][Math.floor(Math.random()*4)];
+        s.style.cssText = 'position:fixed;font-size:2rem;z-index:99997;pointer-events:none;' +
+            'left:' + (20 + Math.random() * 60) + 'vw;top:50vh;' +
+            'animation:yoyoStarFly ' + (1.5 + Math.random()) + 's ease-out forwards;';
+        document.body.appendChild(s);
+        setTimeout(function () { s.remove(); }, 3000);
+    }
+
+    var confettiStyle = document.createElement('style');
+    confettiStyle.textContent =
+        '@keyframes yoyoConfettiFall{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}' +
+        '@keyframes yoyoStarFly{0%{transform:translateY(0) scale(0);opacity:1}50%{transform:translateY(-200px) scale(1.5);opacity:1}100%{transform:translateY(-400px) scale(0.5);opacity:0}}';
+    document.head.appendChild(confettiStyle);
+
     // Auto-create on DOM ready
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', createMascot);
@@ -264,6 +307,7 @@
         onCorrect: onCorrect,
         onError: onError,
         onVictory: onVictory,
+        celebrate: celebrate,
         say: say,
         setMood: setMood,
         hide: hide,

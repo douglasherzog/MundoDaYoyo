@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mundo-yoyo-v2';
+const CACHE_NAME = 'mundo-yoyo-v4';
 const ASSETS = [
     './',
     './index.html',
@@ -7,6 +7,8 @@ const ASSETS = [
     './tts.js',
     './sounds.js',
     './yoyo-mascot.js',
+    './transitions.js',
+    './achievements.js',
     './admin.js',
     './manifest.json',
     './icon.svg',
