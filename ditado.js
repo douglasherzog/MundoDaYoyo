@@ -1,22 +1,17 @@
 const palavras = [
-    { palavra: 'gato', emoji: '🐱' },
-    { palavra: 'bola', emoji: '⚽' },
-    { palavra: 'casa', emoji: '🏠' },
-    { palavra: 'sol', emoji: '☀️' },
-    { palavra: 'lua', emoji: '🌙' },
-    { palavra: 'maçã', emoji: '🍎' },
-    { palavra: 'peixe', emoji: '🐟' },
-    { palavra: 'aviao', emoji: '✈️' },
-    { palavra: 'livro', emoji: '📚' },
-    { palavra: 'sapo', emoji: '🐸' },
-    { palavra: 'uva', emoji: '🍇' },
-    { palavra: 'pato', emoji: '🦆' }
+    { palavra: 'gato', emoji: '' },
+    { palavra: 'bola', emoji: '' },
+    { palavra: 'casa', emoji: '' },
+    { palavra: 'sol', emoji: '' },
+    { palavra: 'lua', emoji: '' },
+    { palavra: 'maçã', emoji: '' },
+    { palavra: 'peixe', emoji: '' },
+    { palavra: 'avião', emoji: '' },
+    { palavra: 'livro', emoji: '' },
+    { palavra: 'sapo', emoji: '' },
+    { palavra: 'uva', emoji: '' },
+    { palavra: 'pato', emoji: '' }
 ];
-
-let palavraAtual = null;
-let respostaAtual = '';
-let concluido = false;
-let pontos = 0;
 
 const elementos = {
     emoji: document.getElementById('spelling-emoji'),
@@ -25,56 +20,54 @@ const elementos = {
     keyboard: document.getElementById('keyboard-area'),
     feedback: document.getElementById('feedback'),
     btnClear: document.getElementById('btn-clear'),
-    btnCheck: document.getElementById('btn-check'),
-    btnNext: document.getElementById('btn-next'),
-    starsCount: document.getElementById('stars-count')
+    btnCheck: document.getElementById('btn-check')
 };
 
-function atualizarEstrelas() {
-    const estrelas = carregarEstrelas();
-    elementos.starsCount.textContent = estrelas;
-}
-
-}
+let round = 0, pontos = 0, palavraAtual = null, respostaAtual = '', concluido = false, wrongCount = 0;
 
 function normalizar(texto) {
     return texto.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 }
 
 function gerarDesafio() {
+    if (round >= 10) { vitoria(); return; }
+    round++;
     concluido = false;
     respostaAtual = '';
+    wrongCount = 0;
     palavraAtual = palavras[Math.floor(Math.random() * palavras.length)];
 
     elementos.emoji.textContent = palavraAtual.emoji;
     elementos.word.innerHTML = '';
     elementos.feedback.textContent = '';
     elementos.feedback.className = 'feedback';
-    elementos.btnNext.disabled = true;
     elementos.btnCheck.disabled = false;
 
-    const letrasUnicas = [...new Set(normalizar(palavraAtual.palavra).split(''))];
-    const letrasExtras = 'abcdefghijklmnopqrstuvwxyz'.split('').filter(l => !letrasUnicas.includes(l));
-    const extras = embaralhar(letrasExtras).slice(0, Math.max(6 - letrasUnicas.length, 0));
-    const teclas = embaralhar([...letrasUnicas, ...extras]);
+    var bar = document.getElementById('progress-bar');
+    if (bar) { bar.style.width = (round / 10 * 100) + '%'; bar.textContent = round + ' / 10'; }
+
+    var letrasUnicas = [...new Set(normalizar(palavraAtual.palavra).split(''))];
+    var letrasExtras = 'abcdefghijklmnopqrstuvwxyz'.split('').filter(function(l) { return !letrasUnicas.includes(l); });
+    var extras = embaralhar(letrasExtras).slice(0, Math.max(6 - letrasUnicas.length, 0));
+    var teclas = embaralhar([...letrasUnicas, ...extras]);
 
     elementos.keyboard.innerHTML = '';
-    teclas.forEach(letra => {
-        const btn = document.createElement('button');
+    teclas.forEach(function(letra) {
+        var btn = document.createElement('button');
         btn.textContent = letra.toUpperCase();
-        btn.className = 'spelling-key';
+        btn.className = 'spelling-key game-option';
         btn.dataset.letra = letra;
-        btn.addEventListener('click', () => adicionarLetra(letra));
+        btn.addEventListener('click', function() { adicionarLetra(letra); });
         elementos.keyboard.appendChild(btn);
     });
 
-    falar(`Digite a palavra: ${palavraAtual.palavra}`);
+    atualizarWordDisplay();
+    setTimeout(function() { falar('Digite a palavra: ' + palavraAtual.palavra); }, 300);
 }
 
 function adicionarLetra(letra) {
     if (concluido) return;
     if (respostaAtual.length >= palavraAtual.palavra.length) return;
-
     respostaAtual += letra;
     atualizarWordDisplay();
     falar(letra);
@@ -82,8 +75,8 @@ function adicionarLetra(letra) {
 
 function atualizarWordDisplay() {
     elementos.word.innerHTML = '';
-    for (let i = 0; i < palavraAtual.palavra.length; i++) {
-        const slot = document.createElement('span');
+    for (var i = 0; i < palavraAtual.palavra.length; i++) {
+        var slot = document.createElement('span');
         slot.className = 'spelling-slot';
         slot.textContent = respostaAtual[i] ? respostaAtual[i].toUpperCase() : '';
         if (respostaAtual[i]) slot.classList.add('filled');
@@ -102,7 +95,7 @@ function limpar() {
 function verificar() {
     if (concluido) return;
     if (respostaAtual.length < palavraAtual.palavra.length) {
-        elementos.feedback.textContent = 'Complete a palavra! 💪';
+        elementos.feedback.textContent = 'Complete a palavra! ';
         elementos.feedback.className = 'feedback error';
         falar('Complete a palavra');
         return;
@@ -110,30 +103,42 @@ function verificar() {
 
     if (normalizar(respostaAtual) === normalizar(palavraAtual.palavra)) {
         concluido = true;
-        pontos += 10;
-        elementos.feedback.textContent = `🎉 Muito bem! ${palavraAtual.palavra}!`;
+        pontos += Math.max(10 - wrongCount * 2, 3);
+        elementos.feedback.textContent = ' Muito bem! ' + palavraAtual.palavra + '!';
         elementos.feedback.className = 'feedback success';
-        elementos.btnNext.disabled = false;
         elementos.btnCheck.disabled = true;
-        falar(`Muito bem! ${palavraAtual.palavra}`);
+        falar('Muito bem! ' + palavraAtual.palavra);
         playSuccess();
-        adicionarEstrelas(1);
-        atualizarEstrelas();
+        setTimeout(gerarDesafio, 2000);
     } else {
-        elementos.feedback.textContent = 'Quase lá! Tente de novo! 💪';
+        wrongCount++;
+        elementos.feedback.textContent = 'Quase lá! Tente de novo! ';
         elementos.feedback.className = 'feedback error';
         falar('Quase lá. Tente de novo');
         playError();
     }
 }
 
-elementos.btnHear.addEventListener('click', () => {
-    if (palavraAtual) falar(`Digite a palavra: ${palavraAtual.palavra}`);
-});
+function vitoria() {
+    if (typeof YoyoMascot !== 'undefined') YoyoMascot.celebrate();
+    elementos.keyboard.innerHTML = '';
+    elementos.word.innerHTML = '';
+    elementos.feedback.innerHTML = '<div style="font-size:2rem"> Parabéns! Você completou o jogo!</div>';
+    elementos.feedback.className = 'feedback success';
+    var bar = document.getElementById('progress-bar');
+    if (bar) { bar.style.width = '100%'; bar.textContent = '10 / 10 '; }
+    if (typeof adicionarEstrelas === 'function') adicionarEstrelas(3);
+    falar('Parabéns! Você completou o jogo!');
+    var btn = document.createElement('button');
+    btn.className = 'game-option play-again-btn';
+    btn.textContent = ' Brincar de novo!';
+    btn.addEventListener('click', function() { round = 0; pontos = 0; gerarDesafio(); });
+    elementos.keyboard.appendChild(btn);
+}
 
+elementos.btnHear.addEventListener('click', function() {
+    if (palavraAtual) falar('Digite a palavra: ' + palavraAtual.palavra);
+});
 elementos.btnClear.addEventListener('click', limpar);
 elementos.btnCheck.addEventListener('click', verificar);
-elementos.btnNext.addEventListener('click', gerarDesafio);
-
-atualizarEstrelas();
 gerarDesafio();

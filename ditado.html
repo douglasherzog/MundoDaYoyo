@@ -3,44 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mundo da Yoyo - Ditado de Palavras</title>
+    <title>Ditado - Mundo da Yoyo</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <header class="game-header">
-            <a href="index.html" class="back-button">In�cio</a>
-            <h1>Ditado de Palavras</h1>
-            <div class="stars-counter">
-                <span class="star-icon">?</span>
-                <span id="stars-count">0</span>
-            </div>
+        <header>
+            <h1> Ditado de Palavras</h1>
+            <p>Escute e escreva a palavra!</p>
         </header>
-
-        <main class="game-area">
-            <div class="spelling-instruction">
-                <p>Escute e digite a palavra:</p>
+        <main class="game">
+            <a href="index.html" class="btn-back"> Início</a>
+            <div class="score"> Pontos: <span id="pontos">0</span></div>
+            <div class="game-progress-container">
+                <div class="game-progress-bar" id="progress-bar" style="width:0%">0 / 10</div>
             </div>
-
-            <div class="spelling-display">
-                <div id="spelling-emoji" class="spelling-emoji"></div>
-                <button id="btn-hear" class="btn-hear"> Ouvir de novo</button>
+            <div class="word-area">
+                <div class="spelling-emoji" id="spelling-emoji"></div>
+                <div class="spelling-word" id="spelling-word"></div>
             </div>
-
-            <div id="spelling-word" class="spelling-word"></div>
-
-            <div id="keyboard-area" class="spelling-keyboard"></div>
-
-            <div id="feedback" class="feedback"></div>
-
-            <div class="spelling-buttons">
+            <div class="keyboard-area" id="keyboard-area"></div>
+            <div class="feedback" id="feedback"></div>
+            <div class="controls">
+                <button id="btn-hear" class="btn-speak"> Ouvir de novo</button>
                 <button id="btn-clear" class="btn-clear"> Limpar</button>
-                <button id="btn-check" class="btn-check">? Verificar</button>
-                <button id="btn-next" class="btn-next" disabled>Pr�xima ??</button>
+                <button id="btn-check" class="btn-next"> Verificar</button>
             </div>
         </main>
+        <footer><p>Feito com  para a Yoyo</p></footer>
     </div>
-
     <script src="stars.js"></script>
     <script src="sounds.js"></script>
     <script src="yoyo-mascot.js"></script>
@@ -52,4 +43,3 @@
     <script src="admin.js"></script>
 </body>
 </html>
-

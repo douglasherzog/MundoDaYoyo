@@ -3,45 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mundo da Yoyo - Aprendendo as Horas</title>
+    <title>Relógio - Mundo da Yoyo</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <header class="game-header">
-            <a href="index.html" class="back-button">In�cio</a>
-            <h1>Aprendendo as Horas</h1>
-            <div class="stars-counter">
-                <span class="star-icon">?</span>
-                <span id="stars-count">0</span>
-            </div>
+        <header>
+            <h1> Que horas são?</h1>
+            <p>Leia o relógio e escolha a hora certa!</p>
         </header>
-
-        <main class="game-area">
-            <div class="clock-instruction">
-                <p>Que horas s�o?</p>
+        <main class="game">
+            <a href="index.html" class="btn-back"> Início</a>
+            <div class="score"> Pontos: <span id="pontos">0</span></div>
+            <div class="game-progress-container">
+                <div class="game-progress-bar" id="progress-bar" style="width:0%">0 / 10</div>
             </div>
-
             <div class="clock-container">
                 <div class="clock-face">
+                    <div class="clock-hand hour-hand" id="hour-hand"></div>
+                    <div class="clock-hand minute-hand" id="minute-hand"></div>
                     <div class="clock-center"></div>
-                    <div id="hour-hand" class="clock-hand hour-hand"></div>
-                    <div id="minute-hand" class="clock-hand minute-hand"></div>
-                    <div class="clock-number n12">12</div>
-                    <div class="clock-number n3">3</div>
-                    <div class="clock-number n6">6</div>
-                    <div class="clock-number n9">9</div>
                 </div>
             </div>
-
             <div id="options-area" class="clock-options"></div>
-
             <div id="feedback" class="feedback"></div>
-
-            <button id="btn-next" class="btn-next" disabled>Pr�xima ??</button>
+            <div class="controls">
+                <button class="btn-speak" id="btn-speak"> Ouvir de novo</button>
+            </div>
         </main>
+        <footer><p>Feito com  para a Yoyo</p></footer>
     </div>
-
     <script src="stars.js"></script>
     <script src="sounds.js"></script>
     <script src="yoyo-mascot.js"></script>
@@ -53,4 +44,3 @@
     <script src="admin.js"></script>
 </body>
 </html>
-

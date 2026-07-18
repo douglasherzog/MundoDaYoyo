@@ -5,111 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Antes e Depois - Mundo da Yoyo</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-        .sequencia-slots {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin: 20px 0;
-            flex-wrap: wrap;
-        }
-        .seq-slot {
-            width: 90px;
-            height: 90px;
-            border: 3px dashed #FF6B9D;
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-            background: #fff;
-            transition: all 0.2s;
-        }
-        .seq-slot.preenchido {
-            border-style: solid;
-            border-color: #5BB870;
-            background: #E8F5E9;
-        }
-        .seq-slot.destacado {
-            border-color: #FF8C42;
-            background: #FFF3E0;
-            transform: scale(1.05);
-        }
-        .seq-num {
-            position: absolute;
-            margin-top: -100px;
-            font-size: 0.9rem;
-            color: #FF6B9D;
-            font-weight: bold;
-        }
-        .seq-opcoes {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin: 15px 0;
-            flex-wrap: wrap;
-        }
-        .seq-opcao {
-            width: 80px;
-            height: 80px;
-            border: 3px solid #ddd;
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            background: #f9f9f9;
-            cursor: pointer;
-            transition: all 0.15s;
-        }
-        .seq-opcao:hover {
-            transform: scale(1.1);
-            border-color: #FF6B9D;
-        }
-        .seq-opcao.usada {
-            opacity: 0.3;
-            pointer-events: none;
-        }
-    </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>📅 Antes e Depois</h1>
+            <h1> Antes e Depois</h1>
             <p>Coloque as figuras na ordem certa!</p>
         </header>
-
         <main class="game">
-            <a href="index.html" class="btn-back">Início</a>
-            <div class="score">⭐ Pontos: <span id="pontos">0</span></div>
-
-            <div class="word-area">
-                <div class="animal-hint" id="dica">Arraste ou clique para ordenar!</div>
-                <div class="sequencia-slots" id="slots"></div>
-                <div class="seq-opcoes" id="opcoes"></div>
+            <a href="index.html" class="btn-back"> Início</a>
+            <div class="score"> Pontos: <span id="pontos">0</span></div>
+            <div class="game-progress-container">
+                <div class="game-progress-bar" id="progress-bar" style="width:0%">0 / 10</div>
             </div>
-
+            <div class="word-area">
+                <div class="animal-hint" id="dica">Clique na figura que vem primeiro!</div>
+            </div>
+            <div class="slots" id="slots"></div>
+            <div class="opcoes" id="opcoes"></div>
             <div class="feedback" id="feedback"></div>
-
             <div class="controls">
-                <button class="btn-speak" id="btn-speak">🔊 Ouvir</button>
-                <button class="btn-next" id="btn-next" disabled>Próximo 🚀</button>
+                <button class="btn-speak" id="btn-speak"> Ouvir pergunta</button>
             </div>
         </main>
-
-        <footer>
-            <p>Feito com ❤️ para a Yoyo</p>
-        </footer>
+        <footer><p>Feito com  para a Yoyo</p></footer>
     </div>
-
     <script src="stars.js"></script>
     <script src="sounds.js"></script>
     <script src="yoyo-mascot.js"></script>
     <script src="transitions.js"></script>
     <script src="achievements.js"></script>
     <script src="game-engine.js"></script>
-    <script src="admin.js"></script>
     <script src="tts.js"></script>
     <script src="antes-depois.js"></script>
+    <script src="admin.js"></script>
 </body>
-</html>
+</html>

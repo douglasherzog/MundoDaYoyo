@@ -3,49 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Frases - Mundo da Yoyo</title>
+    <title>Frases da Yoyo</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <header>
             <h1> Frases da Yoyo</h1>
-            <p>Monte a frase com as palavras em ordem!</p>
+            <p>Monte frases com palavras soltas!</p>
         </header>
-
         <main class="game">
-            <a href="index.html" class="btn-back">In�cio</a>
-            <div class="score">? Pontos: <span id="pontos">0</span></div>
-
+            <a href="index.html" class="btn-back"> Início</a>
+            <div class="score"> Pontos: <span id="pontos">0</span></div>
+            <div class="game-progress-container">
+                <div class="game-progress-bar" id="progress-bar" style="width:0%">0 / 10</div>
+            </div>
             <div class="word-area">
                 <div class="emoji" id="emoji"></div>
-                <div class="sentence-slots" id="sentence-slots"></div>
             </div>
-
+            <div class="sentence-slots" id="sentence-slots"></div>
             <div class="words" id="words"></div>
-
             <div class="feedback" id="feedback"></div>
-
             <div class="controls">
                 <button class="btn-speak" id="btn-speak"> Ouvir frase</button>
-                <button class="btn-next" id="btn-next">Pr�xima ??</button>
             </div>
         </main>
-
-        <footer>
-            <p>Feito com  para a Yoyo</p>
-        </footer>
+        <footer><p>Feito com  para a Yoyo</p></footer>
     </div>
-
     <script src="stars.js"></script>
     <script src="sounds.js"></script>
     <script src="yoyo-mascot.js"></script>
     <script src="transitions.js"></script>
     <script src="achievements.js"></script>
     <script src="game-engine.js"></script>
-    <script src="admin.js"></script>
     <script src="tts.js"></script>
     <script src="frases.js"></script>
+    <script src="admin.js"></script>
 </body>
 </html>
-

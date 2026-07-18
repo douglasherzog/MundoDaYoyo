@@ -28,8 +28,6 @@ const elementos = {
     btnNext: document.getElementById('btn-next')
 };
 
-}
-
 function pronunciarLetra(letra) {
     return pronunciaLetras[letra] || letra.toLowerCase();
 }

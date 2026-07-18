@@ -3,38 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mundo da Yoyo - Ordem Alfab�tica</title>
+    <title>Ordem Alfabética - Mundo da Yoyo</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <header class="game-header">
-            <a href="index.html" class="back-button">In�cio</a>
-            <h1>Ordem Alfab�tica</h1>
-            <div class="stars-counter">
-                <span class="star-icon">?</span>
-                <span id="stars-count">0</span>
-            </div>
+        <header>
+            <h1> Ordem Alfabética</h1>
+            <p>Coloque as letras na ordem certa!</p>
         </header>
-
-        <main class="game-area">
-            <div class="order-instruction">
-                <p>Coloque as letras em ordem alfab�tica:</p>
+        <main class="game">
+            <a href="index.html" class="btn-back"> Início</a>
+            <div class="score"> Pontos: <span id="pontos">0</span></div>
+            <div class="game-progress-container">
+                <div class="game-progress-bar" id="progress-bar" style="width:0%">0 / 10</div>
             </div>
-
-            <div id="letters-pool" class="letters-pool"></div>
-            <div id="answer-slots" class="answer-slots"></div>
-
-            <div id="feedback" class="feedback"></div>
-
-            <div class="order-buttons">
+            <div class="word-area">
+                <p>Coloque as letras em ordem alfabética:</p>
+            </div>
+            <div class="letters-pool" id="letters-pool"></div>
+            <div class="answer-slots" id="answer-slots"></div>
+            <div class="feedback" id="feedback"></div>
+            <div class="controls">
                 <button id="btn-clear" class="btn-clear"> Limpar</button>
-                <button id="btn-check" class="btn-check">? Verificar</button>
-                <button id="btn-next" class="btn-next" disabled>Pr�xima ??</button>
+                <button id="btn-check" class="btn-next"> Verificar</button>
             </div>
         </main>
+        <footer><p>Feito com  para a Yoyo</p></footer>
     </div>
-
     <script src="stars.js"></script>
     <script src="sounds.js"></script>
     <script src="yoyo-mascot.js"></script>
@@ -46,4 +42,3 @@
     <script src="admin.js"></script>
 </body>
 </html>
-

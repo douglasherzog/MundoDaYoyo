@@ -20,6 +20,8 @@ let palavraAtual = null;
 let letrasDigitadas = [];
 let pontos = 0;
 let concluido = false;
+let round = 0;
+let wrongCount = 0;
 
 const elementos = {
     image: document.getElementById('word-image'),
@@ -32,8 +34,6 @@ const elementos = {
     btnClear: document.getElementById('btn-clear'),
     btnNext: document.getElementById('btn-next')
 };
-}
-
 function escolherPalavra() {
     return palavrasLista[Math.floor(Math.random() * palavrasLista.length)];
 }
@@ -48,7 +48,10 @@ function atualizarSlots() {
             slot.classList.add('filled');
         }
         elementos.slots.appendChild(slot);
-}\nfunction criarTeclado() {
+    }
+}
+
+function criarTeclado() {
     elementos.keyboard.innerHTML = '';
     const letras = palavraAtual.palavra.split('');
     const letrasExtras = embaralhar('ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')).slice(0, 10);
@@ -77,14 +80,14 @@ function adicionarLetra(letra) {
 
             if (letrasDigitadas.length === palavraAtual.palavra.length) {
                 concluido = true;
-                pontos += 10;
+                pontos += Math.max(10 - wrongCount * 2, 3);
                 elementos.pontos.textContent = pontos;
-                elementos.feedback.textContent = `🎉 Parabéns! Você escreveu ${palavraAtual.palavra}!`;
+                elementos.feedback.textContent = '🎉 Parabéns! Você escreveu ' + palavraAtual.palavra + '!';
                 elementos.feedback.className = 'feedback success';
-                elementos.btnNext.disabled = false;
                 elementos.image.classList.add('celebration');
                 playSuccess();
-                falar(`Parabéns! Você escreveu ${palavraAtual.palavra}`);
+                falar('Parabéns! Você escreveu ' + palavraAtual.palavra);
+                setTimeout(carregarRodada, 2000);
             }
         } else {
             const botoes = elementos.keyboard.querySelectorAll('.syllable');
@@ -94,11 +97,14 @@ function adicionarLetra(letra) {
                     setTimeout(() => botao.classList.remove('shake'), 500);
                 }
             });
+            wrongCount++;
             elementos.feedback.textContent = 'Letra errada! Tente outra. 💪';
             elementos.feedback.className = 'feedback error';
             playError();
             falar('Tente outra letra');
-}\n}
+        }
+    }
+}
 
 function limpar() {
     letrasDigitadas = [];
@@ -112,21 +118,43 @@ function limpar() {
 }
 
 function carregarRodada() {
+    if (round >= 10) { vitoria(); return; }
+    round++;
     palavraAtual = escolherPalavra();
     letrasDigitadas = [];
     concluido = false;
+    wrongCount = 0;
 
     elementos.image.textContent = palavraAtual.emoji;
     elementos.image.classList.remove('celebration');
     elementos.feedback.textContent = '';
     elementos.feedback.className = 'feedback';
-    elementos.btnNext.disabled = true;
     elementos.tip.textContent = 'Clique nas letras na ordem certa';
+
+    var bar = document.getElementById('progress-bar');
+    if (bar) { bar.style.width = (round / 10 * 100) + '%'; bar.textContent = round + ' / 10'; }
 
     atualizarSlots();
     criarTeclado();
 
-    falar(`Escreva a palavra ${palavraAtual.palavra}`);
+    setTimeout(function() { falar('Escreva a palavra ' + palavraAtual.palavra); }, 300);
+}
+
+function vitoria() {
+    if (typeof YoyoMascot !== 'undefined') YoyoMascot.celebrate();
+    elementos.keyboard.innerHTML = '';
+    elementos.slots.innerHTML = '';
+    elementos.feedback.innerHTML = '<div style="font-size:2rem">🏆 Parabéns! Você completou o jogo!</div>';
+    elementos.feedback.className = 'feedback success';
+    var bar = document.getElementById('progress-bar');
+    if (bar) { bar.style.width = '100%'; bar.textContent = '10 / 10 ✅'; }
+    if (typeof adicionarEstrelas === 'function') adicionarEstrelas(3);
+    falar('Parabéns! Você completou o jogo!');
+    var btn = document.createElement('button');
+    btn.className = 'game-option play-again-btn';
+    btn.textContent = '🔄 Brincar de novo!';
+    btn.addEventListener('click', function() { round = 0; pontos = 0; elementos.pontos.textContent = 0; carregarRodada(); });
+    elementos.keyboard.appendChild(btn);
 }
 
 elementos.btnSpeak.addEventListener('click', () => {
@@ -136,6 +164,5 @@ elementos.btnSpeak.addEventListener('click', () => {
 });
 
 elementos.btnClear.addEventListener('click', limpar);
-elementos.btnNext.addEventListener('click', carregarRodada);
 
 carregarRodada();

@@ -1,26 +1,20 @@
 const frases = [
-    { frase: 'O gato come peixe', palavras: ['O', 'gato', 'come', 'peixe'], emoji: '🐱🐟' },
-    { frase: 'A bola é azul', palavras: ['A', 'bola', 'é', 'azul'], emoji: '⚽🔵' },
-    { frase: 'O sol brilha', palavras: ['O', 'sol', 'brilha'], emoji: '☀️✨' },
-    { frase: 'A maçã é doce', palavras: ['A', 'maçã', 'é', 'doce'], emoji: '🍎😋' },
-    { frase: 'O cão corre', palavras: ['O', 'cão', 'corre'], emoji: '🐶🏃' },
-    { frase: 'A lua brilha', palavras: ['A', 'lua', 'brilha'], emoji: '🌙✨' },
-    { frase: 'O bolo é bom', palavras: ['O', 'bolo', 'é', 'bom'], emoji: '🎂😊' },
-    { frase: 'A casa é grande', palavras: ['A', 'casa', 'é', 'grande'], emoji: '🏠🏰' },
-    { frase: 'A mãe lê livro', palavras: ['A', 'mãe', 'lê', 'livro'], emoji: '👩📖' },
-    { frase: 'O pai faz carinho', palavras: ['O', 'pai', 'faz', 'carinho'], emoji: '👨❤️' },
-    { frase: 'A flor é bonita', palavras: ['A', 'flor', 'é', 'bonita'], emoji: '🌸😍' },
-    { frase: 'O avô dorme', palavras: ['O', 'avô', 'dorme'], emoji: '👴😴' },
-    { frase: 'A vovó cozinha', palavras: ['A', 'vovó', 'cozinha'], emoji: '👵🍳' },
-    { frase: 'O bebê ri', palavras: ['O', 'bebê', 'ri'], emoji: '👶😄' },
-    { frase: 'A menina canta', palavras: ['A', 'menina', 'canta'], emoji: '👧🎵' },
-    { frase: 'O menino pula', palavras: ['O', 'menino', 'pula'], emoji: '👦🤸' }
+    { frase: 'O gato come peixe', palavras: ['O', 'gato', 'come', 'peixe'], emoji: '' },
+    { frase: 'A bola é azul', palavras: ['A', 'bola', 'é', 'azul'], emoji: '' },
+    { frase: 'O sol brilha', palavras: ['O', 'sol', 'brilha'], emoji: '' },
+    { frase: 'A maçã é doce', palavras: ['A', 'maçã', 'é', 'doce'], emoji: '' },
+    { frase: 'O cão corre', palavras: ['O', 'cão', 'corre'], emoji: '' },
+    { frase: 'A lua brilha', palavras: ['A', 'lua', 'brilha'], emoji: '' },
+    { frase: 'O bolo é bom', palavras: ['O', 'bolo', 'é', 'bom'], emoji: '' },
+    { frase: 'A casa é grande', palavras: ['A', 'casa', 'é', 'grande'], emoji: '' },
+    { frase: 'A mãe lê livro', palavras: ['A', 'mãe', 'lê', 'livro'], emoji: '' },
+    { frase: 'O pai faz carinho', palavras: ['O', 'pai', 'faz', 'carinho'], emoji: '' },
+    { frase: 'A flor é bonita', palavras: ['A', 'flor', 'é', 'bonita'], emoji: '' },
+    { frase: 'O bebê ri', palavras: ['O', 'bebê', 'ri'], emoji: '' },
+    { frase: 'A vovó cozinha', palavras: ['A', 'vovó', 'cozinha'], emoji: '' },
+    { frase: 'A menina canta', palavras: ['A', 'menina', 'canta'], emoji: '' },
+    { frase: 'O menino pula', palavras: ['O', 'menino', 'pula'], emoji: '' }
 ];
-
-let fraseAtual = null;
-let palavrasSelecionadas = [];
-let pontos = 0;
-let concluido = false;
 
 const elementos = {
     emoji: document.getElementById('emoji'),
@@ -28,87 +22,103 @@ const elementos = {
     words: document.getElementById('words'),
     feedback: document.getElementById('feedback'),
     pontos: document.getElementById('pontos'),
-    btnSpeak: document.getElementById('btn-speak'),
-    btnNext: document.getElementById('btn-next')
+    btnSpeak: document.getElementById('btn-speak')
 };
-function escolherFrase() {
-    const indice = Math.floor(Math.random() * frases.length);
-    return frases[indice];
-}\nfunction carregarFrase() {
-    fraseAtual = escolherFrase();
+
+let round = 0, pontos = 0, fraseAtual = null, palavrasSelecionadas = [], concluido = false, wrongCount = 0;
+
+function carregarFrase() {
+    if (round >= 10) { vitoria(); return; }
+    round++;
+    fraseAtual = frases[Math.floor(Math.random() * frases.length)];
     palavrasSelecionadas = [];
     concluido = false;
+    wrongCount = 0;
 
     elementos.emoji.textContent = fraseAtual.emoji;
-    elementos.emoji.classList.remove('celebration');
     elementos.feedback.textContent = '';
     elementos.feedback.className = 'feedback';
-    elementos.btnNext.disabled = true;
+
+    var bar = document.getElementById('progress-bar');
+    if (bar) { bar.style.width = (round / 10 * 100) + '%'; bar.textContent = round + ' / 10'; }
 
     elementos.sentenceSlots.innerHTML = '';
-    for (let i = 0; i < fraseAtual.palavras.length; i++) {
-        const slot = document.createElement('div');
+    for (var i = 0; i < fraseAtual.palavras.length; i++) {
+        var slot = document.createElement('div');
         slot.className = 'slot word-slot';
         slot.dataset.indice = i;
         slot.textContent = '?';
         elementos.sentenceSlots.appendChild(slot);
     }
 
-    const palavrasEmbaralhadas = embaralhar(fraseAtual.palavras);
+    var palavras = embaralhar(fraseAtual.palavras.slice());
     elementos.words.innerHTML = '';
-    palavrasEmbaralhadas.forEach((palavra, indice) => {
-        const botao = document.createElement('button');
-        botao.className = `syllable word-button color-${(indice % 6) + 1}`;
-        botao.textContent = palavra;
-        botao.dataset.palavra = palavra;
-        botao.addEventListener('click', () => selecionarPalavra(botao));
-        elementos.words.appendChild(botao);
+    palavras.forEach(function(palavra, indice) {
+        var btn = document.createElement('button');
+        btn.className = 'game-option word-button color-' + ((indice % 6) + 1);
+        btn.textContent = palavra;
+        btn.dataset.palavra = palavra;
+        btn.addEventListener('click', function() { selecionar(btn); });
+        elementos.words.appendChild(btn);
     });
+
+    setTimeout(function() { falar(fraseAtual.frase); }, 300);
 }
 
-function selecionarPalavra(botao) {
+function selecionar(btn) {
     if (concluido) return;
-
-    const palavra = botao.dataset.palavra;
-    const indiceEsperado = palavrasSelecionadas.length;
+    var palavra = btn.dataset.palavra;
+    var indiceEsperado = palavrasSelecionadas.length;
 
     if (palavra === fraseAtual.palavras[indiceEsperado]) {
         palavrasSelecionadas.push(palavra);
-        botao.classList.add('used');
-
-        const slots = elementos.sentenceSlots.querySelectorAll('.slot');
+        btn.classList.add('used');
+        btn.disabled = true;
+        var slots = elementos.sentenceSlots.querySelectorAll('.slot');
         slots[indiceEsperado].textContent = palavra;
         slots[indiceEsperado].classList.add('filled');
 
         if (palavrasSelecionadas.length === fraseAtual.palavras.length) {
             concluido = true;
-            pontos += 10;
+            pontos += Math.max(10 - wrongCount * 2, 3);
             elementos.pontos.textContent = pontos;
-            elementos.feedback.textContent = `🎉 Ótimo! "${fraseAtual.frase}"`;
+            elementos.feedback.textContent = ' Ótimo! "' + fraseAtual.frase + '"';
             elementos.feedback.className = 'feedback success';
-            elementos.emoji.classList.add('celebration');
-            elementos.btnNext.disabled = false;
             playSuccess();
-            falar(`Muito bem! ${fraseAtual.frase}`);
+            falar('Muito bem! ' + fraseAtual.frase);
+            setTimeout(carregarFrase, 2000);
         } else {
             playClick();
             falar(palavra);
         }
     } else {
-        botao.classList.add('celebration');
-        setTimeout(() => botao.classList.remove('celebration'), 500);
-        elementos.feedback.textContent = 'Tente outra palavra! 💪';
+        wrongCount++;
+        btn.classList.add('shake');
+        setTimeout(function() { btn.classList.remove('shake'); }, 500);
+        elementos.feedback.textContent = 'Tente outra palavra! ';
         elementos.feedback.className = 'feedback error';
         playError();
         falar('Tente outra palavra');
-}\nelementos.btnSpeak.addEventListener('click', () => {
-    if (fraseAtual) {
-        falar(fraseAtual.frase);
     }
-});
+}
 
-elementos.btnNext.addEventListener('click', () => {
-    carregarFrase();
-});
+function vitoria() {
+    if (typeof YoyoMascot !== 'undefined') YoyoMascot.celebrate();
+    elementos.words.innerHTML = '';
+    elementos.feedback.innerHTML = '<div style="font-size:2rem"> Parabéns! Você completou o jogo!</div>';
+    elementos.feedback.className = 'feedback success';
+    var bar = document.getElementById('progress-bar');
+    if (bar) { bar.style.width = '100%'; bar.textContent = '10 / 10 '; }
+    if (typeof adicionarEstrelas === 'function') adicionarEstrelas(3);
+    falar('Parabéns! Você completou o jogo!');
+    var btn = document.createElement('button');
+    btn.className = 'game-option play-again-btn';
+    btn.textContent = ' Brincar de novo!';
+    btn.addEventListener('click', function() { round = 0; pontos = 0; elementos.pontos.textContent = 0; carregarFrase(); });
+    elementos.words.appendChild(btn);
+}
 
+elementos.btnSpeak.addEventListener('click', function() {
+    if (fraseAtual) falar(fraseAtual.frase);
+});
 carregarFrase();

@@ -21,8 +21,6 @@ const elementos = {
     btnNext: document.getElementById('btn-next')
 };
 
-}
-
 function numeroPorExtenso(numero) {
     const n = parseInt(numero, 10);
 
