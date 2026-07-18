@@ -1,16 +1,16 @@
 const palavras = [
-    { palavra: 'mamãe', silabas: ['ma', 'mãe'], emoji: '' },
-    { palavra: 'papai', silabas: ['pa', 'pai'], emoji: '' },
-    { palavra: 'bola', silabas: ['bo', 'la'], emoji: '' },
-    { palavra: 'casa', silabas: ['ca', 'sa'], emoji: '' },
-    { palavra: 'gato', silabas: ['ga', 'to'], emoji: '' },
-    { palavra: 'mesa', silabas: ['me', 'sa'], emoji: '' },
-    { palavra: 'lua', silabas: ['lu', 'a'], emoji: '' },
-    { palavra: 'sol', silabas: ['so', 'l'], emoji: '' },
-    { palavra: 'bolo', silabas: ['bo', 'lo'], emoji: '' },
-    { palavra: 'maçã', silabas: ['ma', 'çã'], emoji: '' },
-    { palavra: 'cão', silabas: ['cão'], emoji: '' },
-    { palavra: 'pé', silabas: ['pé'], emoji: '' }
+    { palavra: 'mamãe', silabas: ['ma', 'mãe'], emoji: '👩' },
+    { palavra: 'papai', silabas: ['pa', 'pai'], emoji: '👨' },
+    { palavra: 'bola', silabas: ['bo', 'la'], emoji: '⚽' },
+    { palavra: 'casa', silabas: ['ca', 'sa'], emoji: '🏠' },
+    { palavra: 'gato', silabas: ['ga', 'to'], emoji: '🐱' },
+    { palavra: 'mesa', silabas: ['me', 'sa'], emoji: '🪑' },
+    { palavra: 'lua', silabas: ['lu', 'a'], emoji: '🌙' },
+    { palavra: 'sol', silabas: ['so', 'l'], emoji: '☀️' },
+    { palavra: 'bolo', silabas: ['bo', 'lo'], emoji: '🎂' },
+    { palavra: 'maçã', silabas: ['ma', 'çã'], emoji: '🍎' },
+    { palavra: 'cão', silabas: ['cão'], emoji: '🐶' },
+    { palavra: 'pé', silabas: ['pé'], emoji: '🦶' }
 ];
 
 const elementos = {

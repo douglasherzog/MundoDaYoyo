@@ -1,98 +1,74 @@
-const emojis = ['','','','','','','','','','','','','','','','','','','',''];
+const emojis = ['🍎','🍌','🐶','🐱','🚗','🚌','🌳','🌻','⭐','🌙','🍦','🍪','🎈','🎁','🐟','🐦','🍇','🍉','🚲','⛵'];
 
 const elementos = {
     par: document.getElementById('par-imagens'),
-    pergunta: document.getElementById('pergunta'),
-    opcoes: document.getElementById('opcoes'),
+    options: document.getElementById('options'),
     feedback: document.getElementById('feedback'),
-    pontos: document.getElementById('pontos'),
-    btnSpeak: document.getElementById('btn-speak')
+    pontos: document.getElementById('pontos')
 };
 
-let round = 0, pontos = 0, atual = null, concluido = false, wrongCount = 0;
+let rodada = 0, pontos = 0, respostaCorreta = null;
 
-function carregarRodada() {
-    if (round >= 10) { vitoria(); return; }
-    round++;
-    var saoIguais = Math.random() > 0.5;
-    var emoji1, emoji2;
-    if (saoIguais) {
-        emoji1 = emojis[Math.floor(Math.random() * emojis.length)];
-        emoji2 = emoji1;
-    } else {
-        var par = embaralhar(emojis).slice(0, 2);
-        emoji1 = par[0]; emoji2 = par[1];
-    }
-    atual = { emoji1: emoji1, emoji2: emoji2, resposta: saoIguais ? 'igual' : 'diferente' };
-    concluido = false;
-    wrongCount = 0;
-
-    elementos.feedback.textContent = '';
-    elementos.feedback.className = 'feedback';
-    elementos.par.innerHTML = '<span>' + emoji1 + '</span><span style="font-size:1.5rem"></span><span>' + emoji2 + '</span>';
-    elementos.pergunta.textContent = 'São iguais ou diferentes?';
+function iniciarRodada() {
+    if (rodada >= 10) { vitoria(); return; }
+    rodada++;
 
     var bar = document.getElementById('progress-bar');
-    if (bar) { bar.style.width = (round / 10 * 100) + '%'; bar.textContent = round + ' / 10'; }
+    if (bar) { bar.style.width = (rodada / 10 * 100) + '%'; bar.textContent = rodada + ' / 10'; }
 
-    elementos.opcoes.innerHTML = '';
-    var opcoes = [
-        { texto: ' Iguais', valor: 'igual' },
-        { texto: ' Diferentes', valor: 'diferente' }
-    ];
-    opcoes.forEach(function(op) {
-        var btn = document.createElement('button');
-        btn.className = 'game-option';
-        btn.innerHTML = op.texto;
-        btn.dataset.valor = op.valor;
-        btn.addEventListener('click', function() { selecionar(btn); });
-        elementos.opcoes.appendChild(btn);
-    });
+    var iguais = Math.random() > 0.5;
+    var emojisEscolhidos = embaralhar(emojis.slice()).slice(0, 2);
+    var emoji1 = emojisEscolhidos[0];
+    var emoji2 = iguais ? emoji1 : emojisEscolhidos[1];
+    respostaCorreta = iguais ? 'igual' : 'diferente';
 
-    setTimeout(function() { falar('Olhe os desenhos. São iguais ou diferentes?'); }, 300);
+    elementos.par.innerHTML = '<div style="font-size:4rem;">' + emoji1 + '</div><div style="font-size:4rem;">' + emoji2 + '</div>';
+    elementos.feedback.textContent = '';
+    elementos.feedback.className = 'feedback';
+
+    elementos.options.innerHTML = '';
+    var btnIgual = document.createElement('button');
+    btnIgual.className = 'game-option';
+    btnIgual.innerHTML = ' Iguais';
+    btnIgual.addEventListener('click', function() { verificar('igual'); });
+    elementos.options.appendChild(btnIgual);
+
+    var btnDiferente = document.createElement('button');
+    btnDiferente.className = 'game-option';
+    btnDiferente.innerHTML = ' Diferentes';
+    btnDiferente.addEventListener('click', function() { verificar('diferente'); });
+    elementos.options.appendChild(btnDiferente);
+
+    falar('Essas figuras são iguais ou diferentes?');
 }
 
-function selecionar(btn) {
-    if (concluido) return;
-    if (btn.dataset.valor === atual.resposta) {
-        concluido = true;
-        pontos += Math.max(10 - wrongCount * 2, 3);
+function verificar(resposta) {
+    if (resposta === respostaCorreta) {
+        pontos += 10;
         elementos.pontos.textContent = pontos;
-        btn.classList.add('correct');
-        var txt = atual.resposta === 'igual' ? 'iguais' : 'diferentes';
-        elementos.feedback.textContent = ' Isso mesmo! São ' + txt + '!';
+        elementos.feedback.textContent = ' Isso! São ' + respostaCorreta + 's!';
         elementos.feedback.className = 'feedback success';
         playSuccess();
-        falar('Muito bem! São ' + txt + '!');
-        setTimeout(carregarRodada, 1800);
+        falar('Isso! São ' + respostaCorreta + 's');
+        setTimeout(iniciarRodada, 1800);
     } else {
-        wrongCount++;
-        btn.classList.add('shake', 'disabled');
-        btn.disabled = true;
-        setTimeout(function() { btn.classList.remove('shake'); }, 500);
-        elementos.feedback.textContent = 'Quase! Tenta de novo! ';
+        pontos = Math.max(0, pontos - 2);
+        elementos.pontos.textContent = pontos;
+        elementos.feedback.textContent = 'Tente outra vez! ';
         elementos.feedback.className = 'feedback error';
         playError();
-        falar('Tente de novo');
+        falar('Tente outra vez');
     }
 }
 
 function vitoria() {
     if (typeof YoyoMascot !== 'undefined') YoyoMascot.celebrate();
-    elementos.opcoes.innerHTML = '';
-    elementos.feedback.innerHTML = '<div style="font-size:2rem"> Parabéns! Você completou o jogo!</div>';
-    elementos.feedback.className = 'feedback success';
-    elementos.par.innerHTML = '';
+    elementos.options.innerHTML = '';
+    elementos.par.innerHTML = '<div style="font-size:4rem"> Parabéns!</div>';
     var bar = document.getElementById('progress-bar');
     if (bar) { bar.style.width = '100%'; bar.textContent = '10 / 10 '; }
     if (typeof adicionarEstrelas === 'function') adicionarEstrelas(3);
     falar('Parabéns! Você completou o jogo!');
-    var btn = document.createElement('button');
-    btn.className = 'game-option play-again-btn';
-    btn.textContent = ' Brincar de novo!';
-    btn.addEventListener('click', function() { round = 0; pontos = 0; elementos.pontos.textContent = 0; carregarRodada(); });
-    elementos.opcoes.appendChild(btn);
 }
 
-elementos.btnSpeak.addEventListener('click', function() { falar('Olhe os desenhos. São iguais ou diferentes?'); });
-carregarRodada();
+iniciarRodada();

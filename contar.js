@@ -1,14 +1,14 @@
 ﻿const objetos = [
-    { emoji: '', nome: 'maçãs' },
-    { emoji: '', nome: 'bananas' },
-    { emoji: '', nome: 'carrinhos' },
-    { emoji: '', nome: 'estrelas' },
-    { emoji: '', nome: 'cachorrinhos' },
-    { emoji: '', nome: 'flores' },
-    { emoji: '', nome: 'balões' },
-    { emoji: '', nome: 'ursos' },
-    { emoji: '', nome: 'biscoitos' },
-    { emoji: '', nome: 'gatinhos' }
+    { emoji: '🍎', nome: 'maçãs' },
+    { emoji: '🍌', nome: 'bananas' },
+    { emoji: '🚗', nome: 'carrinhos' },
+    { emoji: '⭐', nome: 'estrelas' },
+    { emoji: '🐶', nome: 'cachorrinhos' },
+    { emoji: '🌸', nome: 'flores' },
+    { emoji: '🎈', nome: 'balões' },
+    { emoji: '🧸', nome: 'ursos' },
+    { emoji: '🍪', nome: 'biscoitos' },
+    { emoji: '🐱', nome: 'gatinhos' }
 ];
 
 const elementos = {

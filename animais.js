@@ -1,14 +1,14 @@
 ﻿const animais = [
-    { nome: 'cachorro', emoji: '', som: 'au au', dica: 'Faz au au' },
-    { nome: 'gato', emoji: '', som: 'miau', dica: 'Faz miau' },
-    { nome: 'passarinho', emoji: '', som: 'piu piu', dica: 'Faz piu piu' },
-    { nome: 'vaca', emoji: '', som: 'muuu', dica: 'Faz muuu' },
-    { nome: 'leão', emoji: '', som: 'roar', dica: 'Ruge forte' },
-    { nome: 'peixe', emoji: '', som: 'glub glub', dica: 'Faz glub glub' },
-    { nome: 'coelho', emoji: '', som: 'snif', dica: 'Pula muito' },
-    { nome: 'elefante', emoji: '', som: 'fuuu', dica: 'Tem tromba grande' },
-    { nome: 'pato', emoji: '', som: 'quack', dica: 'Faz quack' },
-    { nome: 'cavalo', emoji: '', som: 'relinchar', dica: 'Relincha' }
+    { nome: 'cachorro', emoji: '🐶', som: 'au au', dica: 'Faz au au' },
+    { nome: 'gato', emoji: '🐱', som: 'miau', dica: 'Faz miau' },
+    { nome: 'passarinho', emoji: '🐦', som: 'piu piu', dica: 'Faz piu piu' },
+    { nome: 'vaca', emoji: '🐄', som: 'muuu', dica: 'Faz muuu' },
+    { nome: 'leão', emoji: '🦁', som: 'roar', dica: 'Ruge forte' },
+    { nome: 'peixe', emoji: '🐟', som: 'glub glub', dica: 'Faz glub glub' },
+    { nome: 'coelho', emoji: '🐰', som: 'snif', dica: 'Pula muito' },
+    { nome: 'elefante', emoji: '🐘', som: 'fuuu', dica: 'Tem tromba grande' },
+    { nome: 'pato', emoji: '🦆', som: 'quack', dica: 'Faz quack' },
+    { nome: 'cavalo', emoji: '🐴', som: 'relinchar', dica: 'Relincha' }
 ];
 
 const elementos = {

@@ -1,16 +1,16 @@
 const pares = [
-    { palavra: 'grande', oposto: 'pequeno', emoji: '' },
-    { palavra: 'quente', oposto: 'frio', emoji: '' },
-    { palavra: 'alto', oposto: 'baixo', emoji: '' },
-    { palavra: 'rápido', oposto: 'devagar', emoji: '' },
-    { palavra: 'feliz', oposto: 'triste', emoji: '' },
-    { palavra: 'cheio', oposto: 'vazio', emoji: '' },
-    { palavra: 'limpo', oposto: 'sujo', emoji: '' },
-    { palavra: 'dia', oposto: 'noite', emoji: '' },
-    { palavra: 'acordado', oposto: 'dormindo', emoji: '' },
-    { palavra: 'forte', oposto: 'fraco', emoji: '' },
-    { palavra: 'longe', oposto: 'perto', emoji: '' },
-    { palavra: 'novo', oposto: 'velho', emoji: '' }
+    { palavra: 'grande', oposto: 'pequeno', emoji: '🔴' },
+    { palavra: 'quente', oposto: 'frio', emoji: '🌡️' },
+    { palavra: 'alto', oposto: 'baixo', emoji: '📏' },
+    { palavra: 'rápido', oposto: 'devagar', emoji: '🐆' },
+    { palavra: 'feliz', oposto: 'triste', emoji: '😊' },
+    { palavra: 'cheio', oposto: 'vazio', emoji: '🥛' },
+    { palavra: 'limpo', oposto: 'sujo', emoji: '✨' },
+    { palavra: 'dia', oposto: 'noite', emoji: '☀️' },
+    { palavra: 'acordado', oposto: 'dormindo', emoji: '👀' },
+    { palavra: 'forte', oposto: 'fraco', emoji: '💪' },
+    { palavra: 'longe', oposto: 'perto', emoji: '📍' },
+    { palavra: 'novo', oposto: 'velho', emoji: '🆕' }
 ];
 
 const elementos = {

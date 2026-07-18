@@ -20,58 +20,62 @@ body {
 }
 
 .container {
-    max-width: 900px;
+    max-width: 960px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 12px;
 }
 
 header {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 15px;
 }
 
 header h1 {
-    font-size: 3rem;
+    font-size: 2.4rem;
     color: #FF6B9D;
-    text-shadow: 3px 3px 0 #FFF;
-    margin-bottom: 10px;
+    text-shadow: 2px 2px 0 #FFF;
+    margin-bottom: 6px;
     animation: titleGlow 3s ease-in-out infinite;
 }
 
 @keyframes titleGlow {
-    0%, 100% { text-shadow: 3px 3px 0 #FFF, 0 0 20px rgba(255, 107, 157, 0.3); }
-    50% { text-shadow: 3px 3px 0 #FFF, 0 0 40px rgba(255, 107, 157, 0.6); }
+    0%, 100% { text-shadow: 2px 2px 0 #FFF, 0 0 15px rgba(255, 107, 157, 0.3); }
+    50% { text-shadow: 2px 2px 0 #FFF, 0 0 30px rgba(255, 107, 157, 0.6); }
 }
 
 header p {
-    font-size: 1.3rem;
+    font-size: 1.1rem;
     color: #666;
 }
 
 .game {
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 30px;
-    padding: 30px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 24px;
+    padding: 18px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
 .score {
     text-align: center;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     color: #FF9800;
-    margin-bottom: 20px;
+    margin-bottom: 8px;
     font-weight: bold;
 }
 
 .word-area {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 12px;
 }
 
 .emoji {
-    font-size: 6rem;
-    margin-bottom: 20px;
+    font-size: 4.5rem;
+    margin-bottom: 10px;
     animation: bounce 2s infinite;
+    line-height: 1;
 }
 
 @keyframes bounce {
@@ -82,21 +86,21 @@ header p {
 .target-slots {
     display: flex;
     justify-content: center;
-    gap: 15px;
+    gap: 10px;
     flex-wrap: wrap;
-    min-height: 80px;
+    min-height: 60px;
     align-items: center;
 }
 
 .slot {
-    width: 110px;
-    height: 80px;
-    border: 4px dashed #BDBDBD;
-    border-radius: 20px;
+    width: 85px;
+    height: 65px;
+    border: 3px dashed #BDBDBD;
+    border-radius: 18px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     font-weight: bold;
     color: #757575;
     background: #FAFAFA;
@@ -113,23 +117,23 @@ header p {
 .syllables {
     display: flex;
     justify-content: center;
-    gap: 15px;
+    gap: 10px;
     flex-wrap: wrap;
-    margin-bottom: 30px;
-    min-height: 90px;
+    margin-bottom: 12px;
+    min-height: 70px;
 }
 
 .syllable {
-    width: 110px;
-    height: 80px;
+    width: 85px;
+    height: 65px;
     border: none;
-    border-radius: 20px;
-    font-size: 1.8rem;
+    border-radius: 18px;
+    font-size: 1.6rem;
     font-weight: bold;
     color: #FFF;
     cursor: pointer;
     transition: transform 0.2s, box-shadow 0.2s;
-    box-shadow: 0 5px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 0 rgba(0, 0, 0, 0.2);
     user-select: none;
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
@@ -158,39 +162,39 @@ header p {
 
 /* Jogo das Cores */
 .color-shape {
-    font-size: 10rem;
-    margin-bottom: 10px;
+    font-size: 6rem;
+    margin-bottom: 8px;
     line-height: 1;
     animation: bounce 2s infinite;
     user-select: none;
 }
 
 .color-question {
-    font-size: 2rem;
+    font-size: 1.6rem;
     font-weight: bold;
     color: #666;
-    margin-bottom: 20px;
+    margin-bottom: 12px;
 }
 
 .colors {
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 12px;
     flex-wrap: wrap;
-    margin-bottom: 30px;
+    margin-bottom: 12px;
 }
 
 .color-button {
-    width: 140px;
-    height: 100px;
+    width: 120px;
+    height: 80px;
     border: none;
-    border-radius: 25px;
-    font-size: 1.6rem;
+    border-radius: 22px;
+    font-size: 1.4rem;
     font-weight: bold;
     color: #FFF;
     cursor: pointer;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
-    box-shadow: 0 6px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 0 5px 0 rgba(0, 0, 0, 0.2);
     transition: transform 0.15s, box-shadow 0.15s;
     user-select: none;
     -webkit-tap-highlight-color: transparent;
@@ -220,39 +224,39 @@ header p {
 
 /* Jogo das Formas */
 .shape-display {
-    font-size: 9rem;
-    margin-bottom: 10px;
+    font-size: 6rem;
+    margin-bottom: 8px;
     line-height: 1;
     animation: bounce 2s infinite;
     user-select: none;
 }
 
 .shape-question {
-    font-size: 2rem;
+    font-size: 1.6rem;
     font-weight: bold;
     color: #666;
-    margin-bottom: 20px;
+    margin-bottom: 12px;
 }
 
 .shapes {
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 12px;
     flex-wrap: wrap;
-    margin-bottom: 30px;
+    margin-bottom: 12px;
 }
 
 .shape-button {
-    width: 150px;
-    height: 100px;
+    width: 120px;
+    height: 80px;
     border: none;
-    border-radius: 25px;
-    font-size: 1.5rem;
+    border-radius: 22px;
+    font-size: 1.4rem;
     font-weight: bold;
     color: #FFF;
     cursor: pointer;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
-    box-shadow: 0 6px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 0 5px 0 rgba(0, 0, 0, 0.2);
     transition: transform 0.15s, box-shadow 0.15s;
     user-select: none;
     -webkit-tap-highlight-color: transparent;
@@ -270,39 +274,39 @@ header p {
 
 /* Jogo dos Animais */
 .animal-word {
-    font-size: 8rem;
-    margin-bottom: 10px;
+    font-size: 5rem;
+    margin-bottom: 6px;
     line-height: 1;
     animation: bounce 2s infinite;
     user-select: none;
 }
 
 .animal-hint {
-    font-size: 2rem;
+    font-size: 1.6rem;
     font-weight: bold;
     color: #666;
-    margin-bottom: 20px;
+    margin-bottom: 12px;
 }
 
 .animals {
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 12px;
     flex-wrap: wrap;
-    margin-bottom: 30px;
+    margin-bottom: 12px;
 }
 
 .animal-button {
-    width: 170px;
-    height: 90px;
+    width: 140px;
+    height: 80px;
     border: none;
-    border-radius: 25px;
-    font-size: 1.5rem;
+    border-radius: 22px;
+    font-size: 1.4rem;
     font-weight: bold;
     color: #FFF;
     cursor: pointer;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
-    box-shadow: 0 6px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 0 5px 0 rgba(0, 0, 0, 0.2);
     transition: transform 0.15s, box-shadow 0.15s;
     user-select: none;
     -webkit-tap-highlight-color: transparent;
@@ -321,47 +325,47 @@ header p {
 
 /* Jogo da Letra Inicial */
 .letter-word {
-    font-size: 8rem;
-    margin-bottom: 5px;
+    font-size: 5rem;
+    margin-bottom: 4px;
     line-height: 1;
     animation: bounce 2s infinite;
     user-select: none;
 }
 
 .letter-name {
-    font-size: 3rem;
+    font-size: 2.2rem;
     font-weight: bold;
     color: #FF6B9D;
-    margin-bottom: 5px;
+    margin-bottom: 4px;
     text-transform: lowercase;
 }
 
 .letter-question {
-    font-size: 2rem;
+    font-size: 1.6rem;
     font-weight: bold;
     color: #666;
-    margin-bottom: 20px;
+    margin-bottom: 12px;
 }
 
 .letters {
     display: flex;
     justify-content: center;
-    gap: 25px;
+    gap: 15px;
     flex-wrap: wrap;
-    margin-bottom: 30px;
+    margin-bottom: 12px;
 }
 
 .letter-button {
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
     border: none;
     border-radius: 50%;
-    font-size: 2.5rem;
+    font-size: 2rem;
     font-weight: bold;
     color: #FFF;
     cursor: pointer;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
-    box-shadow: 0 6px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 0 5px 0 rgba(0, 0, 0, 0.2);
     transition: transform 0.15s, box-shadow 0.15s;
     user-select: none;
     -webkit-tap-highlight-color: transparent;
@@ -380,46 +384,46 @@ header p {
 
 /* Jogo de Rimas */
 .rhyme-target {
-    font-size: 8rem;
-    margin-bottom: 5px;
+    font-size: 5rem;
+    margin-bottom: 4px;
     line-height: 1;
     animation: bounce 2s infinite;
     user-select: none;
 }
 
 .rhyme-word {
-    font-size: 3rem;
+    font-size: 2.2rem;
     font-weight: bold;
     color: #FF6B9D;
-    margin-bottom: 5px;
+    margin-bottom: 4px;
 }
 
 .rhyme-question {
-    font-size: 2rem;
+    font-size: 1.6rem;
     font-weight: bold;
     color: #666;
-    margin-bottom: 20px;
+    margin-bottom: 12px;
 }
 
 .rhymes {
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 12px;
     flex-wrap: wrap;
-    margin-bottom: 30px;
+    margin-bottom: 12px;
 }
 
 .rhyme-button {
-    width: 170px;
-    height: 90px;
+    width: 140px;
+    height: 80px;
     border: none;
-    border-radius: 25px;
-    font-size: 1.8rem;
+    border-radius: 22px;
+    font-size: 1.5rem;
     font-weight: bold;
     color: #FFF;
     cursor: pointer;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
-    box-shadow: 0 6px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 0 5px 0 rgba(0, 0, 0, 0.2);
     transition: transform 0.15s, box-shadow 0.15s;
     user-select: none;
     -webkit-tap-highlight-color: transparent;
@@ -437,35 +441,35 @@ header p {
 
 /* Jogo Formar Palavras */
 .word-image {
-    font-size: 8rem;
-    margin-bottom: 15px;
+    font-size: 5rem;
+    margin-bottom: 10px;
     line-height: 1;
     animation: bounce 2s infinite;
     user-select: none;
 }
 
 .word-tip {
-    font-size: 1.6rem;
+    font-size: 1.4rem;
     color: #666;
     font-weight: bold;
-    margin-bottom: 20px;
+    margin-bottom: 12px;
 }
 
 .word-keyboard {
     display: flex;
     justify-content: center;
-    gap: 12px;
+    gap: 10px;
     flex-wrap: wrap;
-    margin-bottom: 30px;
+    margin-bottom: 12px;
     max-width: 700px;
     margin-left: auto;
     margin-right: auto;
 }
 
 .word-keyboard .syllable {
-    width: 65px;
-    height: 65px;
-    font-size: 1.8rem;
+    width: 60px;
+    height: 60px;
+    font-size: 1.6rem;
 }
 
 /* Atividade Desenhar e Colorir */
@@ -721,51 +725,45 @@ header p {
 
 .count-question {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 15px;
 }
 
 .count-question .instruction {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     color: #666;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .objects-display {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 15px;
-    min-height: 120px;
-    padding: 25px;
+    gap: 10px;
+    min-height: 90px;
+    padding: 15px;
     background: #FFF;
-    border-radius: 25px;
+    border-radius: 20px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    font-size: 3rem;
+    font-size: 2.5rem;
 }
 
 .object-item {
     animation: popIn 0.4s ease-out;
 }
 
-@keyframes popIn {
-    0% { transform: scale(0); }
-    80% { transform: scale(1.2); }
-    100% { transform: scale(1); }
-}
-
 .count-options {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 15px;
-    margin-bottom: 25px;
+    gap: 10px;
+    margin-bottom: 12px;
 }
 
 .count-option {
-    padding: 20px;
-    font-size: 2.5rem;
+    padding: 14px;
+    font-size: 2rem;
     font-weight: bold;
-    border: 4px solid #4FC3F7;
-    border-radius: 20px;
+    border: 3px solid #4FC3F7;
+    border-radius: 18px;
     background: #FFF;
     color: #4FC3F7;
     cursor: pointer;
@@ -817,35 +815,35 @@ header p {
 
 .case-question {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 15px;
 }
 
 .case-question .instruction {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     color: #666;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .target-letter {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
-    padding: 25px;
+    gap: 8px;
+    padding: 18px;
     background: #FFF;
-    border-radius: 25px;
+    border-radius: 20px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 }
 
 .big-letter {
-    font-size: 6rem;
+    font-size: 4.5rem;
     font-weight: 900;
     color: #AB47BC;
     line-height: 1;
 }
 
 .letter-label {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     color: #888;
     font-weight: bold;
 }
@@ -853,16 +851,16 @@ header p {
 .case-options {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 15px;
-    margin-bottom: 25px;
+    gap: 10px;
+    margin-bottom: 12px;
 }
 
 .case-option {
-    padding: 20px;
-    font-size: 2.5rem;
+    padding: 14px;
+    font-size: 2rem;
     font-weight: 900;
-    border: 4px solid #AB47BC;
-    border-radius: 20px;
+    border: 3px solid #AB47BC;
+    border-radius: 18px;
     background: #FFF;
     color: #AB47BC;
     cursor: pointer;
@@ -1220,32 +1218,32 @@ header p {
 
 .opposite-question {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 15px;
 }
 
 .opposite-question p {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     color: #666;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 
 .target-word {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
-    padding: 25px;
+    gap: 8px;
+    padding: 18px;
     background: #FFF;
-    border-radius: 25px;
+    border-radius: 20px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 }
 
 .opposite-emoji {
-    font-size: 4rem;
+    font-size: 3.5rem;
 }
 
 .opposite-word {
-    font-size: 2.5rem;
+    font-size: 2rem;
     font-weight: 900;
     color: #7E57C2;
 }
@@ -1253,16 +1251,16 @@ header p {
 .opposite-options {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-    margin-bottom: 25px;
+    gap: 12px;
+    margin-bottom: 12px;
 }
 
 .opposite-option {
-    padding: 20px;
-    font-size: 1.6rem;
+    padding: 16px;
+    font-size: 1.4rem;
     font-weight: bold;
-    border: 4px solid #7E57C2;
-    border-radius: 20px;
+    border: 3px solid #7E57C2;
+    border-radius: 18px;
     background: #FFF;
     color: #7E57C2;
     cursor: pointer;
@@ -1302,30 +1300,30 @@ header p {
 
 .clock-instruction {
     text-align: center;
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     color: #666;
-    margin-bottom: 20px;
+    margin-bottom: 12px;
 }
 
 .clock-container {
     display: flex;
     justify-content: center;
-    margin-bottom: 30px;
+    margin-bottom: 15px;
 }
 
 .clock-face {
-    width: 220px;
-    height: 220px;
+    width: 170px;
+    height: 170px;
     border-radius: 50%;
     background: #FFF;
-    border: 8px solid #26C6DA;
+    border: 6px solid #26C6DA;
     position: relative;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .clock-center {
-    width: 16px;
-    height: 16px;
+    width: 12px;
+    height: 12px;
     background: #26C6DA;
     border-radius: 50%;
     position: absolute;
@@ -1346,44 +1344,44 @@ header p {
 }
 
 .hour-hand {
-    width: 8px;
-    height: 60px;
+    width: 6px;
+    height: 45px;
     background: #333;
     z-index: 5;
 }
 
 .minute-hand {
-    width: 5px;
-    height: 85px;
+    width: 4px;
+    height: 65px;
     background: #EF5350;
     z-index: 4;
 }
 
 .clock-number {
     position: absolute;
-    font-size: 1.4rem;
+    font-size: 1.1rem;
     font-weight: 900;
     color: #333;
 }
 
-.clock-number.n12 { top: 10px; left: 50%; transform: translateX(-50%); }
-.clock-number.n3 { right: 12px; top: 50%; transform: translateY(-50%); }
-.clock-number.n6 { bottom: 10px; left: 50%; transform: translateX(-50%); }
-.clock-number.n9 { left: 12px; top: 50%; transform: translateY(-50%); }
+.clock-number.n12 { top: 6px; left: 50%; transform: translateX(-50%); }
+.clock-number.n3 { right: 8px; top: 50%; transform: translateY(-50%); }
+.clock-number.n6 { bottom: 6px; left: 50%; transform: translateX(-50%); }
+.clock-number.n9 { left: 8px; top: 50%; transform: translateY(-50%); }
 
 .clock-options {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-    margin-bottom: 25px;
+    gap: 10px;
+    margin-bottom: 12px;
 }
 
 .clock-option {
-    padding: 18px;
-    font-size: 1.8rem;
+    padding: 14px;
+    font-size: 1.5rem;
     font-weight: bold;
-    border: 4px solid #26C6DA;
-    border-radius: 20px;
+    border: 3px solid #26C6DA;
+    border-radius: 18px;
     background: #FFF;
     color: #26C6DA;
     cursor: pointer;
@@ -1423,32 +1421,32 @@ header p {
 
 .body-instruction {
     text-align: center;
-    margin-bottom: 25px;
+    margin-bottom: 12px;
 }
 
 .body-instruction p {
-    font-size: 1.8rem;
+    font-size: 1.4rem;
     color: #666;
-    margin-bottom: 15px;
+    margin-bottom: 8px;
 }
 
 .target-body-part {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
-    padding: 20px;
+    gap: 6px;
+    padding: 12px;
     background: #FFF;
-    border-radius: 20px;
+    border-radius: 18px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 }
 
 .body-emoji {
-    font-size: 4rem;
+    font-size: 3rem;
 }
 
 .body-part-name {
-    font-size: 2.2rem;
+    font-size: 1.8rem;
     font-weight: 900;
     color: #EC407A;
 }
@@ -1456,13 +1454,13 @@ header p {
 .body-container {
     display: flex;
     justify-content: center;
-    margin-bottom: 25px;
+    margin-bottom: 12px;
 }
 
 .body-figure {
     position: relative;
-    width: 160px;
-    height: 280px;
+    width: 130px;
+    height: 230px;
 }
 
 .body-head {
@@ -1470,58 +1468,58 @@ header p {
     top: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 70px;
-    height: 70px;
+    width: 55px;
+    height: 55px;
     border-radius: 50%;
     background: #F8BBD0;
-    border: 4px solid #EC407A;
+    border: 3px solid #EC407A;
     cursor: pointer;
     transition: all 0.2s;
 }
 
 .body-torso {
     position: absolute;
-    top: 80px;
+    top: 65px;
     left: 50%;
     transform: translateX(-50%);
-    width: 80px;
-    height: 100px;
-    border-radius: 20px;
+    width: 65px;
+    height: 85px;
+    border-radius: 18px;
     background: #F48FB1;
-    border: 4px solid #EC407A;
+    border: 3px solid #EC407A;
     cursor: pointer;
     transition: all 0.2s;
 }
 
 .body-arm {
     position: absolute;
-    top: 90px;
-    width: 25px;
-    height: 90px;
-    border-radius: 15px;
+    top: 75px;
+    width: 22px;
+    height: 80px;
+    border-radius: 12px;
     background: #F8BBD0;
-    border: 4px solid #EC407A;
+    border: 3px solid #EC407A;
     cursor: pointer;
     transition: all 0.2s;
 }
 
-.body-arm.left { left: 10px; }
-.body-arm.right { right: 10px; }
+.body-arm.left { left: 6px; }
+.body-arm.right { right: 6px; }
 
 .body-leg {
     position: absolute;
-    top: 185px;
-    width: 30px;
-    height: 90px;
-    border-radius: 15px;
+    top: 155px;
+    width: 26px;
+    height: 75px;
+    border-radius: 12px;
     background: #F8BBD0;
-    border: 4px solid #EC407A;
+    border: 3px solid #EC407A;
     cursor: pointer;
     transition: all 0.2s;
 }
 
-.body-leg.left { left: 35px; }
-.body-leg.right { right: 35px; }
+.body-leg.left { left: 25px; }
+.body-leg.right { right: 25px; }
 
 .body-figure [data-part]:hover {
     transform: scale(1.05);
@@ -1546,10 +1544,10 @@ header p {
 
 .feedback {
     text-align: center;
-    min-height: 60px;
-    font-size: 1.6rem;
+    min-height: 40px;
+    font-size: 1.4rem;
     font-weight: bold;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .feedback.success {
@@ -1563,28 +1561,28 @@ header p {
 .controls {
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 15px;
     flex-wrap: wrap;
-    margin-top: 10px;
+    margin-top: 6px;
 }
 
 .controls button,
 .btn-next,
 .btn-clear,
 .btn-check {
-    padding: 22px 44px;
-    font-size: 1.8rem;
+    padding: 16px 32px;
+    font-size: 1.5rem;
     border: none;
-    border-radius: 30px;
+    border-radius: 26px;
     cursor: pointer;
     font-weight: bold;
     transition: transform 0.15s, box-shadow 0.15s;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
-    min-height: 80px;
+    box-shadow: 0 5px 14px rgba(0, 0, 0, 0.2);
+    min-height: 62px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 8px;
     touch-action: manipulation;
     user-select: none;
 }
@@ -2431,7 +2429,64 @@ footer {
     animation: playAgainPulse 2s ease-in-out infinite;
 }
 
-@keyframes playAgainPulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); }
+
+/* ====== COMPACT RESPONSIVE LAYOUTS FOR KIDS ====== */
+
+@media (max-height: 750px) {
+    .container { padding: 8px; }
+    header { margin-bottom: 10px; }
+    header h1 { font-size: 1.9rem; }
+    .game { padding: 12px; gap: 8px; }
+    .emoji { font-size: 3.5rem; margin-bottom: 6px; }
+    .color-shape, .shape-display, .animal-word, .letter-word, .rhyme-target, .word-image { font-size: 4rem; }
+    .target-slots, .syllables { gap: 8px; min-height: 55px; }
+    .slot { width: 70px; height: 55px; font-size: 1.4rem; }
+    .syllable { width: 70px; height: 55px; font-size: 1.4rem; }
+    .controls button, .btn-next, .btn-clear, .btn-check { padding: 12px 24px; font-size: 1.2rem; min-height: 50px; }
+    .clock-face { width: 140px; height: 140px; border-width: 5px; }
+    .hour-hand { height: 38px; }
+    .minute-hand { height: 55px; }
+    .body-figure { width: 110px; height: 190px; }
+    .body-head { width: 45px; height: 45px; }
+    .body-torso { width: 55px; height: 70px; top: 55px; }
+    .body-arm { width: 18px; height: 65px; top: 65px; }
+    .body-arm.left { left: 4px; }
+    .body-arm.right { right: 4px; }
+    .body-leg { width: 22px; height: 60px; top: 130px; }
+    .body-leg.left { left: 18px; }
+    .body-leg.right { right: 18px; }
+    .btn-back, .back-button { padding: 10px 18px; font-size: 1.1rem; margin-bottom: 10px; }
+    .feedback { min-height: 30px; font-size: 1.2rem; margin-bottom: 6px; }
+    .game-progress-container { height: 18px; margin-bottom: 8px; }
+    .score { font-size: 1.1rem; margin-bottom: 4px; }
+}
+
+@media (max-height: 600px) {
+    .emoji { font-size: 3rem; }
+    .color-shape, .shape-display, .animal-word, .letter-word, .rhyme-target, .word-image { font-size: 3.2rem; }
+    .object-item { font-size: 2rem; }
+    .count-question .instruction, .case-question .instruction, .sequence-question .instruction, .spelling-instruction, .opposite-question p, .clock-instruction, .order-instruction, .body-instruction p { font-size: 1.2rem; }
+    .syllable, .slot { width: 60px; height: 48px; font-size: 1.2rem; }
+    .game { padding: 8px; }
+    .game-option { padding: 12px 18px; font-size: 1.1rem; min-width: 90px; margin: 3px; }
+}
+
+/* Prevent scrolling by using full viewport on game pages */
+body.game-page {
+    overflow: hidden;
+}
+
+body.game-page .container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    max-width: 100%;
+    padding: 8px;
+}
+
+body.game-page main.game {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    min-height: 0;
 }

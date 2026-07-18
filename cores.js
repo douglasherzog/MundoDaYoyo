@@ -1,14 +1,14 @@
 ﻿const cores = [
-    { nome: 'vermelho', hex: '#FF6B6B', emoji: '' },
-    { nome: 'azul', hex: '#4D96FF', emoji: '' },
-    { nome: 'amarelo', hex: '#FFD93D', emoji: '' },
-    { nome: 'verde', hex: '#6BCB77', emoji: '' },
-    { nome: 'laranja', hex: '#FF9F45', emoji: '' },
-    { nome: 'roxo', hex: '#9B59B6', emoji: '' },
-    { nome: 'rosa', hex: '#FF85A2', emoji: '' }
+    { nome: 'vermelho', hex: '#FF6B6B', emoji: '❤️' },
+    { nome: 'azul', hex: '#4D96FF', emoji: '💙' },
+    { nome: 'amarelo', hex: '#FFD93D', emoji: '💛' },
+    { nome: 'verde', hex: '#6BCB77', emoji: '💚' },
+    { nome: 'laranja', hex: '#FF9F45', emoji: '🧡' },
+    { nome: 'roxo', hex: '#9B59B6', emoji: '💜' },
+    { nome: 'rosa', hex: '#FF85A2', emoji: '🩷' }
 ];
 
-const formas = ['', '', '', '', ''];
+const formas = ['🟥', '🟦', '🟨', '🟩', '🟧'];
 
 const elementos = {
     shape: document.getElementById('color-shape'),

@@ -1,8 +1,8 @@
 const partesCorpo = [
-    { nome: 'cabeça', emoji: '', dica: 'cabeça' },
-    { nome: 'peito', emoji: '', dica: 'peito' },
-    { nome: 'braço', emoji: '', dica: 'braço' },
-    { nome: 'perna', emoji: '', dica: 'perna' }
+    { nome: 'cabeça', emoji: '🧒', dica: 'cabeça' },
+    { nome: 'peito', emoji: '👕', dica: 'peito' },
+    { nome: 'braço', emoji: '💪', dica: 'braço' },
+    { nome: 'perna', emoji: '🦵', dica: 'perna' }
 ];
 
 const elementos = {
