@@ -5,7 +5,7 @@ const grupos = [
     { categoria: 'transporte',itens: ['🚗','🚌','✈️','🚲','🚂','🚢','🏍️','🚁'], intrusos: ['🐶','🍎','🌸','⭐'] },
     { categoria: 'natureza',  itens: ['🌳','🌸','⭐','🌞','🌈','🏔️','🌊','🍀'], intrusos: ['🐶','🚗','🍪','⚽'] },
     { categoria: 'comida',    itens: ['🍪','🍕','🍞','🥕','🌽','🥛','🍎','🍌'], intrusos: ['🐶','🚗','⭐','🎈'] },
-    { categoria: 'roupa',     itens: ['👕','👖','👗','👟','🧢','🧦','🧥',' scarf'], intrusos: ['🐶','🍎','🚗','⚽'] },
+    { categoria: 'roupa',     itens: ['👕','👖','👗','👟','🧢','🧦','🧥','🧣'], intrusos: ['🐶','🍎','🚗','⚽'] },
     { categoria: 'cor',       itens: ['🔴','🟢','🔵','🟡','🟠','🟣','⚫','⚪'], intrusos: ['🐶','🍎','🚗','⭐'] },
 ];
 
@@ -22,23 +22,9 @@ const elementos = {
     btnNext: document.getElementById('btn-next')
 };
 
-function embaralhar(array) {
-    const novo = [...array];
-    for (let i = novo.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [novo[i], novo[j]] = [novo[j], novo[i]];
-    }
     return novo;
 }
 
-function falar(texto) {
-    if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
-        const msg = new SpeechSynthesisUtterance(texto);
-        msg.lang = 'pt-BR';
-        msg.rate = 0.85;
-        window.speechSynthesis.speak(msg);
-    }
 }
 
 function carregarRodada() {

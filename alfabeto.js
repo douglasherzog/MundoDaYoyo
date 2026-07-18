@@ -28,14 +28,6 @@ const elementos = {
     btnNext: document.getElementById('btn-next')
 };
 
-function falar(texto) {
-    if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
-        const msg = new SpeechSynthesisUtterance(texto);
-        msg.lang = 'pt-BR';
-        msg.rate = 0.85;
-        window.speechSynthesis.speak(msg);
-    }
 }
 
 function pronunciarLetra(letra) {

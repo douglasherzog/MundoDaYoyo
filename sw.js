@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mundo-yoyo-v5';
+const CACHE_NAME = 'mundo-yoyo-v6';
 const ASSETS = [
     './',
     './index.html',

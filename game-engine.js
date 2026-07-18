@@ -293,4 +293,5 @@
     }
 
     window.GameEngine = { create: create, shuffle: shuffle };
+    window.embaralhar = shuffle;
 })();

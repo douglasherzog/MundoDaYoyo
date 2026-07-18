@@ -1,4 +1,4 @@
-﻿const pares = ['🦄', '🌈', '🍭', '☁️', '⭐', '🧚', '🍦', '☀️'];
+const pares = ['🦄', '🌈', '🍭', '☁️', '⭐', '🧚', '🍦', '☀️'];
 
 let cartas = [];
 let cartaVirada = null;
@@ -15,23 +15,9 @@ const elementos = {
     btnRestart: document.getElementById('btn-restart')
 };
 
-function embaralhar(array) {
-    const novo = [...array];
-    for (let i = novo.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [novo[i], novo[j]] = [novo[j], novo[i]];
-    }
     return novo;
 }
 
-function falar(texto) {
-    if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
-        const msg = new SpeechSynthesisUtterance(texto);
-        msg.lang = 'pt-BR';
-        msg.rate = 0.9;
-        window.speechSynthesis.speak(msg);
-    }
 }
 
 function criarCartas() {

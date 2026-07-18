@@ -197,14 +197,6 @@ function iniciar() {
     falar('Clique nos bichinhos! Vai Yoyo!');
 }
 
-function falar(texto) {
-    if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
-        const msg = new SpeechSynthesisUtterance(texto);
-        msg.lang = 'pt-BR';
-        msg.rate = 0.9;
-        window.speechSynthesis.speak(msg);
-    }
 }
 
 btnReiniciar.addEventListener('click', iniciar);

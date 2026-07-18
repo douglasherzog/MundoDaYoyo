@@ -26,14 +26,6 @@ function atualizarEstrelas() {
     elementos.starsCount.textContent = estrelas;
 }
 
-function falar(texto) {
-    if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
-        const msg = new SpeechSynthesisUtterance(texto);
-        msg.lang = 'pt-BR';
-        msg.rate = 0.9;
-        window.speechSynthesis.speak(msg);
-    }
 }
 
 function limparDestaques() {
