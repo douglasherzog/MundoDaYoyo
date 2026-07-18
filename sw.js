@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mundo-yoyo-v9';
+const CACHE_NAME = 'mundo-yoyo-v10';
 const ASSETS = [
     './',
     './index.html',
@@ -22,7 +22,9 @@ const ASSETS = [
     './vestir.js',
     './vestir-icons.js',
     './domino.html',
-    './domino.js'
+    './domino.js',
+    './basquete.html',
+    './basquete.js'
 ];
 
 self.addEventListener('install', e => {

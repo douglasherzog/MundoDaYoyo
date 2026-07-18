@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Basquete da Yoyo - Mundo da Yoyo</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#FF6B9D">
+    <style>
+        :root {
+            --quadra: #f4a261;
+            --quadra-dark: #e76f51;
+            --tabela: #ef476f;
+            --ceu: #87CEEB;
+            --grama: #7EC850;
+        }
+
+        body.game-page {
+            background: linear-gradient(180deg, var(--ceu) 0%, #bde0fe 50%, var(--grama) 50%, #5cb85c 100%);
+            min-height: 100vh;
+            overflow: hidden;
+            touch-action: none;
+        }
+
+        .container {
+            max-width: 960px;
+            height: 100vh;
+            margin: 0 auto;
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            flex-shrink: 0;
+            margin-bottom: 8px;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            color: #fff;
+            text-shadow: 2px 2px 0 #e76f51, 0 0 20px rgba(255,255,255,0.5);
+        }
+
+        header p {
+            color: #fff;
+            font-size: 1rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .game {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+            overflow: hidden;
+            background: rgba(255,255,255,0.92);
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+
+        #hud {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            padding: 10px 6px;
+            background: linear-gradient(135deg, #FF6B9D, #FF8C42);
+            border-radius: 14px;
+            color: #fff;
+            font-weight: bold;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(255,107,157,0.35);
+        }
+
+        #hud span {
+            font-size: 0.95rem;
+        }
+
+        #arena-wrap {
+            flex: 1;
+            position: relative;
+            border-radius: 18px;
+            overflow: hidden;
+            border: 4px solid #e76f51;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
+            background: var(--quadra);
+            cursor: crosshair;
+            touch-action: none;
+        }
+
+        #arena {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        #tutorial {
+            position: absolute;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255,255,255,0.95);
+            padding: 14px 22px;
+            border-radius: 16px;
+            text-align: center;
+            font-size: 1.1rem;
+            color: #555;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+            pointer-events: none;
+            z-index: 10;
+            animation: pulseTutorial 2s infinite;
+        }
+
+        @keyframes pulseTutorial {
+            0%, 100% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.03); }
+        }
+
+        #overlay {
+            position: absolute;
+            inset: 0;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: rgba(255,255,255,0.92);
+            z-index: 20;
+            text-align: center;
+            padding: 20px;
+            border-radius: 18px;
+        }
+
+        #overlay h2 {
+            font-size: 2rem;
+            color: #FF6B9D;
+            margin-bottom: 10px;
+        }
+
+        #overlay .estrelas {
+            font-size: 2.6rem;
+            margin: 10px 0;
+        }
+
+        #overlay p {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 16px;
+        }
+
+        #btn-reiniciar {
+            padding: 14px 36px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 50px;
+            background: linear-gradient(135deg, #FF6B9D, #FF8C42);
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 6px 16px rgba(255,107,157,0.4);
+            transition: transform 0.15s;
+        }
+
+        #btn-reiniciar:hover { transform: scale(1.07); }
+
+        footer {
+            flex-shrink: 0;
+        }
+    </style>
+</head>
+<body class="game-page">
+    <div class="container">
+        <header>
+            <h1>🏀 Basquete da Yoyo</h1>
+            <p>Arraste e solte para arremessar a bola na cesta!</p>
+        </header>
+
+        <main class="game">
+            <a href="index.html" class="btn-back">Início</a>
+
+            <div id="hud">
+                <div>🏀 <span id="placar">0</span> pontos</div>
+                <div>🎯 <span id="acertos">0</span> cestas</div>
+                <div>⏱️ <span id="tempo">60</span>s</div>
+            </div>
+
+            <div id="arena-wrap">
+                <canvas id="arena"></canvas>
+                <div id="tutorial">👆 Arraste e solte para jogar!</div>
+                <div id="overlay">
+                    <h2>🎉 Tempo esgotado!</h2>
+                    <div class="estrelas" id="estrelas"></div>
+                    <p>Você fez <strong id="pontos-finais">0</strong> pontos e acertou <strong id="acertos-finais">0</strong> cestas!</p>
+                    <button id="btn-reiniciar">🔄 Jogar de novo</button>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>Feito com ❤️ para a Yoyo</p>
+            <p>✝️ Herzog Developer</p>
+        </footer>
+    </div>
+
+    <script src="stars.js"></script>
+    <script src="sounds.js"></script>
+    <script src="yoyo-mascot.js"></script>
+    <script src="transitions.js"></script>
+    <script src="achievements.js"></script>
+    <script src="game-engine.js"></script>
+    <script src="tts.js"></script>
+    <script src="basquete.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>
