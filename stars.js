@@ -80,36 +80,11 @@ inicializarEstrelas();
 (function () {
     'use strict';
 
-    let overlayLock = null;
-
-    function criarOverlayLock() {
-        if (overlayLock) return overlayLock;
-        overlayLock = document.createElement('div');
-        overlayLock.id = 'lockdown-overlay';
-        overlayLock.style.cssText = [
-            'position:fixed', 'top:0', 'left:0', 'right:0', 'bottom:0',
-            'background:rgba(123,31,162,0.95)', 'z-index:99999',
-            'display:flex', 'flex-direction:column',
-            'align-items:center', 'justify-content:center',
-            'cursor:pointer', 'text-align:center', 'gap:1rem',
-            'font-family:sans-serif'
-        ].join(';');
-        overlayLock.innerHTML =
-            '<div style="font-size:5rem">🎮</div>' +
-            '<div style="font-size:2.5rem;color:#fff;font-weight:bold">Clique aqui para voltar a jogar!</div>' +
-            '<div style="font-size:1.5rem;color:#e1bee7">👆 Toque na tela</div>';
-        overlayLock.addEventListener('click', function () {
-            entrarFullscreen();
-            overlayLock.style.display = 'none';
-        });
-        document.body.appendChild(overlayLock);
-        return overlayLock;
-    }
-
-    function mostrarOverlayLock() {
-        const ov = criarOverlayLock();
-        ov.style.display = 'flex';
-    }
+    /*
+     * O overlay de bloqueio de fullscreen e o auto-fullscreen foram desativados
+     * porque estavam aparecendo a todo momento e atrapalhando a crianca.
+     * As estrelas e o contador continuam funcionando normalmente.
+     */
 
     function entrarFullscreen() {
         const el = document.documentElement;
@@ -118,26 +93,6 @@ inicializarEstrelas();
         if (el.msRequestFullscreen) return el.msRequestFullscreen();
         return Promise.resolve();
     }
-
-    function sairFullscreen() {
-        return !(document.fullscreenElement || document.webkitFullscreenElement);
-    }
-
-    let estavaFullscreen = false;
-    document.addEventListener('fullscreenchange', function () {
-        if (document.fullscreenElement || document.webkitFullscreenElement) {
-            estavaFullscreen = true;
-        } else if (estavaFullscreen && sairFullscreen()) {
-            mostrarOverlayLock();
-        }
-    });
-    document.addEventListener('webkitfullscreenchange', function () {
-        if (document.fullscreenElement || document.webkitFullscreenElement) {
-            estavaFullscreen = true;
-        } else if (estavaFullscreen && sairFullscreen()) {
-            mostrarOverlayLock();
-        }
-    });
 
     document.addEventListener('keydown', function (e) {
         var k = e.key;
@@ -181,17 +136,4 @@ inicializarEstrelas();
             e.preventDefault(); return false;
         }
     });
-
-    var autoFsDone = false;
-    function autoFullscreen() {
-        if (autoFsDone) return;
-        autoFsDone = true;
-        // Tenta entrar em fullscreen, mas nao mostra overlay se o navegador bloquear
-        if (document.documentElement.requestFullscreen || document.documentElement.webkitRequestFullscreen) {
-            entrarFullscreen().catch(function () {});
-        }
-    }
-    document.addEventListener('click', autoFullscreen);
-    document.addEventListener('touchstart', autoFullscreen);
-    document.addEventListener('keydown', autoFullscreen);
 })();
