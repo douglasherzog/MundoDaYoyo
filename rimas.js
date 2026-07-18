@@ -1,17 +1,13 @@
 const rimas = [
-    { palavra: 'bola', emoji: '🏐', correta: 'cola', opcoes: ['cola', 'gato', 'mesa'] },
-    { palavra: 'gato', emoji: '🐱', correta: 'pato', opcoes: ['pato', 'bola', 'peixe'] },
-    { palavra: 'pé', emoji: '🦶', correta: 'você', opcoes: ['você', 'mão', 'boca'] },
-    { palavra: 'pão', emoji: '🍞', correta: 'mão', opcoes: ['mão', 'pé', 'olho'] },
-    { palavra: 'chá', emoji: '🍵', correta: 'pá', opcoes: ['pá', 'colher', 'prato'] },
-    { palavra: 'tia', emoji: '👩', correta: 'cecília', opcoes: ['cecília', 'mãe', 'bebê'] },
-    { palavra: 'sol', emoji: '☀️', correta: 'viol', opcoes: ['viol', 'pente', 'lápis'] },
-    { palavra: 'cão', emoji: '🐶', correta: 'mão', opcoes: ['mão', 'pé', 'boca'] }
+    { palavra: 'bola', emoji: '', correta: 'cola', opcoes: ['cola', 'gato', 'mesa'] },
+    { palavra: 'gato', emoji: '', correta: 'pato', opcoes: ['pato', 'bola', 'peixe'] },
+    { palavra: 'pé', emoji: '', correta: 'você', opcoes: ['você', 'mão', 'boca'] },
+    { palavra: 'pão', emoji: '', correta: 'mão', opcoes: ['mão', 'pé', 'olho'] },
+    { palavra: 'chá', emoji: '', correta: 'pá', opcoes: ['pá', 'colher', 'prato'] },
+    { palavra: 'tia', emoji: '', correta: 'cecília', opcoes: ['cecília', 'mãe', 'bebê'] },
+    { palavra: 'sol', emoji: '', correta: 'viol', opcoes: ['viol', 'pente', 'lápis'] },
+    { palavra: 'cão', emoji: '', correta: 'mão', opcoes: ['mão', 'pé', 'boca'] }
 ];
-
-let rimaAtual = null;
-let pontos = 0;
-let concluido = false;
 
 const elementos = {
     target: document.getElementById('rhyme-target'),
@@ -20,71 +16,87 @@ const elementos = {
     rhymes: document.getElementById('rhymes'),
     feedback: document.getElementById('feedback'),
     pontos: document.getElementById('pontos'),
-    btnSpeak: document.getElementById('btn-speak'),
-    btnNext: document.getElementById('btn-next')
+    btnSpeak: document.getElementById('btn-speak')
 };
-}
 
-function escolherRima() {
-    return rimas[Math.floor(Math.random() * rimas.length)];
-}
+let round = 0, pontos = 0, atual = null, concluido = false, wrongCount = 0;
 
 function carregarRodada() {
-    rimaAtual = escolherRima();
+    if (round >= 10) { vitoria(); return; }
+    round++;
+    atual = rimas[Math.floor(Math.random() * rimas.length)];
     concluido = false;
+    wrongCount = 0;
 
     elementos.feedback.textContent = '';
     elementos.feedback.className = 'feedback';
-    elementos.btnNext.disabled = true;
-
-    elementos.target.textContent = rimaAtual.emoji;
-    elementos.target.classList.remove('celebration');
-    elementos.word.textContent = rimaAtual.palavra;
+    elementos.target.textContent = atual.emoji;
+    elementos.word.textContent = atual.palavra;
     elementos.question.textContent = 'Rima com qual palavra?';
 
-    const opcoesEmbaralhadas = embaralhar([...rimaAtual.opcoes]);
+    var bar = document.getElementById('progress-bar');
+    if (bar) { bar.style.width = (round / 10 * 100) + '%'; bar.textContent = round + ' / 10'; }
+
+    var opcoes = embaralhar(atual.opcoes.slice());
     elementos.rhymes.innerHTML = '';
-    opcoesEmbaralhadas.forEach((opcao, indice) => {
-        const botao = document.createElement('button');
-        botao.className = 'rhyme-button';
-        botao.textContent = opcao;
-        botao.dataset.opcao = opcao;
-        botao.style.background = `linear-gradient(135deg, ${['#FF6B9D', '#4D96FF', '#FFD93D'][indice % 3]} 0%, ${['#FF8E53', '#6BCB77', '#FF9F45'][indice % 3]} 100%)`;
-        botao.addEventListener('click', () => selecionarRima(botao));
-        elementos.rhymes.appendChild(botao);
+    opcoes.forEach(function(opcao, indice) {
+        var btn = document.createElement('button');
+        btn.className = 'game-option';
+        btn.textContent = opcao;
+        btn.dataset.opcao = opcao;
+        btn.addEventListener('click', function() { selecionar(btn); });
+        elementos.rhymes.appendChild(btn);
     });
 
-    falar(`${rimaAtual.palavra}. Rima com qual palavra?`);
+    setTimeout(function() { falar(atual.palavra + '. Rima com qual palavra?'); }, 300);
 }
 
-function selecionarRima(botao) {
+function selecionar(btn) {
     if (concluido) return;
-
-    const opcaoEscolhida = botao.dataset.opcao;
-
-    if (opcaoEscolhida === rimaAtual.correta) {
+    if (btn.dataset.opcao === atual.correta) {
         concluido = true;
-        pontos += 10;
+        pontos += Math.max(10 - wrongCount * 2, 3);
         elementos.pontos.textContent = pontos;
-        elementos.feedback.textContent = `🎉 Rima perfeita! ${rimaAtual.palavra} rima com ${rimaAtual.correta}!`;
+        btn.classList.add('correct');
+        elementos.feedback.textContent = ' Rima perfeita! ' + atual.palavra + ' rima com ' + atual.correta + '!';
         elementos.feedback.className = 'feedback success';
-        elementos.target.classList.add('celebration');
-        elementos.btnNext.disabled = false;
         playSuccess();
-        falar(`Muito bem! ${rimaAtual.palavra} rima com ${rimaAtual.correta}`);
+        falar('Muito bem! ' + atual.palavra + ' rima com ' + atual.correta);
+        setTimeout(carregarRodada, 1800);
     } else {
-        botao.classList.add('shake');
-        setTimeout(() => botao.classList.remove('shake'), 500);
-        elementos.feedback.textContent = 'Tente outra palavra! 💪';
+        wrongCount++;
+        btn.classList.add('shake', 'disabled');
+        btn.disabled = true;
+        setTimeout(function() { btn.classList.remove('shake'); }, 500);
+        elementos.feedback.textContent = 'Tente outra palavra! ';
         elementos.feedback.className = 'feedback error';
         playError();
         falar('Tente outra palavra');
-}\nelementos.btnSpeak.addEventListener('click', () => {
-    falar(`${rimaAtual.palavra}. Rima com qual palavra?`);
-});
+        if (wrongCount === 2) {
+            elementos.rhymes.querySelectorAll('.game-option:not(.disabled)').forEach(function(b) {
+                if (b.dataset.opcao === atual.correta) b.classList.add('hint-pulse');
+            });
+        }
+    }
+}
 
-elementos.btnNext.addEventListener('click', () => {
-    carregarRodada();
-});
+function vitoria() {
+    if (typeof YoyoMascot !== 'undefined') YoyoMascot.celebrate();
+    elementos.rhymes.innerHTML = '';
+    elementos.feedback.innerHTML = '<div style="font-size:2rem"> Parabéns! Você completou o jogo!</div>';
+    elementos.feedback.className = 'feedback success';
+    var bar = document.getElementById('progress-bar');
+    if (bar) { bar.style.width = '100%'; bar.textContent = '10 / 10 '; }
+    if (typeof adicionarEstrelas === 'function') adicionarEstrelas(3);
+    falar('Parabéns! Você completou o jogo!');
+    var btn = document.createElement('button');
+    btn.className = 'game-option play-again-btn';
+    btn.textContent = ' Brincar de novo!';
+    btn.addEventListener('click', function() { round = 0; pontos = 0; elementos.pontos.textContent = 0; carregarRodada(); });
+    elementos.rhymes.appendChild(btn);
+}
 
+elementos.btnSpeak.addEventListener('click', function() {
+    if (atual) falar(atual.palavra + '. Rima com qual palavra?');
+});
 carregarRodada();

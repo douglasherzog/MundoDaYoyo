@@ -10,43 +10,35 @@
     <div class="container">
         <header>
             <h1> Letra Inicial</h1>
-            <p>Qual letra a palavra come�a?</p>
+            <p>Descubra a primeira letra da palavra!</p>
         </header>
-
         <main class="game">
-            <a href="index.html" class="btn-back">In�cio</a>
-            <div class="score">? Pontos: <span id="pontos">0</span></div>
-
+            <a href="index.html" class="btn-back"> Início</a>
+            <div class="score"> Pontos: <span id="pontos">0</span></div>
+            <div class="game-progress-container">
+                <div class="game-progress-bar" id="progress-bar" style="width:0%">0 / 10</div>
+            </div>
             <div class="word-area">
                 <div class="letter-word" id="letter-word"></div>
-                <div class="letter-name" id="letter-name">ma��</div>
-                <div class="letter-question" id="letter-question">Come�a com qual letra?</div>
+                <div class="letter-name" id="letter-name">maçã</div>
+                <div class="letter-question" id="letter-question">Começa com qual letra?</div>
             </div>
-
             <div class="letters" id="letters"></div>
-
             <div class="feedback" id="feedback"></div>
-
             <div class="controls">
                 <button class="btn-speak" id="btn-speak"> Ouvir palavra</button>
-                <button class="btn-next" id="btn-next">Pr�xima ??</button>
             </div>
         </main>
-
-        <footer>
-            <p>Feito com  para a Yoyo</p>
-        </footer>
+        <footer><p>Feito com  para a Yoyo</p></footer>
     </div>
-
     <script src="stars.js"></script>
     <script src="sounds.js"></script>
     <script src="yoyo-mascot.js"></script>
     <script src="transitions.js"></script>
     <script src="achievements.js"></script>
     <script src="game-engine.js"></script>
-    <script src="admin.js"></script>
     <script src="tts.js"></script>
     <script src="letra-inicial.js"></script>
+    <script src="admin.js"></script>
 </body>
 </html>
-

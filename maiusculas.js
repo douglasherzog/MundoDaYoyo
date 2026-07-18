@@ -1,89 +1,104 @@
-const letras = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-let letraAtual = '';
-let modoAtual = 'maiuscula'; // 'maiuscula' ou 'minuscula'
-let concluido = false;
-let pontos = 0;
+const alfabeto = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
 const elementos = {
     target: document.getElementById('target-letter'),
     options: document.getElementById('options-area'),
     feedback: document.getElementById('feedback'),
-    btnNext: document.getElementById('btn-next'),
-    starsCount: document.getElementById('stars-count')
+    pontos: document.getElementById('pontos'),
+    btnSpeak: document.getElementById('btn-speak')
 };
 
-function atualizarEstrelas() {
-    const estrelas = carregarEstrelas();
-    elementos.starsCount.textContent = estrelas;
-}
+let round = 0, pontos = 0, letraAtual = '', modoAtual = 'maiuscula', concluido = false, wrongCount = 0;
 
-}
-
-function gerarDesafio() {
-    concluido = false;
-    letraAtual = letras[Math.floor(Math.random() * letras.length)];
+function carregarRodada() {
+    if (round >= 10) { vitoria(); return; }
+    round++;
+    letraAtual = alfabeto[Math.floor(Math.random() * alfabeto.length)];
     modoAtual = Math.random() > 0.5 ? 'maiuscula' : 'minuscula';
+    concluido = false;
+    wrongCount = 0;
 
     if (modoAtual === 'maiuscula') {
-        elementos.target.innerHTML = `<span class="big-letter">${letraAtual}</span><span class="letter-label">Qual é a minúscula?</span>`;
-        falar(`A letra ${letraAtual.toLowerCase()}. Qual é a minúscula?`);
+        elementos.target.innerHTML = '<span class="big-letter">' + letraAtual + '</span><span class="letter-label">Qual é a minúscula?</span>';
     } else {
-        elementos.target.innerHTML = `<span class="big-letter">${letraAtual.toLowerCase()}</span><span class="letter-label">Qual é a maiúscula?</span>`;
-        falar(`A letra ${letraAtual.toLowerCase()}. Qual é a maiúscula?`);
+        elementos.target.innerHTML = '<span class="big-letter">' + letraAtual.toLowerCase() + '</span><span class="letter-label">Qual é a maiúscula?</span>';
     }
 
-    const opcoes = [letraAtual];
+    var bar = document.getElementById('progress-bar');
+    if (bar) { bar.style.width = (round / 10 * 100) + '%'; bar.textContent = round + ' / 10'; }
+
+    var opcoes = [letraAtual];
     while (opcoes.length < 4) {
-        const letra = letras[Math.floor(Math.random() * letras.length)];
-        if (!opcoes.includes(letra)) {
-            opcoes.push(letra);
-        }
+        var letra = alfabeto[Math.floor(Math.random() * alfabeto.length)];
+        if (!opcoes.includes(letra)) opcoes.push(letra);
     }
-
+    opcoes = embaralhar(opcoes);
     elementos.options.innerHTML = '';
-    embaralhar(opcoes).forEach(letra => {
-        const btn = document.createElement('button');
-        btn.className = 'case-option';
+    opcoes.forEach(function(letra) {
+        var btn = document.createElement('button');
+        btn.className = 'game-option';
+        btn.style.fontSize = '2.5rem';
         btn.textContent = modoAtual === 'maiuscula' ? letra.toLowerCase() : letra;
         btn.dataset.letra = letra;
-        btn.addEventListener('click', () => selecionarLetra(btn));
+        btn.addEventListener('click', function() { selecionar(btn); });
         elementos.options.appendChild(btn);
     });
 
     elementos.feedback.textContent = '';
     elementos.feedback.className = 'feedback';
-    elementos.btnNext.disabled = true;
+    setTimeout(function() {
+        falar('A letra ' + letraAtual.toLowerCase() + '. ' + (modoAtual === 'maiuscula' ? 'Qual é a minúscula?' : 'Qual é a maiúscula?'));
+    }, 300);
 }
 
-function selecionarLetra(botao) {
+function selecionar(btn) {
     if (concluido) return;
-
-    const letraEscolhida = botao.dataset.letra;
-
-    if (letraEscolhida === letraAtual) {
+    if (btn.dataset.letra === letraAtual) {
         concluido = true;
-        pontos += 10;
-        botao.classList.add('correct');
-        const correspondente = modoAtual === 'maiuscula' ? letraAtual.toLowerCase() : letraAtual;
-        const tipo = modoAtual === 'maiuscula' ? 'minúscula' : 'maiúscula';
-        elementos.feedback.textContent = `🎉 Muito bem! ${letraAtual}${letraAtual.toLowerCase()} — ${tipo} é ${correspondente}!`;
+        pontos += Math.max(10 - wrongCount * 2, 3);
+        elementos.pontos.textContent = pontos;
+        btn.classList.add('correct');
+        var correspondente = modoAtual === 'maiuscula' ? letraAtual.toLowerCase() : letraAtual;
+        var tipo = modoAtual === 'maiuscula' ? 'minúscula' : 'maiúscula';
+        elementos.feedback.textContent = ' Muito bem! A ' + tipo + ' é ' + correspondente + '!';
         elementos.feedback.className = 'feedback success';
-        elementos.btnNext.disabled = false;
-        falar(`Muito bem! A ${tipo} é ${correspondente}`);
         playSuccess();
-        adicionarEstrelas(1);
-        atualizarEstrelas();
+        falar('Muito bem! A ' + tipo + ' é ' + correspondente);
+        setTimeout(carregarRodada, 1800);
     } else {
-        botao.classList.add('wrong');
-        setTimeout(() => botao.classList.remove('wrong'), 500);
-        elementos.feedback.textContent = 'Tente outra letra! 💪';
+        wrongCount++;
+        btn.classList.add('shake', 'disabled');
+        btn.disabled = true;
+        setTimeout(function() { btn.classList.remove('shake'); }, 500);
+        elementos.feedback.textContent = 'Tente outra letra! ';
         elementos.feedback.className = 'feedback error';
-        falar('Tente outra letra');
         playError();
+        falar('Tente outra letra');
+        if (wrongCount === 2) {
+            elementos.options.querySelectorAll('.game-option:not(.disabled)').forEach(function(b) {
+                if (b.dataset.letra === letraAtual) b.classList.add('hint-pulse');
+            });
+        }
     }
 }
 
-elementos.btnNext.addEventListener('click', gerarDesafio);
+function vitoria() {
+    if (typeof YoyoMascot !== 'undefined') YoyoMascot.celebrate();
+    elementos.options.innerHTML = '';
+    elementos.feedback.innerHTML = '<div style="font-size:2rem"> Parabéns! Você completou o jogo!</div>';
+    elementos.feedback.className = 'feedback success';
+    var bar = document.getElementById('progress-bar');
+    if (bar) { bar.style.width = '100%'; bar.textContent = '10 / 10 '; }
+    if (typeof adicionarEstrelas === 'function') adicionarEstrelas(3);
+    falar('Parabéns! Você completou o jogo!');
+    var btn = document.createElement('button');
+    btn.className = 'game-option play-again-btn';
+    btn.textContent = ' Brincar de novo!';
+    btn.addEventListener('click', function() { round = 0; pontos = 0; elementos.pontos.textContent = 0; carregarRodada(); });
+    elementos.options.appendChild(btn);
+}
 
-atualizarEstrelas();
-gerarDesafio();
+elementos.btnSpeak.addEventListener('click', function() {
+    falar('A letra ' + letraAtual.toLowerCase() + '. ' + (modoAtual === 'maiuscula' ? 'Qual é a minúscula?' : 'Qual é a maiúscula?'));
+});
+carregarRodada();

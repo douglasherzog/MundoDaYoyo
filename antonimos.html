@@ -3,34 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mundo da Yoyo - Opostos</title>
+    <title>Opostos - Mundo da Yoyo</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <header class="game-header">
-            <a href="index.html" class="back-button">In�cio</a>
-            <h1>Opostos</h1>
-            <div class="stars-counter">
-                <span class="star-icon">?</span>
-                <span id="stars-count">0</span>
-            </div>
+        <header>
+            <h1> Opostos</h1>
+            <p>Encontre palavras opostas!</p>
         </header>
-
         <main class="game-area">
+            <a href="index.html" class="btn-back"> Início</a>
+            <div class="score"> Pontos: <span id="pontos">0</span></div>
+            <div class="game-progress-container">
+                <div class="game-progress-bar" id="progress-bar" style="width:0%">0 / 10</div>
+            </div>
             <div class="opposite-question">
                 <p>Encontre o oposto:</p>
                 <div id="target-word" class="target-word"></div>
             </div>
-
             <div id="options-area" class="opposite-options"></div>
-
             <div id="feedback" class="feedback"></div>
-
-            <button id="btn-next" class="btn-next" disabled>Pr�xima ??</button>
+            <div class="controls">
+                <button class="btn-speak" id="btn-speak"> Ouvir pergunta</button>
+            </div>
         </main>
+        <footer><p>Feito com  para a Yoyo</p></footer>
     </div>
-
     <script src="stars.js"></script>
     <script src="sounds.js"></script>
     <script src="yoyo-mascot.js"></script>
@@ -42,4 +41,3 @@
     <script src="admin.js"></script>
 </body>
 </html>
-
