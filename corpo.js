@@ -8,7 +8,6 @@ const partesCorpo = [
 const elementos = {
     target: document.getElementById('target-body-part'),
     feedback: document.getElementById('feedback'),
-    btnNext: document.getElementById('btn-next'),
     starsCount: document.getElementById('stars-count'),
     bodyParts: document.querySelectorAll('.body-figure [data-part]')
 };
