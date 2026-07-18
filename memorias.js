@@ -14,7 +14,6 @@ const elementos = {
     tentativas: document.getElementById('tentativas'),
     btnRestart: document.getElementById('btn-restart')
 };
-}
 
 function criarCartas() {
     cartas = [];
@@ -99,7 +98,9 @@ function virarCarta(indice) {
             bloqueado = false;
             renderizarGrid();
         }, 1200);
-}\nfunction reiniciarJogo() {
+}
+
+function reiniciarJogo() {
     cartaVirada = null;
     bloqueado = false;
     paresEncontrados = 0;
