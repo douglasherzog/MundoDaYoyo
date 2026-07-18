@@ -48,6 +48,7 @@
 
     let estado = { arrastando: false, mx: 0, my: 0 };
     let marcouCesta = false;
+    let impactouAroTabela = false;
 
     function redimensionar() {
         W = window.innerWidth;
@@ -114,6 +115,7 @@
         bola.x = yoyo.maoX;
         bola.y = yoyo.maoY;
         marcouCesta = false;
+        impactouAroTabela = false;
         if (redesenhar) posicionarElementos();
     }
 
@@ -909,55 +911,73 @@
         const { x, aroY, w } = cesta;
         const frontRim = { x: x - w / 2, y: aroY };
         const backRim = { x: x + w / 2, y: aroY };
-        const rimRadius = 6;
+        const rimRadius = 7;
 
-        // Colisao com o aro horizontal
-        const dx = backRim.x - frontRim.x;
-        const dy = backRim.y - frontRim.y;
-        const len2 = dx * dx + dy * dy;
-        let t = ((bola.x - frontRim.x) * dx + (bola.y - frontRim.y) * dy) / len2;
-        t = Math.max(0, Math.min(1, t));
-        const px = frontRim.x + t * dx;
-        const py = frontRim.y + t * dy;
-        const dist = Math.hypot(bola.x - px, bola.y - py);
+        // Colisao com as laterais/frontais do aro (onde o metal eh grosso)
+        // A parte de cima/de dentro do aro NAO colide, para a bola passar pelo buraco
 
-        if (dist < bola.r + rimRadius) {
-            const nx = (bola.x - px) / dist;
-            const ny = (bola.y - py) / dist;
-            const dot = bola.vx * nx + bola.vy * ny;
-
-            // Se a bola vem de cima e bate no aro pela frente, pode quicar para dentro
-            // se for proximo do centro
-            if (bola.vy > 0 && bola.x > x - w / 4 && bola.x < x + w / 4 && ny < -0.3) {
-                // Dribble no aro: cai para dentro
+        // 1) Tampa frontal (lado esquerdo do aro)
+        let dx = bola.x - frontRim.x;
+        let dy = bola.y - frontRim.y;
+        let dist = Math.hypot(dx, dy);
+        if (dist < bola.r + rimRadius && dist > 0) {
+            let nx = dx / dist;
+            let ny = dy / dist;
+            // Se a bola esta vindo de cima e bate na parte de cima da tampa, deixa passar se estiver central
+            if (bola.vy > 0 && ny < -0.4 && bola.x > x - w / 3 && bola.x < x + w / 3) {
+                // Bola rola para dentro
+                bola.vy *= 0.4;
                 bola.vx *= 0.85;
-                bola.vy = Math.abs(bola.vy) * 0.35;
-                bola.x += nx * (bola.r + rimRadius - dist);
-                bola.y += ny * (bola.r + rimRadius - dist);
             } else {
+                const dot = bola.vx * nx + bola.vy * ny;
                 bola.vx = (bola.vx - 2 * dot * nx) * 0.78;
                 bola.vy = (bola.vy - 2 * dot * ny) * 0.78;
-                bola.x += nx * (bola.r + rimRadius - dist);
-                bola.y += ny * (bola.r + rimRadius - dist);
             }
-
+            const overlap = bola.r + rimRadius - dist;
+            bola.x += nx * overlap;
+            bola.y += ny * overlap;
             cesta.aroBrilho = 1;
             criarImpacto(bola.x, bola.y, '#ef476f', 18);
             playClick();
+            impactouAroTabela = true;
             return true;
         }
 
-        // Pontas do aro
-        if (colidirBolaPonto(frontRim.x, frontRim.y, 0.78)) {
+        // 2) Tampa traseira (lado direito do aro)
+        dx = bola.x - backRim.x;
+        dy = bola.y - backRim.y;
+        dist = Math.hypot(dx, dy);
+        if (dist < bola.r + rimRadius && dist > 0) {
+            let nx = dx / dist;
+            let ny = dy / dist;
+            const dot = bola.vx * nx + bola.vy * ny;
+            bola.vx = (bola.vx - 2 * dot * nx) * 0.78;
+            bola.vy = (bola.vy - 2 * dot * ny) * 0.78;
+            const overlap = bola.r + rimRadius - dist;
+            bola.x += nx * overlap;
+            bola.y += ny * overlap;
             cesta.aroBrilho = 1;
-            criarImpacto(frontRim.x, frontRim.y, '#ef476f', 18);
+            criarImpacto(bola.x, bola.y, '#ef476f', 18);
             playClick();
+            impactouAroTabela = true;
             return true;
         }
-        if (colidirBolaPonto(backRim.x, backRim.y, 0.78)) {
+
+        // 3) Arco inferior do aro: so colide se a bola esta subindo e abaixo do aro
+        const distCentro = Math.hypot(bola.x - x, bola.y - aroY);
+        if (bola.y > aroY && bola.vy < 0 && distCentro > w / 2 - bola.r && distCentro < w / 2 + bola.r + 2) {
+            let nx = (bola.x - x) / distCentro;
+            let ny = (bola.y - aroY) / distCentro;
+            const dot = bola.vx * nx + bola.vy * ny;
+            bola.vx = (bola.vx - 2 * dot * nx) * 0.75;
+            bola.vy = (bola.vy - 2 * dot * ny) * 0.75;
+            const overlap = w / 2 + bola.r - distCentro;
+            bola.x += nx * overlap;
+            bola.y += ny * overlap;
             cesta.aroBrilho = 1;
-            criarImpacto(backRim.x, backRim.y, '#ef476f', 18);
+            criarImpacto(bola.x, bola.y, '#ef476f', 18);
             playClick();
+            impactouAroTabela = true;
             return true;
         }
 
@@ -1009,9 +1029,9 @@
             return;
         }
 
-        const limFront = x - w / 2 + 4;
-        const limBack = x + w / 2 - 4;
-        const limAroTop = aroY - bola.r;
+        const limFront = x - w / 2 + 10;
+        const limBack = x + w / 2 - 10;
+        const limAroTop = aroY - bola.r - 2;
         const limAroBot = aroY + 24;
 
         // Bola passou pelo aro vindo de cima
@@ -1023,21 +1043,20 @@
             elAcertos.textContent = acertos;
             elPlacar.textContent = placar;
 
-            cesta.redeBalancoVel += 2.2;
+            cesta.redeBalancoVel += 3.0;
 
             // Cesta limpa: sem tocar em nada recentemente
-            if (bola.vx > 2 && Math.abs(bola.vy) < 12 && !impactouAroTabela) {
+            if (!impactouAroTabela) {
                 playSuccess();
                 falar('Shuuuuáááá! Cesta!');
-                criarFlutuante('SHUUUUÁÁÁÁ!', x, aroY, '#FFD700');
-                for (let i = 0; i < 40; i++) confetes.push(criarConfete(x, aroY, true));
-                for (let i = 0; i < 8; i++) estrelas.push(criarEstrela(x, aroY));
-                // Onda expansiva dourada
+                criarFlutuante('SHUUUUÁÁÁÁ!', x, aroY - 30, '#FFD700');
+                for (let i = 0; i < 50; i++) confetes.push(criarConfete(x, aroY, true));
+                for (let i = 0; i < 10; i++) estrelas.push(criarEstrela(x, aroY));
                 criarOnda(x, aroY, '#FFD700');
             } else {
                 playSuccess();
                 falar('Cesta!');
-                for (let i = 0; i < 28; i++) confetes.push(criarConfete(x, aroY));
+                for (let i = 0; i < 32; i++) confetes.push(criarConfete(x, aroY));
                 for (let i = 0; i < 6; i++) estrelas.push(criarEstrela(x, aroY));
             }
 
@@ -1045,14 +1064,12 @@
             yoyo.estado = 'celebra';
         }
 
-        // Bola dentro da rede ainda nao marcou
+        // Bola dentro da rede ainda nao marcou: balanca a rede
         if (bola.y > aroY && bola.y < aroY + redeH && bola.x > limFront && bola.x < limBack && !marcouCesta) {
-            cesta.redeBalancoVel += 0.15;
+            cesta.redeBalancoVel += 0.25;
             bola.vx *= 0.9;
         }
     }
-
-    let impactouAroTabela = false;
 
     function criarOnda(x, y, cor) {
         const ondas = [];
@@ -1103,7 +1120,6 @@
             if (Math.abs(bola.vy) < 1.2) {
                 bola.noChao = true;
                 bola.lancada = false;
-                impactouAroTabela = false;
                 setTimeout(resetarBola, 600);
             }
         }
