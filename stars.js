@@ -86,6 +86,12 @@ inicializarEstrelas();
      * As estrelas e o contador continuam funcionando normalmente.
      */
 
+    // Remove qualquer overlay antigo que possa ter ficado no cache
+    document.addEventListener('DOMContentLoaded', function () {
+        var antigos = document.querySelectorAll('#lockdown-overlay, .lockdown-overlay');
+        antigos.forEach(function (el) { el.remove(); });
+    });
+
     function entrarFullscreen() {
         const el = document.documentElement;
         if (el.requestFullscreen) return el.requestFullscreen();
