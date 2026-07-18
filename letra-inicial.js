@@ -25,10 +25,6 @@ const elementos = {
     btnSpeak: document.getElementById('btn-speak'),
     btnNext: document.getElementById('btn-next')
 };
-
-    return novo;
-}
-
 }
 
 function escolherPalavra() {
@@ -65,10 +61,7 @@ function carregarRodada() {
         const candidato = alfabeto[Math.floor(Math.random() * alfabeto.length)];
         if (!letras.includes(candidato)) {
             letras.push(candidato);
-        }
-    }
-
-    const letrasEmbaralhadas = embaralhar(letras);
+}\n    const letrasEmbaralhadas = embaralhar(letras);
     elementos.letters.innerHTML = '';
     letrasEmbaralhadas.forEach((letra) => {
         const botao = document.createElement('button');
@@ -104,10 +97,7 @@ function selecionarLetra(botao) {
         elementos.feedback.className = 'feedback error';
         playError();
         falar('Tente outra letra');
-    }
-}
-
-elementos.btnSpeak.addEventListener('click', () => {
+}\nelementos.btnSpeak.addEventListener('click', () => {
     falar(`${palavraAtual.palavra}. Começa com qual letra?`);
 });
 

@@ -12,10 +12,6 @@ const elementos = {
     btnSpeak: document.getElementById('btn-speak'),
     btnNext: document.getElementById('btn-next')
 };
-
-    return novo;
-}
-
 }
 
 function numeroPorExtenso(numero) {
@@ -46,10 +42,7 @@ function carregarRodada() {
         const candidato = Math.floor(Math.random() * 9) + 1;
         if (!opcoes.includes(candidato)) {
             opcoes.push(candidato);
-        }
-    }
-
-    const opcoesEmbaralhadas = embaralhar(opcoes);
+}\n    const opcoesEmbaralhadas = embaralhar(opcoes);
     elementos.numbers.innerHTML = '';
     opcoesEmbaralhadas.forEach((numero, indice) => {
         const botao = document.createElement('button');
@@ -82,10 +75,7 @@ function selecionarNumero(botao) {
         elementos.feedback.className = 'feedback error';
         playError();
         falar('Tente outro número');
-    }
-}
-
-elementos.btnSpeak.addEventListener('click', () => {
+}\nelementos.btnSpeak.addEventListener('click', () => {
     falar(`Quantos objetos? ${numeroPorExtenso(numeroAtual)}`);
 });
 

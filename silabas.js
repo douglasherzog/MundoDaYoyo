@@ -33,18 +33,10 @@ const elementos = {
     btnSpeak: document.getElementById('btn-speak'),
     btnNext: document.getElementById('btn-next')
 };
-
-    return novo;
-}
-
 function escolherPalavra() {
     const indice = Math.floor(Math.random() * palavras.length);
     return palavras[indice];
-}
-
-}
-
-function carregarPalavra() {
+}\nfunction carregarPalavra() {
     palavraAtual = escolherPalavra();
     silabasSelecionadas = [];
     concluido = false;
@@ -111,10 +103,7 @@ function selecionarSyllable(botao) {
         elementos.feedback.className = 'feedback error';
         playError();
         falar('Tente outra sílaba');
-    }
-}
-
-elementos.btnSpeak.addEventListener('click', () => {
+}\nelementos.btnSpeak.addEventListener('click', () => {
     if (palavraAtual) {
         falar(palavraAtual.palavra);
     }

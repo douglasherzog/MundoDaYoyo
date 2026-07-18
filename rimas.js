@@ -23,10 +23,6 @@ const elementos = {
     btnSpeak: document.getElementById('btn-speak'),
     btnNext: document.getElementById('btn-next')
 };
-
-    return novo;
-}
-
 }
 
 function escolherRima() {
@@ -83,10 +79,7 @@ function selecionarRima(botao) {
         elementos.feedback.className = 'feedback error';
         playError();
         falar('Tente outra palavra');
-    }
-}
-
-elementos.btnSpeak.addEventListener('click', () => {
+}\nelementos.btnSpeak.addEventListener('click', () => {
     falar(`${rimaAtual.palavra}. Rima com qual palavra?`);
 });
 

@@ -26,10 +26,6 @@ const elementos = {
     btnSpeak: document.getElementById('btn-speak'),
     btnNext: document.getElementById('btn-next')
 };
-
-    return novo;
-}
-
 }
 
 function carregarRodada() {
@@ -113,9 +109,7 @@ function escolher(btn, emoji) {
             elementos.feedback.textContent = 'Quase! Vamos tentar de novo!';
             elementos.feedback.className = 'feedback error';
             setTimeout(() => carregarRodada(), 2000);
-        }
-    }
-}
+}\n}
 
 elementos.btnSpeak.addEventListener('click', () => falar('Clique na figura que vem primeiro!'));
 elementos.btnNext.addEventListener('click', carregarRodada);

@@ -21,10 +21,6 @@ const elementos = {
     btnSpeak: document.getElementById('btn-speak'),
     btnNext: document.getElementById('btn-next')
 };
-
-    return novo;
-}
-
 }
 
 function carregarRodada() {
@@ -73,10 +69,7 @@ function selecionar(btn) {
         elementos.feedback.className = 'feedback error';
         playError();
         falar('Tente de novo');
-    }
-}
-
-elementos.btnSpeak.addEventListener('click', () => falar('Qual não encaixa com os outros?'));
+}\nelementos.btnSpeak.addEventListener('click', () => falar('Qual não encaixa com os outros?'));
 elementos.btnNext.addEventListener('click', carregarRodada);
 
 carregarRodada();

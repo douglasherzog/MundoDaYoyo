@@ -32,10 +32,6 @@ const elementos = {
     btnClear: document.getElementById('btn-clear'),
     btnNext: document.getElementById('btn-next')
 };
-
-    return novo;
-}
-
 }
 
 function escolherPalavra() {
@@ -52,10 +48,7 @@ function atualizarSlots() {
             slot.classList.add('filled');
         }
         elementos.slots.appendChild(slot);
-    }
-}
-
-function criarTeclado() {
+}\nfunction criarTeclado() {
     elementos.keyboard.innerHTML = '';
     const letras = palavraAtual.palavra.split('');
     const letrasExtras = embaralhar('ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')).slice(0, 10);
@@ -105,9 +98,7 @@ function adicionarLetra(letra) {
             elementos.feedback.className = 'feedback error';
             playError();
             falar('Tente outra letra');
-        }
-    }
-}
+}\n}
 
 function limpar() {
     letrasDigitadas = [];

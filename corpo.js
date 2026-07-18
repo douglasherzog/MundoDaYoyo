@@ -1,8 +1,4 @@
-yohana@dino:/tmp$ sudo pkill -f tts-server
-sudo -u yoyo nohup python3 /home/yoyo/MundoDaYoyo/os-setup/tts-server.py &
-[1] 3152
-yohana@dino:/tmp$ nohup: ignorando entrada e anexando saída a 'nohup.out'
-
+const partesCorpo = [
     { nome: 'cabeça', emoji: '😊', dica: 'cabeça' },
     { nome: 'peito', emoji: '❤️', dica: 'peito' },
     { nome: 'braço', emoji: '💪', dica: 'braço' },
@@ -24,8 +20,6 @@ const elementos = {
 function atualizarEstrelas() {
     const estrelas = carregarEstrelas();
     elementos.starsCount.textContent = estrelas;
-}
-
 }
 
 function limparDestaques() {

@@ -29,10 +29,6 @@ const elementos = {
     btnSpeak: document.getElementById('btn-speak'),
     btnNext: document.getElementById('btn-next')
 };
-
-    return novo;
-}
-
 }
 
 function carregarRodada() {
@@ -84,10 +80,7 @@ function selecionar(btn) {
         elementos.feedback.className = 'feedback error';
         playError();
         falar('Tente de novo');
-    }
-}
-
-elementos.btnSpeak.addEventListener('click', () => falar(`O que é isso? ${atual.dica}`));
+}\nelementos.btnSpeak.addEventListener('click', () => falar(`O que é isso? ${atual.dica}`));
 elementos.btnNext.addEventListener('click', carregarRodada);
 
 carregarRodada();

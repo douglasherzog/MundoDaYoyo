@@ -31,18 +31,10 @@ const elementos = {
     btnSpeak: document.getElementById('btn-speak'),
     btnNext: document.getElementById('btn-next')
 };
-
-    return novo;
-}
-
 function escolherFrase() {
     const indice = Math.floor(Math.random() * frases.length);
     return frases[indice];
-}
-
-}
-
-function carregarFrase() {
+}\nfunction carregarFrase() {
     fraseAtual = escolherFrase();
     palavrasSelecionadas = [];
     concluido = false;
@@ -109,10 +101,7 @@ function selecionarPalavra(botao) {
         elementos.feedback.className = 'feedback error';
         playError();
         falar('Tente outra palavra');
-    }
-}
-
-elementos.btnSpeak.addEventListener('click', () => {
+}\nelementos.btnSpeak.addEventListener('click', () => {
     if (fraseAtual) {
         falar(fraseAtual.frase);
     }
