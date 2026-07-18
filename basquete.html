@@ -9,206 +9,223 @@
     <meta name="theme-color" content="#FF6B9D">
     <style>
         :root {
+            --ceu-topo: #4facfe;
+            --ceu-base: #00f2fe;
             --quadra: #f4a261;
             --quadra-dark: #e76f51;
             --tabela: #ef476f;
-            --ceu: #87CEEB;
-            --grama: #7EC850;
+            --grama: #43aa8b;
         }
 
-        body.game-page {
-            background: linear-gradient(180deg, var(--ceu) 0%, #bde0fe 50%, var(--grama) 50%, #5cb85c 100%);
-            min-height: 100vh;
-            overflow: auto;
+        * { box-sizing: border-box; }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Comic Sans MS', 'Segoe UI', cursive, sans-serif;
+            overflow: hidden;
             touch-action: none;
+            user-select: none;
+            -webkit-user-select: none;
         }
 
-        .container {
-            max-width: 960px;
-            min-height: 100vh;
-            height: auto;
-            margin: 0 auto;
-            padding: 6px;
+        body {
+            background: linear-gradient(180deg, var(--ceu-topo) 0%, var(--ceu-base) 45%, var(--grama) 45%, #2d6a4f 100%);
+        }
+
+        #app {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
             display: flex;
             flex-direction: column;
         }
 
-        header {
-            flex-shrink: 0;
-            margin-bottom: 4px;
-        }
-
-        header h1 {
-            font-size: 1.45rem;
-            color: #fff;
-            text-shadow: 2px 2px 0 #e76f51, 0 0 20px rgba(255,255,255,0.5);
-            margin-bottom: 2px;
-        }
-
-        header p {
-            color: #fff;
-            font-size: 0.8rem;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-        }
-
-        .game {
-            flex: 1;
+        #top-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
             display: flex;
-            flex-direction: column;
-            padding: 6px;
-            min-height: auto;
-            overflow: visible;
-            background: rgba(255,255,255,0.92);
-            border-radius: 16px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
-        }
-
-        #hud {
-            display: flex;
-            justify-content: space-around;
+            justify-content: space-between;
             align-items: center;
-            gap: 4px;
-            margin-bottom: 4px;
-            padding: 4px 4px;
+            padding: 8px 12px;
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(6px);
+            box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+            border-radius: 0 0 18px 18px;
+            margin: 0 8px;
+            width: calc(100% - 16px);
+        }
+
+        #top-bar .btn-back {
+            padding: 6px 12px;
+            border-radius: 50px;
             background: linear-gradient(135deg, #FF6B9D, #FF8C42);
-            border-radius: 10px;
             color: #fff;
+            text-decoration: none;
             font-weight: bold;
             font-size: 0.85rem;
-            flex-shrink: 0;
-            box-shadow: 0 4px 10px rgba(255,107,157,0.35);
+            box-shadow: 0 3px 8px rgba(255,107,157,0.35);
         }
 
-        #hud span {
-            font-size: 0.78rem;
+        #top-bar .hud-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            color: #444;
         }
 
-        #arena-wrap {
-            flex: 1;
-            position: relative;
-            border-radius: 14px;
-            min-height: 38vh;
-            height: 52vh;
-            overflow: hidden;
-            border: 3px solid #e76f51;
-            box-shadow: inset 0 0 16px rgba(0,0,0,0.1);
-            background: var(--quadra);
-            cursor: crosshair;
-            touch-action: none;
-        }
+        #top-bar .hud-item span { color: #e76f51; }
 
         #arena {
             display: block;
-            width: 100%;
-            height: 100%;
+            width: 100vw;
+            height: 100vh;
+            touch-action: none;
+            cursor: crosshair;
         }
 
-        #tutorial {
-            position: absolute;
-            top: 6%;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(255,255,255,0.95);
-            padding: 8px 14px;
-            border-radius: 12px;
-            text-align: center;
-            font-size: 0.9rem;
-            color: #555;
-            box-shadow: 0 4px 14px rgba(0,0,0,0.15);
-            pointer-events: none;
-            z-index: 10;
-            animation: pulseTutorial 2s infinite;
-        }
-
-        @keyframes pulseTutorial {
-            0%, 100% { transform: translateX(-50%) scale(1); }
-            50% { transform: translateX(-50%) scale(1.03); }
-        }
-
-        #overlay {
+        #tela-inicial, #tela-final {
             position: absolute;
             inset: 0;
-            display: none;
+            display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            background: rgba(255,255,255,0.92);
-            z-index: 20;
+            z-index: 100;
+            background: rgba(0,0,0,0.45);
+            backdrop-filter: blur(4px);
             text-align: center;
             padding: 20px;
-            border-radius: 18px;
         }
 
-        #overlay h2 {
-            font-size: 1.55rem;
+        #tela-final { display: none; }
+
+        .painel {
+            background: #fff;
+            border-radius: 28px;
+            padding: 28px 22px;
+            max-width: 420px;
+            width: 90%;
+            box-shadow: 0 16px 40px rgba(0,0,0,0.25);
+            animation: aparecer 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes aparecer {
+            from { transform: scale(0.7); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .painel h1 {
+            font-size: 1.9rem;
             color: #FF6B9D;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
+            text-shadow: 1px 1px 0 #ffe0e9;
         }
 
-        #overlay .estrelas {
-            font-size: 2rem;
-            margin: 6px 0;
-        }
-
-        #overlay p {
-            font-size: 1rem;
+        .painel p {
             color: #666;
-            margin-bottom: 10px;
+            font-size: 1rem;
+            margin-bottom: 18px;
         }
 
-        #btn-reiniciar {
-            padding: 10px 28px;
-            font-size: 1rem;
+        .painel .estrelas {
+            font-size: 3rem;
+            margin: 8px 0 14px;
+        }
+
+        .painel button {
+            padding: 14px 38px;
+            font-size: 1.1rem;
             border: none;
             border-radius: 50px;
             background: linear-gradient(135deg, #FF6B9D, #FF8C42);
             color: #fff;
             font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(255,107,157,0.4);
-            transition: transform 0.15s;
+            box-shadow: 0 8px 20px rgba(255,107,157,0.4);
+            transition: transform 0.15s, box-shadow 0.15s;
         }
 
-        #btn-reiniciar:hover { transform: scale(1.07); }
+        .painel button:hover { transform: translateY(-2px) scale(1.03); }
+        .painel button:active { transform: scale(0.97); }
+
+        #dica-gesto {
+            position: absolute;
+            bottom: 14px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 40;
+            background: rgba(255,255,255,0.9);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            color: #555;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            pointer-events: none;
+            animation: flutuar 2s ease-in-out infinite;
+        }
+
+        @keyframes flutuar {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-6px); }
+        }
 
         footer {
-            flex-shrink: 0;
+            position: absolute;
+            bottom: 4px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: rgba(255,255,255,0.85);
+            font-size: 0.75rem;
+            z-index: 30;
+            pointer-events: none;
         }
+
+        footer p { margin: 1px 0; }
     </style>
 </head>
 <body class="game-page">
-    <div class="container">
-        <header>
-            <h1>🏀 Basquete da Yoyo</h1>
-            <p>Arraste e solte para arremessar a bola na cesta!</p>
-        </header>
-
-        <main class="game">
+    <div id="app">
+        <div id="top-bar">
             <a href="index.html" class="btn-back">Início</a>
+            <div class="hud-item">🏀 <span id="placar">0</span></div>
+            <div class="hud-item">🎯 <span id="acertos">0</span></div>
+            <div class="hud-item">⏱️ <span id="tempo">60</span>s</div>
+        </div>
 
-            <div id="hud">
-                <div>🏀 <span id="placar">0</span> pontos</div>
-                <div>🎯 <span id="acertos">0</span> cestas</div>
-                <div>⏱️ <span id="tempo">60</span>s</div>
+        <canvas id="arena"></canvas>
+
+        <div id="tela-inicial">
+            <div class="painel">
+                <h1>🏀 Basquete da Yoyo</h1>
+                <p>Arraste a bola para mirar e solte para fazer cestas!</p>
+                <button id="btn-iniciar">Jogar! 🚀</button>
             </div>
+        </div>
 
-            <div id="arena-wrap">
-                <canvas id="arena"></canvas>
-                <div id="tutorial">👆 Arraste e solte para jogar!</div>
-                <div id="overlay">
-                    <h2>🎉 Tempo esgotado!</h2>
-                    <div class="estrelas" id="estrelas"></div>
-                    <p>Você fez <strong id="pontos-finais">0</strong> pontos e acertou <strong id="acertos-finais">0</strong> cestas!</p>
-                    <button id="btn-reiniciar">🔄 Jogar de novo</button>
-                </div>
+        <div id="tela-final">
+            <div class="painel">
+                <h2 id="titulo-final">🎉 Fim de jogo!</h2>
+                <div class="estrelas" id="estrelas">⭐⭐⭐</div>
+                <p id="texto-final">Você fez 0 pontos e acertou 0 cestas!</p>
+                <button id="btn-reiniciar">🔄 Jogar de novo</button>
             </div>
-        </main>
+        </div>
 
-        <footer>
-            <p>Feito com ❤️ para a Yoyo</p>
-            <p>✝️ Herzog Developer</p>
-        </footer>
+        <div id="dica-gesto">👆 Puxe a bola e solte para arremessar!</div>
     </div>
+
+    <footer>
+        <p>Feito com ❤️ para a Yoyo</p>
+        <p>✝️ Herzog Developer</p>
+    </footer>
 
     <script src="stars.js"></script>
     <script src="sounds.js"></script>
