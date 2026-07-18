@@ -29,14 +29,14 @@
 
     const cesta = { x: 0, y: 0, w: 80, h: 10, aroY: 0, redeH: 65, tabelaX: 0, tabelaTop: 0, tabelaBottom: 0, redeBalanco: 0, redeBalancoVel: 0 };
     const bola = { x: 0, y: 0, r: 18, vx: 0, vy: 0, gira: 0, lancada: false, noChao: true };
-    const yoyo = { x: 0, baseY: 0, pulo: 0, puloOffset: 0 };
+    const boneca = { x: 0, y: 0, baseY: 0, pulo: 0, puloOffset: 0, estado: 'idle', maoX: 0, maoY: 0, maoAng: 0, corpoAng: 0, arremesso: 0, historico: [] };
 
     const estrelas = [];
     const confetes = [];
     const nuvens = [];
     const impactos = [];
 
-    let estado = { arrastando: false, startX: 0, startY: 0, mx: 0, my: 0 };
+    let estado = { arrastando: false, startX: 0, startY: 0, mx: 0, my: 0, maoBaseX: 0, maoBaseY: 0 };
     let marcouCesta = false;
 
     function redimensionar() {
@@ -64,9 +64,10 @@
         cesta.tabelaTop = cesta.aroY - cesta.redeH - 20;
         cesta.tabelaBottom = cesta.aroY;
 
-        yoyo.x = W * 0.14;
-        yoyo.baseY = H * 0.73;
-        yoyo.puloOffset = 0;
+        boneca.x = W * 0.14;
+        boneca.baseY = H * 0.74;
+        boneca.puloOffset = 0;
+        boneca.estado = 'idle';
 
         if (!bola.lancada) resetarBola(false);
     }
@@ -83,14 +84,30 @@
         }
     }
 
+    function maoDefault() {
+        // Mão fica do lado direito do corpo, levemente à frente
+        return {
+            x: boneca.x + 42,
+            y: boneca.baseY + boneca.puloOffset - 42
+        };
+    }
+
     function resetarBola(redesenhar = true) {
         bola.vx = 0;
         bola.vy = 0;
         bola.lancada = false;
         bola.noChao = true;
         bola.gira = 0;
-        bola.x = yoyo.x + 50;
-        bola.y = yoyo.baseY - 35;
+        const mao = maoDefault();
+        boneca.maoX = mao.x;
+        boneca.maoY = mao.y;
+        boneca.maoAng = 0;
+        boneca.corpoAng = 0;
+        boneca.arremesso = 0;
+        boneca.estado = 'idle';
+        boneca.historico = [];
+        bola.x = boneca.maoX;
+        bola.y = boneca.maoY;
         marcouCesta = false;
         if (redesenhar) posicionarElementos();
     }
@@ -122,7 +139,7 @@
         lastTime = performance.now();
         animId = requestAnimationFrame(loop);
 
-        falar('Basquete da Yoyo! Arraste e solte a bola na cesta!');
+        falar('Basquete da Yoyo! Puxe a bola e arremesse na cesta!');
         trackGamePlayed('basquete');
     }
 
@@ -163,13 +180,17 @@
         if (!jogoAtivo || bola.lancada) return;
         const p = getPos(e);
         const d = Math.hypot(p.x - bola.x, p.y - bola.y);
-        if (d < 70) {
+        if (d < 90) {
             estado.arrastando = true;
-            estado.startX = bola.x;
-            estado.startY = bola.y;
             estado.mx = p.x;
             estado.my = p.y;
+            const mao = maoDefault();
+            estado.maoBaseX = mao.x;
+            estado.maoBaseY = mao.y;
+            estado.startX = estado.mx;
+            estado.startY = estado.my;
             dicaGesto.style.display = 'none';
+            boneca.estado = 'mira';
         }
     }
 
@@ -179,23 +200,59 @@
         const p = getPos(e);
         estado.mx = p.x;
         estado.my = p.y;
+
+        // Mantem a bola seguindo o dedo, mas limita distancia da boneca
+        const mao = maoDefault();
+        const dx = p.x - mao.x;
+        const dy = p.y - mao.y;
+        const dist = Math.hypot(dx, dy);
+        const maxDist = 160;
+        if (dist > maxDist) {
+            const ang = Math.atan2(dy, dx);
+            estado.mx = mao.x + Math.cos(ang) * maxDist;
+            estado.my = mao.y + Math.sin(ang) * maxDist;
+        }
+
+        // A bola fica na mao, que segue o cursor
+        boneca.maoX = estado.mx;
+        boneca.maoY = estado.my;
+        bola.x = boneca.maoX;
+        bola.y = boneca.maoY;
+        boneca.historico.push({ x: boneca.maoX, y: boneca.maoY, t: performance.now() });
+        if (boneca.historico.length > 6) boneca.historico.shift();
     }
 
     function onUp(e) {
         if (!estado.arrastando) return;
         estado.arrastando = false;
 
-        const dx = estado.startX - estado.mx;
-        const dy = estado.startY - estado.my;
-        const forca = Math.min(Math.hypot(dx, dy), 220) / 6.5;
-        if (forca < 4) return;
+        const mao = maoDefault();
+        // Vetor da mao puxada de volta a posicao base: quanto mais puxou para tras/baixo, mais forte o arremesso para cesta
+        const dx = mao.x - boneca.maoX;
+        const dy = mao.y - boneca.maoY;
+        const dist = Math.hypot(dx, dy);
+        if (dist < 12) return;
 
+        // Fator de forca: puxada longa gera arremesso forte, puxada curta gera arremesso suave
+        const forca = Math.min(dist, 160) / 9;
         const ang = Math.atan2(dy, dx);
-        bola.vx = Math.cos(ang) * forca * 1.2;
-        bola.vy = Math.sin(ang) * forca * 1.2;
+
+        bola.vx = Math.cos(ang) * forca * 1.3;
+        bola.vy = Math.sin(ang) * forca * 1.3;
+
+        // Limita velocidade maxima
+        const v = Math.hypot(bola.vx, bola.vy);
+        const maxV = 22;
+        if (v > maxV) {
+            bola.vx = (bola.vx / v) * maxV;
+            bola.vy = (bola.vy / v) * maxV;
+        }
+
         bola.lancada = true;
         bola.noChao = false;
-        bola.gira = forca * 0.05;
+        bola.gira = (bola.vx + bola.vy) * 0.015;
+        boneca.estado = 'arremesso';
+        boneca.arremesso = 0;
         playClick();
     }
 
@@ -267,11 +324,11 @@
     }
 
     function desenharCesta() {
-        const { x, y, w, h, aroY, redeH, tabelaX, tabelaTop, tabelaBottom, redeBalanco } = cesta;
+        const { x, w, h, aroY, redeH, tabelaX, tabelaTop, tabelaBottom, redeBalanco } = cesta;
 
         ctx.save();
 
-        // Tabela (suporte)
+        // Tabela
         const grad = ctx.createLinearGradient(tabelaX - 6, 0, tabelaX + 6, 0);
         grad.addColorStop(0, '#6d597a');
         grad.addColorStop(0.5, '#9d4edd');
@@ -279,14 +336,13 @@
         ctx.fillStyle = grad;
         ctx.fillRect(tabelaX - 5, tabelaTop, 10, tabelaBottom - tabelaTop);
 
-        // Placa de encosto da tabela
         ctx.fillStyle = '#b185db';
         ctx.fillRect(tabelaX - 5, tabelaTop, 10, 18);
         ctx.strokeStyle = '#fff';
         ctx.lineWidth = 1.5;
         ctx.strokeRect(tabelaX - 5, tabelaTop, 10, 18);
 
-        // Aro vermelho (frente e fundo)
+        // Aro
         ctx.lineWidth = h;
         ctx.strokeStyle = '#ef476f';
         ctx.lineCap = 'round';
@@ -295,7 +351,6 @@
         ctx.lineTo(x + w / 2, aroY);
         ctx.stroke();
 
-        // Brilho no aro
         ctx.lineWidth = 3;
         ctx.strokeStyle = 'rgba(255,255,255,0.45)';
         ctx.beginPath();
@@ -303,7 +358,7 @@
         ctx.lineTo(x + w / 2 - 3, aroY - 2);
         ctx.stroke();
 
-        // Rede com balanço
+        // Rede
         ctx.strokeStyle = 'rgba(255,255,255,0.75)';
         ctx.lineWidth = 1.5;
         const passos = 8;
@@ -324,7 +379,6 @@
             ctx.stroke();
         }
 
-        // Branco interior da rede
         ctx.fillStyle = 'rgba(255,255,255,0.12)';
         ctx.beginPath();
         ctx.moveTo(x - w / 2, aroY);
@@ -337,44 +391,200 @@
         ctx.restore();
     }
 
-    function desenharYoyo() {
-        const x = yoyo.x;
-        const y = yoyo.baseY + yoyo.puloOffset + Math.sin(performance.now() * 0.006) * 4;
+    function desenharBoneca() {
+        const x = boneca.x;
+        const y = boneca.baseY + boneca.puloOffset + Math.sin(performance.now() * 0.004) * 2;
+
+        // Atualiza animacao do arremesso
+        if (boneca.estado === 'arremesso') {
+            boneca.arremesso += 0.08;
+            if (boneca.arremesso >= 1) {
+                boneca.arremesso = 1;
+                boneca.estado = 'idle';
+            }
+        }
+
+        const maoDefaultPos = maoDefault();
+        let alvoMaoX = boneca.maoX;
+        let alvoMaoY = boneca.maoY;
+
+        if (boneca.estado === 'idle') {
+            alvoMaoX = maoDefaultPos.x;
+            alvoMaoY = maoDefaultPos.y;
+            boneca.corpoAng = 0;
+        } else if (boneca.estado === 'mira') {
+            // Corpo inclina e mao segue a bola
+            const dx = boneca.maoX - boneca.x;
+            const dy = boneca.maoY - boneca.baseY;
+            boneca.maoAng = Math.atan2(dy, dx);
+            boneca.corpoAng = Math.max(-0.35, Math.min(0.35, (boneca.maoX - boneca.x) * 0.003));
+        } else if (boneca.estado === 'arremesso') {
+            // Mao segue a bola no inicio, depois volta
+            const t = boneca.arremesso;
+            if (t < 0.35) {
+                // Mao acompanha a bola que acabou de sair
+                const suave = t / 0.35;
+                alvoMaoX = alvoMaoX + (bola.x - alvoMaoX) * suave;
+                alvoMaoY = alvoMaoY + (bola.y - alvoMaoY) * suave;
+            } else {
+                // Mao volta ao default com swing elegante
+                const ret = (t - 0.35) / 0.65;
+                alvoMaoX = alvoMaoX + (maoDefaultPos.x - alvoMaoX) * ret;
+                alvoMaoY = alvoMaoY + (maoDefaultPos.y - alvoMaoY) * ret;
+            }
+            boneca.corpoAng = 0.25 * (1 - t);
+        } else if (boneca.estado === 'celebra') {
+            boneca.corpoAng = Math.sin(performance.now() * 0.02) * 0.15;
+            alvoMaoX = maoDefaultPos.x + Math.sin(performance.now() * 0.015) * 20;
+            alvoMaoY = maoDefaultPos.y - 30 - Math.abs(Math.sin(performance.now() * 0.02)) * 20;
+        }
+
+        // Suaviza posicao da mao
+        boneca.maoX += (alvoMaoX - boneca.maoX) * 0.25;
+        boneca.maoY += (alvoMaoY - boneca.maoY) * 0.25;
 
         ctx.save();
         ctx.translate(x, y);
+        ctx.rotate(boneca.corpoAng);
 
-        ctx.fillStyle = 'rgba(0,0,0,0.15)';
+        // Sombra
+        ctx.fillStyle = 'rgba(0,0,0,0.18)';
         ctx.beginPath();
-        ctx.ellipse(0, 32 - yoyo.puloOffset, 22, 6, 0, 0, Math.PI * 2);
+        ctx.ellipse(0, 52 - boneca.puloOffset, 26, 7, 0, 0, Math.PI * 2);
         ctx.fill();
 
-        ctx.fillStyle = '#ff9a9e';
+        // Pernas (meia calça branca + sapatilha branca)
+        ctx.strokeStyle = '#fff';
+        ctx.lineWidth = 7;
+        ctx.lineCap = 'round';
         ctx.beginPath();
-        ctx.arc(0, 0, 26, 0, Math.PI * 2);
-        ctx.fill();
-
-        ctx.fillStyle = '#fad2e1';
+        ctx.moveTo(-8, 18);
+        ctx.lineTo(-10, 46);
+        ctx.stroke();
         ctx.beginPath();
-        ctx.arc(-8, -6, 20, 0, Math.PI * 2);
-        ctx.fill();
-
-        ctx.fillStyle = '#333';
-        ctx.beginPath();
-        ctx.arc(-8, -6, 3, 0, Math.PI * 2);
-        ctx.arc(8, -6, 3, 0, Math.PI * 2);
-        ctx.fill();
-
-        ctx.strokeStyle = '#d62839';
-        ctx.lineWidth = 2.5;
-        ctx.beginPath();
-        ctx.arc(0, 4, 9, 0, Math.PI, false);
+        ctx.moveTo(8, 18);
+        ctx.lineTo(10, 46);
         ctx.stroke();
 
-        ctx.fillStyle = '#FF6B9D';
-        ctx.font = 'bold 13px Comic Sans MS, sans-serif';
-        ctx.textAlign = 'center';
-        ctx.fillText('YOYO', 0, 38);
+        // Sapatilhas brancas
+        ctx.fillStyle = '#fff';
+        ctx.beginPath();
+        ctx.ellipse(-10, 48, 8, 4, 0, 0, Math.PI * 2);
+        ctx.ellipse(10, 48, 8, 4, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = '#ddd';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.ellipse(-10, 48, 8, 4, 0, 0, Math.PI * 2);
+        ctx.ellipse(10, 48, 8, 4, 0, 0, Math.PI * 2);
+        ctx.stroke();
+
+        // Vestidinho dourado (corpo)
+        const dourado = ctx.createLinearGradient(-15, 10, 15, 45);
+        dourado.addColorStop(0, '#ffe66d');
+        dourado.addColorStop(0.5, '#ffd700');
+        dourado.addColorStop(1, '#c9a000');
+        ctx.fillStyle = dourado;
+        ctx.beginPath();
+        ctx.moveTo(0, -12);
+        ctx.lineTo(22, 32);
+        ctx.lineTo(0, 38);
+        ctx.lineTo(-22, 32);
+        ctx.closePath();
+        ctx.fill();
+        ctx.strokeStyle = '#b8860b';
+        ctx.lineWidth = 1.2;
+        ctx.stroke();
+
+        // Bracos
+        const ombroX = 0;
+        const ombroY = -8;
+        const maoDX = boneca.maoX - x;
+        const maoDY = boneca.maoY - y;
+        const maoDist = Math.hypot(maoDX, maoDY);
+        const maoAng = Math.atan2(maoDY, maoDX);
+
+        // Braco direito (arremesso) - estendido
+        ctx.strokeStyle = '#ffe0bd';
+        ctx.lineWidth = 7;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(12, -5);
+        ctx.lineTo(maoDX, maoDY);
+        ctx.stroke();
+
+        // Braco esquerdo (apoio) - levemente curvado
+        ctx.beginPath();
+        ctx.moveTo(-10, -5);
+        ctx.quadraticCurveTo(-25, 5, -20, 20);
+        ctx.stroke();
+
+        // Mao
+        ctx.fillStyle = '#ffe0bd';
+        ctx.beginPath();
+        ctx.arc(maoDX, maoDY, 7, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Cabeca
+        ctx.fillStyle = '#ffe0bd';
+        ctx.beginPath();
+        ctx.arc(0, -28, 20, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Cabelo castanho comprido e ondulado
+        ctx.fillStyle = '#8b5a2b';
+        ctx.beginPath();
+        ctx.arc(0, -30, 22, Math.PI, 0); // topo
+        ctx.quadraticCurveTo(28, -20, 28, 10);
+        ctx.quadraticCurveTo(30, 30, 18, 42);
+        ctx.quadraticCurveTo(8, 36, 0, 40);
+        ctx.quadraticCurveTo(-8, 36, -18, 42);
+        ctx.quadraticCurveTo(-30, 30, -28, 10);
+        ctx.quadraticCurveTo(-28, -20, 0, -30);
+        ctx.fill();
+
+        // Franja ondulada
+        ctx.fillStyle = '#a0703e';
+        ctx.beginPath();
+        ctx.arc(0, -34, 18, 0.1, Math.PI - 0.1);
+        ctx.fill();
+
+        // Olhos
+        ctx.fillStyle = '#3d2b1f';
+        ctx.beginPath();
+        ctx.arc(-6, -28, 2.5, 0, Math.PI * 2);
+        ctx.arc(6, -28, 2.5, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Sorriso
+        ctx.strokeStyle = '#c65d57';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(0, -22, 6, 0.2, Math.PI - 0.2);
+        ctx.stroke();
+
+        // Bochechas rosadas
+        ctx.fillStyle = 'rgba(255, 160, 160, 0.35)';
+        ctx.beginPath();
+        ctx.arc(-11, -24, 3, 0, Math.PI * 2);
+        ctx.arc(11, -24, 3, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Borboletinha dourada no cabelo
+        ctx.save();
+        ctx.translate(-16, -42);
+        ctx.rotate(Math.sin(performance.now() * 0.008) * 0.3);
+        ctx.fillStyle = '#ffd700';
+        ctx.beginPath();
+        ctx.ellipse(-5, -3, 6, 9, -0.5, 0, Math.PI * 2);
+        ctx.ellipse(5, -3, 6, 9, 0.5, 0, Math.PI * 2);
+        ctx.ellipse(0, 4, 6, 9, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#c9a000';
+        ctx.beginPath();
+        ctx.arc(0, 0, 3, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
 
         ctx.restore();
     }
@@ -430,18 +640,18 @@
     function desenharMira() {
         if (!estado.arrastando) return;
 
-        const dx = estado.startX - estado.mx;
-        const dy = estado.startY - estado.my;
+        const dx = estado.maoBaseX - estado.mx;
+        const dy = estado.maoBaseY - estado.my;
         const forca = Math.min(Math.hypot(dx, dy), 220);
         const ang = Math.atan2(dy, dx);
 
-        const passos = 14;
-        const passo = forca / 5;
+        const passos = 16;
+        const passo = forca / 6;
 
         for (let i = 1; i <= passos; i++) {
             const t = i;
-            const px = bola.x + Math.cos(ang) * passo * t * 0.55;
-            const py = bola.y + Math.sin(ang) * passo * t * 0.55 + 0.5 * GRAV * t * t * 0.12;
+            const px = bola.x + Math.cos(ang) * passo * t * 0.65;
+            const py = bola.y + Math.sin(ang) * passo * t * 0.65 + 0.5 * GRAV * t * t * 0.12;
             if (px < 0 || px > W || py > H) break;
 
             const alpha = 1 - i / passos;
@@ -455,7 +665,7 @@
         ctx.lineWidth = 2;
         ctx.setLineDash([8, 6]);
         ctx.beginPath();
-        ctx.moveTo(bola.x, bola.y);
+        ctx.moveTo(boneca.maoX, boneca.maoY);
         ctx.lineTo(estado.mx, estado.my);
         ctx.stroke();
         ctx.setLineDash([]);
@@ -576,7 +786,6 @@
         const backRim = { x: x + w / 2, y: aroY };
         const rimRadius = 6;
 
-        // Verifica colisao com o aro (segmento horizontal) com raio
         const dx = backRim.x - frontRim.x;
         const dy = backRim.y - frontRim.y;
         const len2 = dx * dx + dy * dy;
@@ -587,7 +796,6 @@
         const dist = Math.hypot(bola.x - px, bola.y - py);
 
         if (dist < bola.r + rimRadius) {
-            // Reflete no aro
             const nx = (bola.x - px) / dist;
             const ny = (bola.y - py) / dist;
             const dot = bola.vx * nx + bola.vy * ny;
@@ -601,7 +809,6 @@
             return true;
         }
 
-        // Colisao direta com as bordas redondas do aro
         if (colidirBolaPonto(frontRim.x, frontRim.y, 0.7)) {
             criarImpacto(frontRim.x, frontRim.y, '#ef476f');
             playClick();
@@ -649,11 +856,6 @@
         }
     }
 
-    function atualizarRede() {
-        cesta.redeBalanco += cesta.redeBalancoVel;
-        cesta.redeBalancoVel *= 0.92;
-    }
-
     function verificarCesta() {
         const { x, w, aroY, redeH } = cesta;
 
@@ -678,17 +880,15 @@
             playSuccess();
             falar('Cesta!');
 
-            // Efeito de rede balançando
             cesta.redeBalancoVel += 1.2;
 
-            // Efeitos visuais
             for (let i = 0; i < 22; i++) confetes.push(criarConfete(x, aroY));
             for (let i = 0; i < 5; i++) estrelas.push(criarEstrela(x, aroY));
 
-            yoyo.pulo = 1;
+            boneca.estado = 'celebra';
+            boneca.pulo = 1;
         }
 
-        // Quando a bola passar pela rede, adiciona fricção e balanço
         if (bola.y > aroY && bola.y < aroY + redeH && bola.x > limFront && bola.x < limBack && !marcouCesta) {
             cesta.redeBalancoVel += 0.08;
             bola.vx *= 0.92;
@@ -731,28 +931,33 @@
             bola.vy = Math.abs(bola.vy) * 0.45;
         }
 
-        // Colisoes com tabela e aro (antes de verificar cesta)
         if (bola.x > cesta.x - cesta.w / 2 - 40 && bola.x < cesta.tabelaX + 20 &&
             bola.y > cesta.aroY - cesta.redeH - 40 && bola.y < cesta.aroY + cesta.redeH + 20) {
             colidirTabela();
             colidirAro();
         }
 
-        // Verifica se fez a cesta
         verificarCesta();
     }
 
-    function desenharEfeitos() {
-        if (yoyo.pulo > 0) {
-            yoyo.pulo += 0.12;
-            yoyo.puloOffset = -Math.sin(Math.min(yoyo.pulo, 1) * Math.PI) * 35;
-            if (yoyo.pulo >= 1) {
-                yoyo.pulo = 0;
-                yoyo.puloOffset = 0;
+    function atualizarAnimacaoBoneca() {
+        // Celebracao/pulo
+        if (boneca.pulo > 0) {
+            boneca.pulo += 0.12;
+            boneca.puloOffset = -Math.sin(Math.min(boneca.pulo, 1) * Math.PI) * 35;
+            if (boneca.pulo >= 1) {
+                boneca.pulo = 0;
+                boneca.puloOffset = 0;
+                if (boneca.estado === 'celebra') boneca.estado = 'idle';
             }
         } else {
-            yoyo.puloOffset = 0;
+            boneca.puloOffset = 0;
         }
+    }
+
+    function atualizarRede() {
+        cesta.redeBalanco += cesta.redeBalancoVel;
+        cesta.redeBalancoVel *= 0.92;
     }
 
     function loop(now) {
@@ -763,11 +968,11 @@
 
         desenharFundo();
         desenharCesta();
-        desenharYoyo();
+        atualizarAnimacaoBoneca();
+        desenharBoneca();
         desenharMira();
         desenharBola();
         atualizarImpactos();
-        desenharEfeitos();
         atualizarFisica();
         atualizarRede();
         atualizarConfetes();
