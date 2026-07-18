@@ -30,8 +30,6 @@ function atualizarEstrelas() {
     elementos.starsCount.textContent = estrelas;
 }
 
-}
-
 function gerarDesafio() {
     concluido = false;
     parAtual = pares[Math.floor(Math.random() * pares.length)];

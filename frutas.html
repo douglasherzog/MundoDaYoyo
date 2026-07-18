@@ -9,42 +9,35 @@
 <body>
     <div class="container">
         <header>
-            <h1>🍎 Frutas e Vegetais</h1>
-            <p>Clique no nome certo!</p>
+            <h1> Frutas e Vegetais</h1>
+            <p>Descubra o nome das frutas e legumes!</p>
         </header>
-
         <main class="game">
-            <a href="index.html" class="btn-back">Início</a>
-            <div class="score">⭐ Pontos: <span id="pontos">0</span></div>
-
+            <a href="index.html" class="btn-back"> Início</a>
+            <div class="score"> Pontos: <span id="pontos">0</span></div>
+            <div class="game-progress-container">
+                <div class="game-progress-bar" id="progress-bar" style="width:0%">0 / 10</div>
+            </div>
             <div class="word-area">
-                <div class="animal-word" id="fruta-emoji">🍎</div>
+                <div class="animal-word" id="fruta-emoji"></div>
                 <div class="animal-hint" id="fruta-hint">Qual é essa fruta?</div>
             </div>
-
             <div class="animals" id="opcoes"></div>
-
             <div class="feedback" id="feedback"></div>
-
             <div class="controls">
-                <button class="btn-speak" id="btn-speak">🔊 Ouvir</button>
-                <button class="btn-next" id="btn-next">Próxima 🚀</button>
+                <button class="btn-speak" id="btn-speak"> Ouvir dica</button>
             </div>
         </main>
-
-        <footer>
-            <p>Feito com ❤️ para a Yoyo</p>
-        </footer>
+        <footer><p>Feito com  para a Yoyo</p></footer>
     </div>
-
     <script src="stars.js"></script>
     <script src="sounds.js"></script>
     <script src="yoyo-mascot.js"></script>
     <script src="transitions.js"></script>
     <script src="achievements.js"></script>
     <script src="game-engine.js"></script>
-    <script src="admin.js"></script>
     <script src="tts.js"></script>
     <script src="frutas.js"></script>
+    <script src="admin.js"></script>
 </body>
-</html>
+</html>
