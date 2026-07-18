@@ -15,6 +15,14 @@ const elementos = {
     btnRestart: document.getElementById('btn-restart')
 };
 
+function embaralhar(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
 function criarCartas() {
     cartas = [];
     pares.forEach(par => {
@@ -76,18 +84,18 @@ function virarCarta(indice) {
         paresEncontrados++;
         pontos += 10;
         elementos.pontos.textContent = pontos;
-        elementos.feedback.textContent = 'Par encontrado! ðŸŽ‰';
+        elementos.feedback.textContent = 'Par encontrado! 🎉';
         elementos.feedback.className = 'feedback success';
         playSuccess();
         falar('Par encontrado');
 
         if (paresEncontrados === pares.length) {
-            elementos.feedback.textContent = `ðŸŽ‰ VocÃª venceu! Encontrou todos os pares em ${tentativas} tentativas!`;
+            elementos.feedback.textContent = `🎉 Você venceu! Encontrou todos os pares em ${tentativas} tentativas!`;
             playSuccess();
-            falar('ParabÃ©ns, vocÃª venceu!');
+            falar('Parabéns, você venceu!');
         }
     } else {
-        elementos.feedback.textContent = 'NÃ£o Ã© igual. Tente de novo! ðŸ’ª';
+        elementos.feedback.textContent = 'Não é igual. Tente de novo! 💪';
         elementos.feedback.className = 'feedback error';
         playError();
         falar('Tente de novo');
@@ -98,6 +106,7 @@ function virarCarta(indice) {
             bloqueado = false;
             renderizarGrid();
         }, 1200);
+    }
 }
 
 function reiniciarJogo() {

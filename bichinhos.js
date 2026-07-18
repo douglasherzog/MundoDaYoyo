@@ -197,8 +197,6 @@ function iniciar() {
     falar('Clique nos bichinhos! Vai Yoyo!');
 }
 
-}
-
 btnReiniciar.addEventListener('click', iniciar);
 
 iniciar();
