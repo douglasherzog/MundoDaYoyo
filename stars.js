@@ -113,23 +113,30 @@ inicializarEstrelas();
 
     function entrarFullscreen() {
         const el = document.documentElement;
-        if (el.requestFullscreen) el.requestFullscreen();
-        else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
-        else if (el.msRequestFullscreen) el.msRequestFullscreen();
+        if (el.requestFullscreen) return el.requestFullscreen();
+        if (el.webkitRequestFullscreen) return el.webkitRequestFullscreen();
+        if (el.msRequestFullscreen) return el.msRequestFullscreen();
+        return Promise.resolve();
     }
 
     function sairFullscreen() {
-        if (document.fullscreenElement || document.webkitFullscreenElement) {
-            return false;
-        }
-        return true;
+        return !(document.fullscreenElement || document.webkitFullscreenElement);
     }
 
+    let estavaFullscreen = false;
     document.addEventListener('fullscreenchange', function () {
-        if (sairFullscreen()) mostrarOverlayLock();
+        if (document.fullscreenElement || document.webkitFullscreenElement) {
+            estavaFullscreen = true;
+        } else if (estavaFullscreen && sairFullscreen()) {
+            mostrarOverlayLock();
+        }
     });
     document.addEventListener('webkitfullscreenchange', function () {
-        if (sairFullscreen()) mostrarOverlayLock();
+        if (document.fullscreenElement || document.webkitFullscreenElement) {
+            estavaFullscreen = true;
+        } else if (estavaFullscreen && sairFullscreen()) {
+            mostrarOverlayLock();
+        }
     });
 
     document.addEventListener('keydown', function (e) {
@@ -179,16 +186,12 @@ inicializarEstrelas();
     function autoFullscreen() {
         if (autoFsDone) return;
         autoFsDone = true;
-        entrarFullscreen();
+        // Tenta entrar em fullscreen, mas nao mostra overlay se o navegador bloquear
+        if (document.documentElement.requestFullscreen || document.documentElement.webkitRequestFullscreen) {
+            entrarFullscreen().catch(function () {});
+        }
     }
     document.addEventListener('click', autoFullscreen);
     document.addEventListener('touchstart', autoFullscreen);
     document.addEventListener('keydown', autoFullscreen);
-    window.addEventListener('load', function () {
-        setTimeout(function () {
-            if (!document.fullscreenElement && !document.webkitFullscreenElement) {
-                mostrarOverlayLock();
-            }
-        }, 1000);
-    });
 })();
