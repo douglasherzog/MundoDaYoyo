@@ -1,113 +1,77 @@
-const objetos = [
-    { emoji: '🍎', nome: 'maçãs' },
-    { emoji: '🍌', nome: 'bananas' },
-    { emoji: '🚗', nome: 'carrinhos' },
-    { emoji: '⭐', nome: 'estrelas' },
-    { emoji: '🐶', nome: 'cachorrinhos' },
-    { emoji: '🌸', nome: 'flores' },
-    { emoji: '🎈', nome: 'balões' },
-    { emoji: '🧸', nome: 'ursos' },
-    { emoji: '🍪', nome: 'biscoitos' },
-    { emoji: '🐱', nome: 'gatinhos' }
+﻿const objetos = [
+    { emoji: '', nome: 'maçãs' },
+    { emoji: '', nome: 'bananas' },
+    { emoji: '', nome: 'carrinhos' },
+    { emoji: '', nome: 'estrelas' },
+    { emoji: '', nome: 'cachorrinhos' },
+    { emoji: '', nome: 'flores' },
+    { emoji: '', nome: 'balões' },
+    { emoji: '', nome: 'ursos' },
+    { emoji: '', nome: 'biscoitos' },
+    { emoji: '', nome: 'gatinhos' }
 ];
-
-let objetoAtual = null;
-let quantidadeAtual = 0;
-let concluido = false;
-let pontos = 0;
 
 const elementos = {
     display: document.getElementById('objects-display'),
     options: document.getElementById('options-area'),
     feedback: document.getElementById('feedback'),
-    btnNext: document.getElementById('btn-next'),
+    pontos: document.getElementById('pontos'),
+    btnSpeak: document.getElementById('btn-speak'),
     starsCount: document.getElementById('stars-count')
 };
 
-function atualizarEstrelas() {
-    const estrelas = carregarEstrelas();
-    elementos.starsCount.textContent = estrelas;
-}
+const game = GameEngine.create({
+    id: 'contar',
+    data: objetos,
+    totalRounds: 10,
+    minOptions: 2,
+    maxOptions: 4,
+    containerSelector: '#options-area',
+    feedbackSelector: '#feedback',
+    displaySelector: '#objects-display',
+    progressSelector: '#progress-bar',
 
-function falar(texto) {
-    if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
-        const msg = new SpeechSynthesisUtterance(texto);
-        msg.lang = 'pt-BR';
-        msg.rate = 0.9;
-        window.speechSynthesis.speak(msg);
-    }
-}
+    getData: function () {
+        var obj = objetos[Math.floor(Math.random() * objetos.length)];
+        var qty = Math.floor(Math.random() * 9) + 1;
+        return { emoji: obj.emoji, nome: obj.nome, quantidade: qty, id: obj.nome + '_' + qty };
+    },
 
-function embaralhar(array) {
-    return array.slice().sort(() => Math.random() - 0.5);
-}
+    optionKey: function (item) { return item.quantidade; },
+    matchFn: function (a, b) { return a === b; },
 
-function gerarDesafio() {
-    concluido = false;
-    objetoAtual = objetos[Math.floor(Math.random() * objetos.length)];
-    quantidadeAtual = Math.floor(Math.random() * 9) + 1;
-
-    elementos.display.innerHTML = '';
-    for (let i = 0; i < quantidadeAtual; i++) {
-        const span = document.createElement('span');
-        span.textContent = objetoAtual.emoji;
-        span.className = 'object-item';
-        elementos.display.appendChild(span);
-    }
-
-    const opcoes = [quantidadeAtual];
-    while (opcoes.length < 4) {
-        const num = Math.floor(Math.random() * 10) + 1;
-        if (!opcoes.includes(num)) {
-            opcoes.push(num);
+    onRound: function (item) {
+        elementos.display.innerHTML = '';
+        for (var i = 0; i < item.quantidade; i++) {
+            var span = document.createElement('span');
+            span.textContent = item.emoji;
+            span.className = 'object-item';
+            span.style.animationDelay = (i * 0.1) + 's';
+            elementos.display.appendChild(span);
         }
+    },
+
+    renderOption: function (btn, item) {
+        btn.className = 'game-option count-option';
+        btn.textContent = item.quantidade;
+        btn.style.fontSize = '2rem';
+    },
+
+    speakQuestion: function (item) { falar('Quantos ' + item.nome + ' você vê?'); },
+    speakCorrect: function (item) { falar('Muito bem! São ' + item.quantidade + ' ' + item.nome); },
+    speakWrong: function (item) { falar('Tente outro número'); },
+
+    onCorrect: function (item) {
+        elementos.pontos.textContent = game.state.score;
+    },
+
+    onVictory: function () {
+        elementos.pontos.textContent = game.state.score;
     }
+});
 
-    elementos.options.innerHTML = '';
-    embaralhar(opcoes).forEach(num => {
-        const btn = document.createElement('button');
-        btn.textContent = num;
-        btn.className = 'count-option';
-        btn.dataset.numero = num;
-        btn.addEventListener('click', () => selecionarNumero(btn));
-        elementos.options.appendChild(btn);
-    });
+elementos.btnSpeak.addEventListener('click', function () {
+    if (game.state.current) falar('Quantos ' + game.state.current.nome + ' você vê?');
+});
 
-    elementos.feedback.textContent = '';
-    elementos.feedback.className = 'feedback';
-    elementos.btnNext.disabled = true;
-
-    falar(`Quantos ${objetoAtual.nome} você vê?`);
-}
-
-function selecionarNumero(botao) {
-    if (concluido) return;
-
-    const numeroEscolhido = parseInt(botao.dataset.numero, 10);
-
-    if (numeroEscolhido === quantidadeAtual) {
-        concluido = true;
-        pontos += 10;
-        botao.classList.add('correct');
-        elementos.feedback.textContent = `🎉 Muito bem! São ${quantidadeAtual} ${objetoAtual.nome}!`;
-        elementos.feedback.className = 'feedback success';
-        elementos.btnNext.disabled = false;
-        falar(`Muito bem! São ${quantidadeAtual} ${objetoAtual.nome}`);
-        playSuccess();
-        adicionarEstrelas(1);
-        atualizarEstrelas();
-    } else {
-        botao.classList.add('wrong');
-        setTimeout(() => botao.classList.remove('wrong'), 500);
-        elementos.feedback.textContent = 'Tente outro número! 💪';
-        elementos.feedback.className = 'feedback error';
-        falar('Tente outro número');
-        playError();
-    }
-}
-
-elementos.btnNext.addEventListener('click', gerarDesafio);
-
-atualizarEstrelas();
-gerarDesafio();
+game.start();

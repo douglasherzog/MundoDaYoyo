@@ -9,17 +9,21 @@
 <body>
     <div class="container">
         <header>
-            <h1>?? Cores da Yoyo</h1>
+            <h1> Cores da Yoyo</h1>
             <p>Clique na cor do objeto!</p>
         </header>
 
         <main class="game">
-            <a href="index.html" class="btn-back">In�cio</a>
-            <div class="score">? Pontos: <span id="pontos">0</span></div>
+            <a href="index.html" class="btn-back"> Início</a>
+            <div class="score"> Pontos: <span id="pontos">0</span></div>
+
+            <div class="game-progress-container">
+                <div class="game-progress-bar" id="progress-bar" style="width:0%">0 / 10</div>
+            </div>
 
             <div class="word-area">
-                <div class="color-shape" id="color-shape">?</div>
-                <div class="color-question" id="color-question">Qual � a cor?</div>
+                <div class="color-shape" id="color-shape"></div>
+                <div class="color-question" id="color-question">Qual é a cor?</div>
             </div>
 
             <div class="colors" id="colors"></div>
@@ -27,13 +31,12 @@
             <div class="feedback" id="feedback"></div>
 
             <div class="controls">
-                <button class="btn-speak" id="btn-speak">?? Ouvir pergunta</button>
-                <button class="btn-next" id="btn-next">Pr�xima ??</button>
+                <button class="btn-speak" id="btn-speak"> Ouvir pergunta</button>
             </div>
         </main>
 
         <footer>
-            <p>Feito com ?? para a Yoyo</p>
+            <p>Feito com  para a Yoyo</p>
         </footer>
     </div>
 
@@ -42,9 +45,9 @@
     <script src="yoyo-mascot.js"></script>
     <script src="transitions.js"></script>
     <script src="achievements.js"></script>
-    <script src="admin.js"></script>
-    <script src="cores.js"></script>
+    <script src="game-engine.js"></script>
     <script src="tts.js"></script>
+    <script src="cores.js"></script>
+    <script src="admin.js"></script>
 </body>
 </html>
-
