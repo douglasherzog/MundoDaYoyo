@@ -768,12 +768,14 @@
         if (emTransicao) return;
         emTransicao = true;
         modo = modos[nome];
-        redimensionar();
         tituloJogo.textContent = nomes[nome];
         confetes = [];
-        if (modo.init) modo.init();
         menuPrincipal.parentElement.style.display = 'none';
         areaJogo.classList.add('ativo');
+        // forca o navegador a calcular o layout da area visivel
+        areaJogo.offsetHeight;
+        redimensionar();
+        if (modo.init) modo.init();
         ultimoT = performance.now();
         emTransicao = false;
         if (animId) cancelAnimationFrame(animId);
