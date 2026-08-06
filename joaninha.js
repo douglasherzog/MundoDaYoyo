@@ -505,8 +505,11 @@
         },
         toque(x, y) {
             if (this.terminado) return;
-            this.arrastando = true;
-            this.mover(x, y);
+            const dist = Math.hypot(x - this.joaninhaPos.x, y - this.joaninhaPos.y);
+            if (dist < 90) {
+                this.arrastando = true;
+                this.mover(x, y);
+            }
         },
         mover(x, y) {
             if (!this.arrastando || this.terminado) return;
@@ -522,13 +525,10 @@
                     melhor = proj;
                 }
             }
-            if (melhor) {
-                const d = Math.hypot(this.joaninhaPos.x - melhor.x, this.joaninhaPos.y - melhor.y);
-                // so atualiza se nao for um salto muito grande
-                if (d < 350) {
-                    this.joaninhaPos.x = melhor.x;
-                    this.joaninhaPos.y = melhor.y;
-                }
+            // segue o dedo enquanto ele estiver razoavelmente perto do caminho
+            if (melhor && melhorDist < 140) {
+                this.joaninhaPos.x = melhor.x;
+                this.joaninhaPos.y = melhor.y;
             }
             const distFlor = Math.hypot(this.joaninhaPos.x - this.flor.x, this.joaninhaPos.y - this.flor.y);
             if (distFlor < 40) this.terminar();
