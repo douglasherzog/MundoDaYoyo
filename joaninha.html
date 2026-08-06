@@ -190,6 +190,28 @@
             to { opacity: 1; transform: translateX(-50%) translateY(0); }
         }
 
+        .btn-voltar-menu {
+            position: fixed;
+            top: 15px;
+            left: 70px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #e63946;
+            color: #fff;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 3px 8px rgba(230,57,70,0.3);
+            z-index: 100;
+        }
+
+        .area-jogo.ativo ~ .btn-voltar-menu {
+            display: none;
+        }
+
         .inicio-fixo {
             position: fixed;
             bottom: 12px;
@@ -251,6 +273,8 @@
             <div class="mensagem-tela" id="mensagemTela"></div>
         </div>
     </div>
+
+    <a href="index.html" class="btn-voltar-menu" aria-label="Voltar para o menu principal">⬅</a>
 
     <script src="stars.js"></script>
     <script src="tts.js"></script>
