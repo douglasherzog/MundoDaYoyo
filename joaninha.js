@@ -522,9 +522,13 @@
                     melhor = proj;
                 }
             }
-            if (melhor && melhorDist < 90) {
-                this.joaninhaPos.x = melhor.x;
-                this.joaninhaPos.y = melhor.y;
+            if (melhor) {
+                const d = Math.hypot(this.joaninhaPos.x - melhor.x, this.joaninhaPos.y - melhor.y);
+                // so atualiza se nao for um salto muito grande
+                if (d < 350) {
+                    this.joaninhaPos.x = melhor.x;
+                    this.joaninhaPos.y = melhor.y;
+                }
             }
             const distFlor = Math.hypot(this.joaninhaPos.x - this.flor.x, this.joaninhaPos.y - this.flor.y);
             if (distFlor < 40) this.terminar();
@@ -842,6 +846,7 @@
 
     canvas.addEventListener('pointerdown', e => {
         e.preventDefault();
+        if (canvas.setPointerCapture) canvas.setPointerCapture(e.pointerId);
         if (!modo || !modo.toque) return;
         const p = getPos(e);
         modo.toque(p.x, p.y);
@@ -857,6 +862,7 @@
 
     canvas.addEventListener('pointerup', e => {
         e.preventDefault();
+        if (canvas.releasePointerCapture) canvas.releasePointerCapture(e.pointerId);
         if (!modo || !modo.toqueFim) return;
         modo.toqueFim();
     });
