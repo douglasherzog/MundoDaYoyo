@@ -24,7 +24,9 @@ const ASSETS = [
     './domino.html',
     './domino.js',
     './basquete.html',
-    './basquete.js'
+    './basquete.js',
+    './joaninha.html',
+    './joaninha.js'
 ];
 
 self.addEventListener('install', e => {
