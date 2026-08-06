@@ -30,11 +30,23 @@
     const floresIcones = ['🌸', '🌼', '🌺', '🌻', '🌷', '🌹'];
 
     function redimensionar() {
-        W = document.getElementById('telaCanvas').clientWidth;
-        H = document.getElementById('telaCanvas').clientHeight;
+        const tela = document.getElementById('telaCanvas');
+        const barra = document.querySelector('.barra-jogo');
+        let w = tela.clientWidth;
+        let h = tela.clientHeight;
+        if (w <= 10 || h <= 10) {
+            const area = document.getElementById('areaJogo');
+            const barraH = barra ? barra.clientHeight : 56;
+            w = area.clientWidth || window.innerWidth;
+            h = (area.clientHeight || window.innerHeight) - barraH;
+        }
+        W = Math.max(300, w);
+        H = Math.max(200, h);
         const escala = window.devicePixelRatio || 1;
         canvas.width = W * escala;
         canvas.height = H * escala;
+        canvas.style.width = W + 'px';
+        canvas.style.height = H + 'px';
         ctx.setTransform(escala, 0, 0, escala, 0, 0);
     }
 
@@ -767,19 +779,21 @@
     function iniciarModo(nome) {
         if (emTransicao) return;
         emTransicao = true;
+        if (animId) cancelAnimationFrame(animId);
         modo = modos[nome];
         tituloJogo.textContent = nomes[nome];
         confetes = [];
         menuPrincipal.parentElement.style.display = 'none';
         areaJogo.classList.add('ativo');
-        // forca o navegador a calcular o layout da area visivel
         areaJogo.offsetHeight;
         redimensionar();
-        if (modo.init) modo.init();
-        ultimoT = performance.now();
-        emTransicao = false;
-        if (animId) cancelAnimationFrame(animId);
-        animId = requestAnimationFrame(loop);
+        setTimeout(() => {
+            redimensionar();
+            if (modo && modo.init) modo.init();
+            ultimoT = performance.now();
+            emTransicao = false;
+            animId = requestAnimationFrame(loop);
+        }, 80);
     }
 
     function voltarMenu() {
@@ -793,6 +807,11 @@
 
     function loop(now) {
         if (!modo) return;
+        if (W <= 0 || H <= 0) {
+            redimensionar();
+            animId = requestAnimationFrame(loop);
+            return;
+        }
         const dt = now - ultimoT;
         ultimoT = now;
         ctx.clearRect(0, 0, W, H);
