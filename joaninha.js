@@ -510,21 +510,21 @@
         },
         mover(x, y) {
             if (!this.arrastando || this.terminado) return;
-            let noCaminho = false;
+            let melhor = null;
+            let melhorDist = Infinity;
             for (let i = 0; i < this.caminho.length - 1; i++) {
                 const a = this.caminho[i];
                 const b = this.caminho[i + 1];
                 const proj = projetaPontoSegmento(x, y, a, b);
                 const dist = Math.hypot(x - proj.x, y - proj.y);
-                if (dist < 45) noCaminho = true;
+                if (dist < melhorDist) {
+                    melhorDist = dist;
+                    melhor = proj;
+                }
             }
-            if (noCaminho) {
-                this.joaninhaPos.x = x;
-                this.joaninhaPos.y = y;
-            } else {
-                this.joaninhaPos.x = this.caminho[0].x;
-                this.joaninhaPos.y = this.caminho[0].y;
-                falar('Ops, fora do caminho!');
+            if (melhor && melhorDist < 90) {
+                this.joaninhaPos.x = melhor.x;
+                this.joaninhaPos.y = melhor.y;
             }
             const distFlor = Math.hypot(this.joaninhaPos.x - this.flor.x, this.joaninhaPos.y - this.flor.y);
             if (distFlor < 40) this.terminar();
