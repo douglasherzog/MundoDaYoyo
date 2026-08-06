@@ -147,12 +147,18 @@
             flex: 1;
             position: relative;
             touch-action: none;
+            min-height: 0;
+            overflow: hidden;
         }
 
         #jogoCanvas {
             display: block;
             width: 100%;
             height: 100%;
+        }
+
+        .area-jogo.ativo ~ #yoyo-music-btn {
+            display: none !important;
         }
 
         .mensagem-tela {

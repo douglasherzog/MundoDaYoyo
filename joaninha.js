@@ -36,15 +36,15 @@
         let h = tela.clientHeight;
         if (w <= 10 || h <= 10) {
             const area = document.getElementById('areaJogo');
-            const barraH = barra ? barra.clientHeight : 56;
-            w = area.clientWidth || window.innerWidth;
-            h = (area.clientHeight || window.innerHeight) - barraH;
+            const barraH = (barra && barra.clientHeight) || 56;
+            w = (area.clientWidth || window.innerWidth || 320) - 1;
+            h = (area.clientHeight || window.innerHeight || 480) - barraH;
         }
-        W = Math.max(300, w);
-        H = Math.max(200, h);
+        W = Math.max(10, w);
+        H = Math.max(10, h);
         const escala = window.devicePixelRatio || 1;
-        canvas.width = W * escala;
-        canvas.height = H * escala;
+        canvas.width = Math.floor(W * escala);
+        canvas.height = Math.floor(H * escala);
         canvas.style.width = W + 'px';
         canvas.style.height = H + 'px';
         ctx.setTransform(escala, 0, 0, escala, 0, 0);
@@ -303,8 +303,10 @@
             }
             ctx.fillStyle = '#81c784';
             ctx.fillRect(0, H - 20, W, 20);
-            for (let i = 0; i < 8; i++) {
-                desenhaFlor(80 + i * 120, H - 35, 18 + (i % 3) * 5, CORES[i % CORES.length].hex);
+            let idx = 0;
+            for (let x = 80; x < W - 40; x += 120) {
+                desenhaFlor(x, H - 35, 18 + (idx % 3) * 5, CORES[idx % CORES.length].hex);
+                idx++;
             }
             for (const it of this.itens) {
                 if (it.tipo === 'gota') {
@@ -342,6 +344,8 @@
         init() {
             this.terminado = false;
             this.spots = [];
+            this.floresChao = [];
+            for (let i = 0; i < 5; i++) this.floresChao.push({ x: Math.random() * W, y: H - 40, t: 20, cor: CORES[i % CORES.length].hex });
             const ang = Math.PI * 2 / 7;
             for (let i = 0; i < 7; i++) {
                 const a = i * ang + 0.2;
@@ -396,7 +400,7 @@
         draw() {
             ctx.fillStyle = '#fff5f5';
             ctx.fillRect(0, 0, W, H);
-            for (let i = 0; i < 5; i++) desenhaFlor(Math.random() * W, H - 40, 20, CORES[i % CORES.length].hex);
+            for (const f of this.floresChao) desenhaFlor(f.x, f.y, f.t, f.cor);
 
             // joaninha base
             ctx.save();
@@ -688,6 +692,8 @@
             this.pontos = 0;
             this.rodadas = 0;
             this.gerou = false;
+            this.floresChao = [];
+            for (let i = 0; i < 10; i++) this.floresChao.push({ x: Math.random() * W, y: H - 35, t: 14, cor: CORES[i % 7].hex });
             ajustarPontos(0);
             falar('Onde está a joaninha? Escute e toque no lugar certo!');
         },
@@ -741,7 +747,7 @@
             ctx.fillRect(0, 0, W, H);
             ctx.fillStyle = '#81c784';
             ctx.fillRect(0, H - 25, W, 25);
-            for (let i = 0; i < 10; i++) desenhaFlor(Math.random() * W, H - 35, 14, CORES[i % 7].hex);
+            for (const f of this.floresChao) desenhaFlor(f.x, f.y, f.t, f.cor);
 
             for (let i = 0; i < this.lugares.length; i++) {
                 const l = this.lugares[i];
