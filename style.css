@@ -2091,14 +2091,22 @@ main > .spelling-buttons .btn-next {
     text-align: center;
     font-size: 1.2rem;
     color: #666;
+    margin-bottom: 10px;
+}
+
+.fase-info {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #FF6B9D;
+    font-weight: bold;
     margin-bottom: 15px;
 }
 
 .memory-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(var(--grid-cols, 4), 1fr);
     gap: 15px;
-    max-width: 500px;
+    max-width: min(90vw, var(--grid-width, 500px));
     margin: 0 auto 30px;
 }
 
@@ -2134,7 +2142,7 @@ main > .spelling-buttons .btn-next {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2.5rem;
+    font-size: var(--card-font, 3rem);
     font-weight: bold;
 }
 
