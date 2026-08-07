@@ -39,7 +39,7 @@ const game = GameEngine.create({
 
     renderOption: function (btn, animal) {
         btn.className = 'game-option animal-button';
-        btn.textContent = animal.nome;
+        btn.textContent = animal.emoji;
         btn.title = animal.nome;
     },
 

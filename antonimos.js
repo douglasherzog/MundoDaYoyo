@@ -1,3 +1,9 @@
+const EMOJIS = {
+    'pequeno': '🔵', 'frio': '❄️', 'baixo': '⬇️', 'devagar': '🐢',
+    'triste': '😢', 'vazio': '⬜', 'sujo': '🦠', 'noite': '🌙',
+    'dormindo': '😴', 'fraco': '🥀', 'perto': '📍', 'velho': '🦕'
+};
+
 const pares = [
     { palavra: 'grande', oposto: 'pequeno', emoji: '🔴' },
     { palavra: 'quente', oposto: 'frio', emoji: '🌡️' },
@@ -32,7 +38,7 @@ function carregarRodada() {
 
     elementos.feedback.textContent = '';
     elementos.feedback.className = 'feedback';
-    elementos.target.innerHTML = '<span class="opposite-emoji">' + atual.emoji + '</span><span class="opposite-word">' + atual.palavra + '</span>';
+    elementos.target.innerHTML = '<span class="opposite-emoji" style="font-size:3.5rem">' + atual.emoji + '</span>';
 
     var bar = document.getElementById('progress-bar');
     if (bar) { bar.style.width = (round / 10 * 100) + '%'; bar.textContent = round + ' / 10'; }
@@ -47,7 +53,8 @@ function carregarRodada() {
     opcoes.forEach(function(oposto) {
         var btn = document.createElement('button');
         btn.className = 'game-option';
-        btn.textContent = oposto;
+        btn.textContent = EMOJIS[oposto] || oposto;
+        btn.title = oposto;
         btn.dataset.oposto = oposto;
         btn.addEventListener('click', function() { selecionar(btn); });
         elementos.options.appendChild(btn);

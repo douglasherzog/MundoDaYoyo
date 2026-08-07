@@ -32,7 +32,7 @@ function gerarDesafio() {
     limparDestaques();
     parteAtual = partesCorpo[Math.floor(Math.random() * partesCorpo.length)];
 
-    elementos.target.innerHTML = '<span class="body-emoji">' + parteAtual.emoji + '</span><span class="body-part-name">' + parteAtual.nome + '</span>';
+    elementos.target.innerHTML = '<span class="body-emoji">' + parteAtual.emoji + '</span>';
     elementos.feedback.textContent = '';
     elementos.feedback.className = 'feedback';
 

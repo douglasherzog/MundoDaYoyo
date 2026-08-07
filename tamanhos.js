@@ -1,3 +1,16 @@
+const EMOJIS = {
+    'elefante': '🐘', 'ratinho': '🐁',
+    'árvore grande': '🌳', 'muda pequena': '🌱',
+    'casa': '🏠', 'prédio': '🏢',
+    'melancia': '🍉', 'uva': '🍇',
+    'leão': '🦁', 'gatinho': '🐈',
+    'estrela pequena': '⭐', 'estrela grande': '🌟',
+    'carro': '🚗', 'ônibus': '🚌',
+    'flor pequena': '🌼', 'flor grande': '🌺',
+    'baleia': '🐋', 'peixinho': '🐟',
+    'lua cheia': '🌕', 'crescente': '🌙'
+};
+
 const perguntas = [
     { cena: '                    ', pergunta: 'Qual é o maior?', opcoes: ['elefante', 'ratinho'], correta: 'elefante', explicacao: 'O elefante é muito maior que o ratinho!' },
     { cena: '        ', pergunta: 'Qual é o menor?', opcoes: ['árvore grande', 'muda pequena'], correta: 'muda pequena', explicacao: 'A muda pequena ainda vai crescer!' },
@@ -37,7 +50,9 @@ function carregarRodada() {
 
     elementos.feedback.textContent = '';
     elementos.feedback.className = 'feedback';
-    elementos.cena.textContent = perguntaAtual.cena;
+    var op1 = perguntaAtual.opcoes[0];
+    var op2 = perguntaAtual.opcoes[1];
+    elementos.cena.textContent = (EMOJIS[op1] || op1) + '  ❓  ' + (EMOJIS[op2] || op2);
     elementos.hint.textContent = perguntaAtual.pergunta;
 
     var bar = document.getElementById('progress-bar');
@@ -48,7 +63,8 @@ function carregarRodada() {
     opcoes.forEach(function(opt) {
         var btn = document.createElement('button');
         btn.className = 'game-option';
-        btn.textContent = opt;
+        btn.textContent = EMOJIS[opt] || opt;
+        btn.title = opt;
         btn.dataset.valor = opt;
         btn.addEventListener('click', function() { selecionar(btn); });
         elementos.opcoes.appendChild(btn);

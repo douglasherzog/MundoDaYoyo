@@ -42,7 +42,7 @@ function iniciarRodada() {
     opcoes.forEach(function(op) {
         var btn = document.createElement('button');
         btn.className = 'game-option';
-        btn.innerHTML = '<span style="font-size:1.4em">' + op.emoji + '</span> ' + op.nome;
+        btn.innerHTML = '<span style="font-size:2.4em">' + op.emoji + '</span>';
         btn.addEventListener('click', function() { verificar(op); });
         elementos.options.appendChild(btn);
     });
