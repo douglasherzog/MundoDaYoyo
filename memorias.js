@@ -1,11 +1,11 @@
 const ICONS = ['🦄', '🌈', '🍭', '☁️', '⭐', '🧚', '🍦', '☀️'];
 
 const FASES = [
-    { pares: 2, tentativas: 4, cols: 2, largura: 360, fonte: 4.5 },
-    { pares: 3, tentativas: 6, cols: 3, largura: 420, fonte: 4 },
-    { pares: 4, tentativas: 8, cols: 4, largura: 500, fonte: 3.5 },
-    { pares: 6, tentativas: 12, cols: 4, largura: 560, fonte: 3.5 },
-    { pares: 8, tentativas: 16, cols: 4, largura: 600, fonte: 3 }
+    { pares: 2, tentativas: 4, cols: 2, largura: 330, fonte: 4.5 },
+    { pares: 3, tentativas: 6, cols: 3, largura: 480, fonte: 4.5 },
+    { pares: 4, tentativas: 8, cols: 4, largura: 645, fonte: 4.5 },
+    { pares: 6, tentativas: 12, cols: 4, largura: 645, fonte: 4.5 },
+    { pares: 8, tentativas: 16, cols: 4, largura: 645, fonte: 4.5 }
 ];
 
 let faseAtual = 0;

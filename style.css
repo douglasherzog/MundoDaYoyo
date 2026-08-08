@@ -2142,7 +2142,7 @@ main > .spelling-buttons .btn-next {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: var(--card-font, 3rem);
+    font-size: clamp(2.2rem, 12vmin, var(--card-font, 4.5rem));
     font-weight: bold;
 }
 
